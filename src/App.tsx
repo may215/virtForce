@@ -8,6 +8,7 @@ import { SecuritySandbox } from './components/SecuritySandbox';
 import { VentureIncubator } from './components/VentureIncubator';
 import { LandingPage } from './components/LandingPage';
 import { CommandPalette } from './components/CommandPalette';
+import { generateDynamicSimulation } from './utils/dynamicSimulation';
 import { Activity, Circle, Terminal, ShieldAlert, Sparkles, Home } from 'lucide-react';
 
 export default function App() {
@@ -80,6 +81,33 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'hq' | 'kanban' | 'logs' | 'gates' | 'incubator'>('hq');
   const [selectedAgentId, setSelectedAgentId] = useState<AgentRole>('CEO');
   const [isSystemKilled, setIsSystemKilled] = useState(false);
+  const [simulationSteps, setSimulationSteps] = useState(() => SIMULATION_STEPS);
+
+  const handleLaunchCustomProduct = (name: string, desc: string, provider: string, model: string) => {
+    // Generate tasks, steps, initial system logs, and sandboxed Docker container startup parameters
+    const result = generateDynamicSimulation(name, desc, provider, model);
+
+    setIsSimulating(false);
+    setTasks(result.tasks);
+    setAgents(prev => prev.map(a => ({
+      ...a,
+      status: 'SLEEPING',
+      currentGoal: `Bootstrapping container dependencies for ${name}`,
+      costSpent: 0,
+      totalTokens: 0,
+    })));
+    setLogs(result.logs);
+    setSandboxLogs(result.sandboxLogs);
+    setSimulationSteps(result.steps);
+    
+    // Reset interval sequence pointer
+    stepIndexRef.current = -1;
+
+    // Transition to visual headquarters canvas and turn simulation ON
+    setActiveTab('hq');
+    setShowLanding(false);
+    setIsSimulating(true);
+  };
 
   // Use ref to keep track of simulation step pointer without re-creating interval
   const stepIndexRef = useRef(-1);
@@ -269,8 +297,8 @@ export default function App() {
 
     const interval = setInterval(() => {
       // Advance step pointer
-      stepIndexRef.current = (stepIndexRef.current + 1) % SIMULATION_STEPS.length;
-      const step = SIMULATION_STEPS[stepIndexRef.current];
+      stepIndexRef.current = (stepIndexRef.current + 1) % simulationSteps.length;
+      const step = simulationSteps[stepIndexRef.current];
 
       // If the next target state requires human merge gates (HITL state)
       if (step.targetState === 'HITL') {
@@ -401,7 +429,7 @@ export default function App() {
     }, tickMs);
 
     return () => clearInterval(interval);
-  }, [isSimulating, simulationSpeed, isSystemKilled]);
+  }, [isSimulating, simulationSpeed, isSystemKilled, simulationSteps]);
 
   // --- Swarm Actions Inputs ---
 
@@ -802,6 +830,7 @@ export default function App() {
               setSelectedAgentId(agentId as AgentRole);
               setActiveTab('logs');
             }}
+            onLaunchCustomSimulation={handleLaunchCustomProduct}
           />
         )}
 

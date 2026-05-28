@@ -17,7 +17,16 @@ interface HQCoreProps {
   onResetSimulation: () => void;
   onSetSpeed: (speed: number) => void;
   onSelectAgent: (agentId: string) => void;
+  onLaunchCustomSimulation?: (name: string, desc: string, provider: string, model: string) => void;
 }
+
+const PROVIDER_MODELS: Record<string, string[]> = {
+  gemini: ['gemini-3.5-flash', 'gemini-2.5-pro'],
+  openai: ['gpt-4o-mini', 'gpt-4o', 'o1-mini'],
+  anthropic: ['claude-3-5-sonnet', 'claude-3-5-haiku'],
+  deepseek: ['deepseek-chat', 'deepseek-reasoner'],
+  ollama: ['llama3 (local)', 'mistral (local)', 'codellama']
+};
 
 export function HQCore({
   agents,
@@ -29,11 +38,43 @@ export function HQCore({
   onResetSimulation,
   onSetSpeed,
   onSelectAgent,
+  onLaunchCustomSimulation,
 }: HQCoreProps) {
   // Summary calculations
   const totalCost = agents.reduce((sum, a) => sum + a.costSpent, 0) + stats.totalBudgetUsed;
   const activeCount = agents.filter(a => a.status === 'ACTIVE' || a.status === 'CODE_RUNNING').length;
   const mergedCount = agents.reduce((sum, a) => sum + a.prsMerged, 0);
+
+  // Dynamic sandbox builder form state
+  const [customName, setCustomName] = useState('');
+  const [customDesc, setCustomDesc] = useState('');
+  const [selectedProvider, setSelectedProvider] = useState('gemini');
+  const [selectedModel, setSelectedModel] = useState('gemini-3.5-flash');
+
+  const handleProviderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const prov = e.target.value;
+    setSelectedProvider(prov);
+    const models = PROVIDER_MODELS[prov] || [];
+    if (models.length > 0) {
+      setSelectedModel(models[0]);
+    }
+  };
+
+  const handleLaunchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customName.trim()) return;
+    if (onLaunchCustomSimulation) {
+      onLaunchCustomSimulation(
+        customName,
+        customDesc,
+        selectedProvider.toUpperCase(),
+        selectedModel
+      );
+      // Clean inputs for satisfaction
+      setCustomName('');
+      setCustomDesc('');
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -146,6 +187,89 @@ export function HQCore({
             <Terminal className="w-4 h-4" />
           </div>
         </div>
+      </div>
+
+      {/* --- AI SWARM DOCKER SANDBOX COMPILATION TEST LAB --- */}
+      <div className="bg-[#090b11] border border-slate-805 rounded-xl p-4 space-y-3 font-sans relative overflow-hidden text-left shadow-lg shadow-indigo-950/20">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-850 pb-3">
+          <div className="text-left">
+            <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono flex items-center gap-1.5 leading-none">
+              <span className="inline-block w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+              🧪 Dynamic Autonomous Swarm Docker Sandbox Lab
+            </h3>
+            <p className="text-[10px] text-slate-400 mt-1 leading-relaxed max-w-2xl font-sans">
+              Test dynamic product blueprints. Enter any custom product name to command the supervisor nodes to spin up secure isolated containers, compile modules on the fly, and test regression routines inside the terminal log pool.
+            </p>
+          </div>
+          <div className="text-[9px] font-mono tracking-widest text-[#00d2ff] uppercase font-bold bg-[#0d1522] border border-indigo-950 px-2 py-0.5 rounded shrink-0">
+            Isolated Docker Cluster
+          </div>
+        </div>
+
+        <form onSubmit={handleLaunchSubmit} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+          <div className="md:col-span-3 text-left space-y-1">
+            <label className="text-[9px] font-mono font-bold uppercase text-slate-450 block">Product / MVP Name</label>
+            <input 
+              type="text"
+              required
+              className="w-full bg-[#05060a] border border-slate-800 focus:border-indigo-600 rounded p-2 text-[11px] text-white font-mono placeholder-slate-700 outline-none leading-none h-[34px] text-left block"
+              placeholder="e.g. Telemetry Analytics HUD"
+              value={customName}
+              onChange={e => setCustomName(e.target.value)}
+            />
+          </div>
+
+          <div className="md:col-span-3 text-left space-y-1">
+            <label className="text-[9px] font-mono font-bold uppercase text-slate-455 block">MVP Features Description</label>
+            <input 
+              type="text"
+              className="w-full bg-[#05060a] border border-slate-800 focus:border-indigo-600 rounded p-2 text-[11px] text-white font-mono placeholder-slate-700 outline-none leading-none h-[34px] text-left block"
+              placeholder="e.g. React panel with offline caching state."
+              value={customDesc}
+              onChange={e => setCustomDesc(e.target.value)}
+            />
+          </div>
+
+          <div className="md:col-span-2 text-left space-y-1">
+            <label className="text-[9px] font-mono font-bold uppercase text-slate-450 block">AI Router</label>
+            <select 
+              value={selectedProvider} 
+              onChange={handleProviderChange}
+              className="w-full bg-[#05060a] border border-slate-800 focus:border-indigo-600 rounded p-2 text-[11px] text-white font-mono outline-none h-[34px] cursor-pointer text-left block"
+            >
+              <option value="gemini">Google Gemini SDK</option>
+              <option value="openai">OpenAI GPT Core</option>
+              <option value="anthropic">Anthropic Claude</option>
+              <option value="deepseek">DeepSeek AI</option>
+              <option value="ollama">Ollama (Offline local)</option>
+            </select>
+          </div>
+
+          <div className="md:col-span-2 text-left space-y-1">
+            <label className="text-[9px] font-mono font-bold uppercase text-slate-450 block">Sovereign Model</label>
+            <select 
+              value={selectedModel} 
+              onChange={e => setSelectedModel(e.target.value)}
+              className="w-full bg-[#05060a] border border-slate-800 focus:border-indigo-600 rounded p-2 text-[11px] text-white font-mono outline-none h-[34px] cursor-pointer text-left block"
+            >
+              {(PROVIDER_MODELS[selectedProvider] || []).map(m => (
+                <option key={m} value={m}>{m}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="md:col-span-2">
+            <button
+              type="submit"
+              className="w-full h-[34px] bg-indigo-600 hover:bg-indigo-500 text-white rounded font-mono font-bold text-[10px] uppercase tracking-wider transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+            >
+              <Hammer className="w-3.5 h-3.5" />
+              BUILD PRODUCT MVP
+            </button>
+          </div>
+        </form>
       </div>
 
       {/* --- SECTION: DRAGGABLE CAD SWARM ORCHESTRATION CANVAS & INSPECTOR --- */}

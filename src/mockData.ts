@@ -1,4 +1,4 @@
-import { Agent, Task, SwarmLog, TaskState, AgentRole } from './types';
+import { Agent, Task, SwarmLog, TaskState, AgentRole, SimulationStep } from './types';
 
 export const INITIAL_AGENTS: Agent[] = [
   {
@@ -260,26 +260,6 @@ export const INITIAL_LOGS: SwarmLog[] = [
 ];
 
 // Steps sequence that can be replayed to animate/simulate the Multi-Agent development process live!
-export interface SimulationStep {
-  taskId: string;
-  targetState: TaskState;
-  activeAgent: AgentRole;
-  agentGoal: string;
-  logMessage: string;
-  logDetail?: string;
-  logLevel: 'THOUGHT' | 'TOOL_CALL' | 'INFO' | 'SUCCESS' | 'ERROR';
-  specUpdate?: string;
-  diffUpdate?: {
-    file: string;
-    additions: string[];
-    deletions: string[];
-  };
-  terminalOutput?: string;
-  costIncurred: number;
-  tokensUsed: number;
-  monologue: string;
-}
-
 export const SIMULATION_STEPS: SimulationStep[] = [
   {
     taskId: 'TASK-001',
