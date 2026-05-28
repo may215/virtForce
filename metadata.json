@@ -1,0 +1,6 @@
+{
+  "name": "virtForce",
+  "description": "An interactive full-stack operations hub, container sandboxing terminal, and secure human-in-the-loop control dashboard for virtForce multi-agent developer swarms.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

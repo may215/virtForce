@@ -1,0 +1,141 @@
+{
+  "name": "virtforce-swarm-engine",
+  "version": "2.5.0",
+  "description": "An isolated multi-agent software development and DevOps management container swarm, offering automated code development, QA verification, security sanitization, and web crawler ingress with real-time performance analytics.",
+  "category": "DevOps & Software Development AI Agent",
+  "mcpProtocol": {
+    "specification": "https://modelcontextprotocol.io",
+    "transport": "stdio",
+    "command": "node",
+    "args": [
+      "./dist/server.cjs",
+      "--mcp"
+    ]
+  },
+  "capabilities": {
+    "tools": [
+      {
+        "name": "refine_code",
+        "description": "Refines source code asynchronously inside an air-gapped node sandbox based on human feedback or QA audit issues.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "taskId": {
+              "type": "string",
+              "description": "The unique ID of the development sub-task"
+            },
+            "originalCode": {
+              "type": "string",
+              "description": "The raw TypeScript or React source code requiring changes"
+            },
+            "feedback": {
+              "type": "string",
+              "description": "Specific human instructions or compiled error message stack traces to resolve"
+            },
+            "file": {
+              "type": "string",
+              "description": "Relative file path context within target workspace"
+            }
+          },
+          "required": [
+            "feedback"
+          ]
+        }
+      },
+      {
+        "name": "web_ingress_crawl",
+        "description": "Crawls and reverse-engineers visual websites or docker webhook schemas into actionable agent task backlogs.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "description": "Target live application URL"
+            },
+            "strategy": {
+              "type": "string",
+              "enum": [
+                "web_crawl",
+                "github_ssh",
+                "docker_registry"
+              ],
+              "description": "Method of acquiring file context patterns"
+            },
+            "category": {
+              "type": "string",
+              "description": "Primary framework archetype (e.g., field_service, retail_checkout)"
+            }
+          },
+          "required": [
+            "url"
+          ]
+        }
+      },
+      {
+        "name": "simulate_forecast",
+        "description": "Executes monte-carlo resource simulations protecting LLM budget margins for a specified workspace stack.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": [
+                "BUDGET_SAVING",
+                "STANDARD",
+                "MAX_QUALITY"
+              ],
+              "description": "Orchestration cost guardrail level"
+            },
+            "budget": {
+              "type": "number",
+              "description": "Allocated developer credit pool"
+            },
+            "techStack": {
+              "type": "string",
+              "description": "Framework tags (e.g. React, Docker, Postgres)"
+            }
+          },
+          "required": [
+            "budget"
+          ]
+        }
+      },
+      {
+        "name": "post_messenger_command",
+        "description": "Proxies incoming mobile WhatsApp or Telegram commands to local sandbox supervisor sockets.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "Inbound text directive"
+            },
+            "channel": {
+              "type": "string",
+              "enum": [
+                "whatsapp",
+                "telegram"
+              ]
+            }
+          },
+          "required": [
+            "message"
+          ]
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "name": "review-pull-request",
+        "description": "Prepares the CEO and QA audit prompt constraints for validating staged DevOps patches.",
+        "arguments": [
+          {
+            "name": "filename",
+            "description": "The target code filename",
+            "required": true
+          }
+        ]
+      }
+    ]
+  }
+}

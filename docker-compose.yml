@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # Central Express Host Orchestrator
+  virtforce-host:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: virtforce-host-orchestrator
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - WHATSAPP_VERIFY_TOKEN=${WHATSAPP_VERIFY_TOKEN}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Allows host process to scale sibling containers
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+
+  # Sandboxed DEV Workspace
+  virtforce-sandbox-dev:
+    image: node:18-alpine
+    container_name: virtforce-container-dev
+    working_dir: /sandbox
+    command: sh -c "yarn install && tail -f /dev/null"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/sandbox
+    stop_signal: SIGKILL
+    security_opt:
+      - no-new-privileges:true
+
+  # Ephemeral QA & Unit compiler node
+  virtforce-sandbox-qa:
+    image: node:18-alpine
+    container_name: virtforce-container-qa
+    working_dir: /qa
+    command: sh -c "tail -f /dev/null"
+    volumes:
+      - .:/qa
+    read_only: true
+    tmpfs:
+      - /run
+      - /tmp
