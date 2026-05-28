@@ -17,7 +17,9 @@ import {
   Star,
   Users,
   Compass,
-  ArrowRight
+  ArrowRight,
+  Sparkles,
+  Database
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -661,6 +663,119 @@ export function LandingPage({
                   <span>* Config file ~/.multica/configs/teammates.json synchronized successfully.</span>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Card 0C: Self-Seeding Swarm Memory & Rules Compiler */}
+          <div className="lg:col-span-12 bg-[#0a0d14] border border-slate-800/80 p-6 md:p-8 rounded-xl space-y-6 shadow-2xl relative overflow-hidden group hover:border-emerald-500/40 transition-all">
+            {/* Visual background gradient accents */}
+            <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-10 right-0 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              
+              {/* Left Column Product value copy (col-span-5) */}
+              <div className="lg:col-span-5 space-y-4 text-left">
+                <span className="text-[9px] font-mono tracking-widest font-extrabold text-emerald-400 bg-emerald-950/40 border border-emerald-900/60 px-2 py-0.5 rounded uppercase">
+                  PERSISTENT SWARM MEMORY SYSTEM
+                </span>
+                <h3 className="text-xl md:text-2xl font-extrabold text-white tracking-tight uppercase font-mono">
+                  Autonomous Self-Learning Skills
+                </h3>
+                <p className="text-xs text-slate-400 font-sans leading-relaxed">
+                  Tired of telling your development agents the same configuration adjustments and style preferences over and over? virtForce now compiles and remembers your guidelines automatically!
+                </p>
+                <p className="text-xs text-slate-400 font-sans leading-relaxed">
+                  Our system features a live <strong>Incremental Swarm Memory Matrix</strong> that captures your instructions, resolves conflicting rules, and compiles them into persistent <code>.json</code> schemas. These instructions are physically translated into active prompt instruction sets inside your local <code>AGENTS.md</code> file context.
+                </p>
+                <p className="text-xs text-slate-400 font-sans leading-relaxed">
+                  Subsequent agent sessions instantly read these rule vectors to prevent regression or repetition, offering a true, dynamic, <strong>self-reinforcing workflow integration</strong>.
+                </p>
+
+                <div className="space-y-2 pt-1 font-mono text-[11px] text-slate-350">
+                  <div className="flex items-center gap-2">
+                    <span className="text-emerald-400">✔</span>
+                    <span>Live feedback capture (auto-saves style preferences & api habits)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-emerald-400">✔</span>
+                    <span>Full file persistence (synchronous updates in AGENTS.md for turn-agnoness)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-emerald-400">✔</span>
+                    <span>Interactive controls (toggle, parameter tuning & prompt tweaking)</span>
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <button 
+                    onClick={onEnterDashboard}
+                    className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-mono font-bold text-xs uppercase rounded cursor-pointer transition-all shadow-md flex items-center justify-center gap-1.5"
+                  >
+                    <span>COMPILE CUSTOM SKILL VECTORS</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Right Column Interactive Preview Card (col-span-7) */}
+              <div className="lg:col-span-7 bg-[#05060a] border border-slate-850 rounded-lg p-5 relative shadow-inner flex flex-col justify-between min-h-[300px] text-left">
+                {/* Dots background */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1018_1px,transparent_1px),linear-gradient(to_bottom,#0c1018_1px,transparent_1px)] bg-[size:16px_16px] opacity-40 pointer-events-none" />
+
+                {/* Header panel */}
+                <div className="relative z-10 flex items-center justify-between border-b border-slate-900 pb-2">
+                  <div className="flex items-center gap-1.5 font-mono text-[9px]">
+                    <span className="p-0.5 px-1.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-900/60 text-[8px] font-bold uppercase animate-pulse">MATRIX LINKED</span>
+                    <span className="text-slate-500">Target File: /AGENTS.md (Hot Injected)</span>
+                  </div>
+                  <span className="text-[8px] font-mono text-emerald-400 bg-emerald-950/20 border border-emerald-900/40 px-1.5 py-0.5 rounded font-extrabold pb-0.5">ACTIVE PERSISTENCE</span>
+                </div>
+
+                {/* Interactive Simulation items */}
+                <div className="relative z-10 my-4 space-y-2 block text-left">
+                  <div className="bg-[#0b0d13] border border-emerald-950/65 p-2.5 rounded-lg flex items-start gap-2.5">
+                    <div className="p-1.5 bg-emerald-950/30 border border-emerald-900/50 rounded-md text-emerald-400 text-xs font-mono">
+                      🧠
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <strong className="text-xs text-white">Tailwind Primacy Protocol</strong>
+                        <span className="text-[7px] bg-emerald-950 border border-emerald-900/40 text-emerald-400 px-1 rounded-sm uppercase tracking-wider font-semibold font-mono">CODING</span>
+                      </div>
+                      <p className="text-[10px] text-slate-400 font-sans leading-tight">
+                        &quot;Always style components using inline Tailwind utility classes. Strict prohibition from writing custom CSS files...&quot;
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-[#0b0d13] border border-blue-955/60 p-2.5 rounded-lg flex items-start gap-2.5 opacity-80">
+                    <div className="p-1.5 bg-blue-955/30 border border-blue-900/50 rounded-md text-blue-400 text-xs font-mono">
+                      🛡️
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <strong className="text-xs text-white">Absolute Path Deflection</strong>
+                        <span className="text-[7px] bg-blue-950 border border-blue-900/40 text-blue-400 px-1 rounded-sm uppercase tracking-wider font-semibold font-mono font-mono">SAFETY</span>
+                      </div>
+                      <p className="text-[10px] text-slate-400 font-sans leading-tight">
+                        &quot;Refuse workspace paths starting with root &quot;/&quot;. Only reference correct relative paths...&quot;
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Live Output Log Stream */}
+                <div className="relative z-10 bg-[#020305]/95 border border-slate-900 rounded p-2.5 font-mono text-[9.5px] leading-relaxed text-slate-400 space-y-1 block text-left">
+                  <div className="text-slate-500 flex items-center justify-between border-b border-slate-900 pb-1">
+                    <span className="text-[8px] uppercase tracking-wide">Learned Guardrail Compiler Logs</span>
+                    <span className="text-[8px] text-emerald-400">STATUS: RE-COMPILING SUCCESS</span>
+                  </div>
+                  <div className="text-slate-400">[HEURISTICS] Extracted pattern turn turns. Compiling...</div>
+                  <div className="text-emerald-400 font-bold">[SUCCESS] Rebuilt AGENTS.md with 3 active dynamic system instructions. Exposing and feeding memory blocks to model.</div>
+                </div>
+              </div>
+
             </div>
           </div>
 

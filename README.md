@@ -45,6 +45,11 @@ Traditional multi-agent frameworks are monolithic and cloud-dependent. They requ
 
 Unlike projects like HKUDS/ClawTeam and SwarmClaw which rely on opaque, non-interactive terminal outputs or read-only text lists, **virtForce** introduces of an state-of-the-art **Interactive Topological CAD Swarm Canvas**:
 
+<p align="center">
+  <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" alt="virtForce Topological CAD Swarm Workspace" style="border-radius:12px; max-width: 100%; height: auto;" />
+</p>
+
+
 ```text
  ┌─── CEO ────────┐                       ┌─── DEV ────────┐                      ┌─── HITL ───────┐
  │               ├────── [Planning] ─────►│ (OpenHands)    ├────── [Verify] ─────►│ Approval Gate  │
@@ -82,6 +87,11 @@ Unlike projects like HKUDS/ClawTeam and SwarmClaw which rely on opaque, non-inte
 
 ### 1. Ephemeral Secure Sandboxing V2
 Every time a code development task is initiated, virtForce isolates the thread inside a zero-privilege Docker runtime container. If any third-party script makes malicious API calls or accesses restricted files, the security fence automatically kills the script and triggers a visual telemetry warning.
+
+<p align="center">
+  <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" alt="virtForce ephemeral secure server container room" style="border-radius:12px; max-width: 100%; height: auto;" />
+</p>
+
 
 ### 2. HITL (Human-In-The-Loop) Change Control
 virtForce prioritizes code safety. DEV containers output pristine git file deltas (`git diff` representation) and stage pull requests inside the Security Sandbox holding chamber. Developers inspect true side-by-side git file additions or deletions before committing updates to the production branch:
@@ -149,6 +159,31 @@ To run locally and ensure complete development tooling alignment:
    npm run lint
    npm run build
    ```
+
+---
+
+## 🤖 Supported AI Providers
+
+virtForce is compatible with enterprise LLMs, local offline runtimes, and low-latency API proxy routes:
+*   **Google Gemini:** Native support for `gemini-3.5-flash` and `gemini-2.5-pro` (Fully configurable API base URLs and strict context limits).
+*   **OpenAI GPT Core:** `gpt-4o`, `gpt-4o-mini`, and high-reasoning models like `o1` or `o3-mini`.
+*   **Anthropic Claude:** `claude-3-5-sonnet-20241022` and `claude-3-5-haiku`.
+*   **DeepSeek:** `deepseek-chat` (DeepSeek-V3) and `deepseek-reasoner` (DeepSeek-R1).
+*   **Ollama (Self-Hosted/Offline):** Run standard open models like `llama3`, `mistral`, or `codellama` locally without keys or subscription costs.
+*   **Custom / API Gateway Proxy:** Fully compliant with unified proxies like OpenRouter, Groq, xAI Grok, Together AI, or local vLLM REST instances.
+*   **Zero-Cost Mock Simulator:** Fallback mock simulation mode that mimics developer agent code improvements and security audits, allowing complete testing of pipeline heartbeats offline without any fees.
+
+---
+
+## ⌨️ Global Keyboard Shortcuts
+
+Sovereign operations are fast with global keyboard command controls. Key combinations automatically block triggers when typing inside input text fields:
+*   **`Ctrl + Enter` (or `Cmd + Enter`):** Start / Pause active Swarm Simulated Tick Loop.
+*   **`Ctrl + K` (or `Cmd + K`):** Open / Toggle Floating Command control palette.
+*   **`Alt + 1` / `2` / `3` / `4` / `5`:** Swift jump to HQ CAD Canvas, Backlog, AI Logs, Sandbox Gate, or Venture Incubator respectively.
+*   **`Alt + L`:** Switch landing homepage.
+*   **`Alt + X`:** Emergency system kill switch / reset active container processes.
+*   **`Shift + C` / `P` / `D` / `Q` / `M`:** Swift focus / inspect individual agent parameters (CEO, PM, DEV, QA, Growth Marketer).
 
 ---
 

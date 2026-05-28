@@ -507,9 +507,132 @@ export function SecuritySandbox({
     });
   }, [learnedSkills]);
 
+  // Fetch raw AGENTS.md markdown content
+  const refreshAgentsMd = () => {
+    fetch('/api/skills/agents-md')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.markdown) {
+          setRawAgentsMdText(data.markdown);
+        }
+      })
+      .catch(err => {
+        console.error("Failed to fetch raw AGENTS.md:", err);
+      });
+  };
+
+  // Save AGENTS.md and trigger reparse
+  const saveAgentsMd = (markdownContent: string) => {
+    setIsSavingAgentsMd(true);
+    const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    setSkillsTerminalLogs(prev => [
+      ...prev,
+      `[${nowStr}] [DISK-WRITE] Initializing raw compilation push on AGENTS.md file...`
+    ]);
+
+    fetch('/api/skills/agents-md', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ markdown: markdownContent })
+    })
+    .then(res => res.json())
+    .then(data => {
+      setIsSavingAgentsMd(false);
+      if (data.success) {
+        if (Array.isArray(data.parsedSkills) && data.parsedSkills.length > 0) {
+          setLearnedSkills(data.parsedSkills);
+        }
+        setSkillsTerminalLogs(prev => [
+          ...prev,
+          `[${nowStr}] [SUCCESS] Compiled ${data.count} neural layers out of raw Markdown text and updated skills database.`
+        ]);
+        setSandboxSystemLogs(logs => [
+          ...logs,
+          `[SWARM-MEM] AGENTS.md edited and bidirectionally recompiled. Restored ${data.count} structured rules.`
+        ]);
+      } else {
+        setSkillsTerminalLogs(prev => [...prev, `[${nowStr}] [ERROR] Markdown compilation failed: ${data.error || 'Syntax format error'}`]);
+      }
+    })
+    .catch(err => {
+      setIsSavingAgentsMd(false);
+      console.error("Failed to compile markdown:", err);
+      setSkillsTerminalLogs(prev => [...prev, `[${nowStr}] [ERROR] Network timeout or connection drop during compilation compile.`]);
+    });
+  };
+
+  // Syntactic conflict analyzer of compiled rules
+  const scanRuleConflicts = () => {
+    type SkillType = typeof learnedSkills[0];
+    const conflicts: Array<{
+      ruleA: SkillType;
+      ruleB: SkillType;
+      severity: 'CRITICAL' | 'WARNING';
+      reason: string;
+      advice: string;
+    }> = [];
+
+    for (let i = 0; i < learnedSkills.length; i++) {
+      for (let j = i + 1; j < learnedSkills.length; j++) {
+        const a = learnedSkills[i];
+        const b = learnedSkills[j];
+        if (!a.enabled || !b.enabled) continue;
+
+        // Conflict 1: Tailwind vs custom CSS stylesheets
+        if (
+          (a.userPrompt.toLowerCase().includes('tailwind') && b.userPrompt.toLowerCase().includes('custom css')) ||
+          (a.userPrompt.toLowerCase().includes('tailwind') && b.userPrompt.toLowerCase().includes('stylesheet'))
+        ) {
+          conflicts.push({
+            ruleA: a,
+            ruleB: b,
+            severity: 'CRITICAL',
+            reason: `Incompatible visual styling mechanics on rules "${a.name}" & "${b.name}". Inline style restriction clashes with stylesheet override.`,
+            advice: 'Disable custom CSS stylesheets and let Tailwind utility classes manage the UI presentation layer exclusively.'
+          });
+        }
+
+        // Conflict 2: Absolute vs relative files paths
+        if (
+          (a.userPrompt.toLowerCase().includes('absolute path') || a.userPrompt.toLowerCase().includes('path starting with root')) &&
+          (b.userPrompt.toLowerCase().includes('relative path') || b.userPrompt.toLowerCase().includes('active directory'))
+        ) {
+          conflicts.push({
+            ruleA: a,
+            ruleB: b,
+            severity: 'CRITICAL',
+            reason: `Directory resolution clash: "${a.name}" rules against absolute root directory patterns while "${b.name}" expects relative addressing.`,
+            advice: 'Standardize lookup strategies to use purely relative paths (./) to prevent Docker container deploy boot crashes.'
+          });
+        }
+
+        // Conflict 3: Logical overlaps on crucial keywords (token fatigue warning)
+        const sharedKeywords = ['token', 'key', 'auth', 'database', 'sdk', 'credentials', 'bypass'].filter(
+          kw => a.userPrompt.toLowerCase().includes(kw) && b.userPrompt.toLowerCase().includes(kw)
+        );
+        if (sharedKeywords.length >= 2) {
+          conflicts.push({
+            ruleA: a,
+            ruleB: b,
+            severity: 'WARNING',
+            reason: `High redundancy: "${a.name}" and "${b.name}" share overlapping criteria for core components: [${sharedKeywords.join(', ')}].`,
+            advice: 'Unify both rules into a single logical instruction block to optimize Gemini prompts and lower token context window load.'
+          });
+        }
+      }
+    }
+    return conflicts;
+  };
+
   const [interactiveSkillText, setInteractiveSkillText] = useState('');
   const [isExtractingSkill, setIsExtractingSkill] = useState(false);
   const [activeSelectedSkillId, setActiveSelectedSkillId] = useState<string | null>('ls-1');
+
+  // --- Dynamic Rule Extension States ---
+  const [skillsSubTab, setSkillsSubTab] = useState<'cards' | 'markdown'>('cards');
+  const [rawAgentsMdText, setRawAgentsMdText] = useState('');
+  const [isSavingAgentsMd, setIsSavingAgentsMd] = useState(false);
+  const [swarmTemperature, setSwarmTemperature] = useState(15); // Strictness slider (10 = absolute strict, 90 = creative)
 
   // Agent Memory expansion statistics
   const [agentMemoryStats, setAgentMemoryStats] = useState<Array<{
@@ -1664,132 +1787,335 @@ export function SecuritySandbox({
                           <Database className="w-4 h-4 text-blue-400" />
                           Active Skill Memory Bank
                         </h4>
-                        <span className="text-[9px] bg-indigo-950 text-indigo-400 border border-indigo-900/60 px-1.5 py-0.2 rounded font-bold">
-                          {learnedSkills.length} Rules Bound
-                        </span>
+                        
+                        {/* SubTab navigation buttons */}
+                        <div className="flex bg-[#07090d] border border-slate-800 p-0.5 rounded-md text-[9px] font-mono">
+                          <button
+                            type="button"
+                            onClick={() => setSkillsSubTab('cards')}
+                            className={`px-2 py-1 rounded cursor-pointer leading-none transition-all font-bold ${
+                              skillsSubTab === 'cards' 
+                                ? 'bg-indigo-600 text-white' 
+                                : 'text-slate-400 hover:text-white'
+                            }`}
+                          >
+                            🧠 CARDS
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSkillsSubTab('markdown');
+                              refreshAgentsMd();
+                            }}
+                            className={`px-2 py-1 rounded cursor-pointer leading-none transition-all font-bold ${
+                              skillsSubTab === 'markdown' 
+                                ? 'bg-indigo-600 text-white' 
+                                : 'text-slate-400 hover:text-white'
+                            }`}
+                          >
+                            📜 AGENTS.MD
+                          </button>
+                        </div>
                       </div>
+                      
                       <p className="text-[10px] text-slate-450 mt-1 font-sans">
-                        These compiled guardrails are globally injected into the primary system context, guiding the agent outputs on any first-pass code generation so you NEVER have to repeat yourself.
+                        {skillsSubTab === 'cards' 
+                          ? 'Active heuristics parsed directly from prompt logs and injected to the models short-term memory layer.'
+                          : 'Direct markdown visualization of AGENTS.md. Editing compiles new guidelines into active memory blocks.'}
                       </p>
                     </div>
 
-                    {/* Scrollable list of Rules */}
-                    <div className="my-2.5 overflow-y-auto max-h-[170px] space-y-1.5 pr-1 font-mono text-[11px] scrollbar-thin scrollbar-thumb-slate-805 flex-1">
-                      {learnedSkills.map((sk) => {
-                        const isSelected = activeSelectedSkillId === sk.id;
-                        return (
-                          <div
-                            key={sk.id}
-                            onClick={() => setActiveSelectedSkillId(sk.id)}
-                            className={`p-2.5 rounded-lg border text-left cursor-pointer transition-all flex items-start justify-between gap-3 ${
-                              isSelected 
-                                ? 'bg-[#0f1420]/70 border-indigo-500 text-indigo-200' 
-                                : 'bg-[#12151b] border-slate-850 hover:bg-[#151921] hover:border-slate-700 text-slate-300'
-                            }`}
+                    {skillsSubTab === 'markdown' ? (
+                      <div className="flex-1 flex flex-col justify-between my-1 font-mono text-[11px] space-y-2 h-[350px]">
+                        <div className="flex justify-between items-center text-[9px] text-slate-450">
+                          <span className="text-[8.5px] uppercase font-bold tracking-wider text-emerald-400">🔥 DIRECT AGENTS.MD SYNC WORKSPACE</span>
+                          <button 
+                            type="button"
+                            onClick={refreshAgentsMd}
+                            className="text-indigo-400 hover:underline cursor-pointer flex items-center gap-1 font-bold text-[8.5px]"
                           >
-                            <div className="space-y-1 truncate flex-1 block">
-                              <div className="flex items-center gap-1.5">
-                                <span className={`w-1.5 h-1.5 rounded-full ${sk.enabled ? 'bg-emerald-450 animate-pulse' : 'bg-slate-600'}`} />
-                                <strong className="text-xs text-white truncate max-w-[180px]" title={sk.name}>
-                                  {sk.name}
-                                </strong>
-                                <span className="text-[7.5px] bg-[#1a1f29] border border-slate-805 text-slate-400 px-1 rounded-sm uppercase tracking-wider font-semibold">
-                                  {sk.type}
-                                </span>
-                              </div>
-                              <p className="text-[9.5px] text-slate-400 truncate whitespace-nowrap overflow-hidden">
-                                {sk.userPrompt}
-                              </p>
-                              <div className="text-[7.5px] text-slate-500 flex items-center gap-1 font-semibold uppercase mt-0.5">
-                                <span>Ref: {sk.origin}</span>
-                                <span>•</span>
-                                <span>Confidence: {sk.confidence}%</span>
+                            <RefreshCw className="w-2.5 h-2.5" /> FORCE RELOAD
+                          </button>
+                        </div>
+
+                        <textarea
+                          value={rawAgentsMdText}
+                          onChange={(e) => setRawAgentsMdText(e.target.value)}
+                          className="w-full bg-[#040507] border border-slate-900 p-2.5 rounded-lg text-[10px] text-emerald-300 font-mono h-[200px] resize-none focus:outline-none focus:border-indigo-600 block text-left leading-normal placeholder:text-slate-800 scrollbar-thin scrollbar-thumb-slate-800"
+                          placeholder="# Instructions..."
+                          disabled={isSavingAgentsMd}
+                        />
+
+                        <div className="flex justify-between items-center bg-[#090c12] border border-slate-900 p-2 rounded-lg">
+                          <span className="text-[8.5px] text-slate-500 font-sans leading-tight">Parses headers like &quot;### 🧠 Name&quot; on save.</span>
+                          <button
+                            type="button"
+                            onClick={() => saveAgentsMd(rawAgentsMdText)}
+                            disabled={isSavingAgentsMd}
+                            className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-550 text-white font-bold uppercase rounded text-[9.5px] flex items-center gap-1 transition-all cursor-pointer disabled:opacity-40"
+                          >
+                            {isSavingAgentsMd ? (
+                              <>
+                                <RefreshCw className="w-3 h-3 animate-spin" />
+                                Compiling...
+                              </>
+                            ) : (
+                              <>
+                                <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                                Save & Compile
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        {/* Conflict scanner warning banner */}
+                        {(() => {
+                          const activeConflicts = scanRuleConflicts();
+                          if (activeConflicts.length === 0) return null;
+                          return (
+                            <div className="bg-amber-950/20 border border-amber-900/60 p-2 rounded-lg flex items-start gap-2 text-left block">
+                              <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                              <div className="flex-1 text-[10px] space-y-1">
+                                <div className="flex justify-between items-center font-bold text-amber-400 font-mono text-[9px]">
+                                  <span>⚠️ ACTIVE RULE CONFLICT DETECTED</span>
+                                  <button 
+                                    type="button"
+                                    onClick={() => {
+                                      const updatedRules = [...learnedSkills];
+                                      activeConflicts.forEach(conf => {
+                                        const target = updatedRules.find(r => r.id === conf.ruleB.id);
+                                        if (target) target.enabled = false;
+                                      });
+                                      setLearnedSkills(updatedRules);
+                                      const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                                      setSkillsTerminalLogs(prev => [
+                                        ...prev,
+                                        `[${nowStr}] [DE-CONFLICT] Muted overlapping rule "${activeConflicts[0].ruleB.name}" automatically.`
+                                      ]);
+                                      setSandboxSystemLogs(logs => [
+                                        ...logs,
+                                        `[RESOLVER] Syntactic Conflict Scanner auto-resolved clashing guidelines.`
+                                      ]);
+                                    }}
+                                    className="px-1.5 py-0.5 bg-amber-900/40 text-amber-200 border border-amber-800 rounded font-bold uppercase text-[8px] cursor-pointer hover:bg-amber-800 hover:text-white transition-all"
+                                  >
+                                    Auto-Resolve
+                                  </button>
+                                </div>
+                                <p className="text-[9.5px] text-slate-450 leading-relaxed font-sans">
+                                  {activeConflicts[0].reason}
+                                </p>
+                                <span className="text-[9px] text-emerald-400 font-bold font-mono block">💡 ADVICE: {activeConflicts[0].advice}</span>
                               </div>
                             </div>
+                          );
+                        })()}
 
-                            <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
-                              <button
-                                onClick={() => {
-                                  setLearnedSkills(prev => prev.map(item => {
-                                    if (item.id === sk.id) {
-                                      const nextState = !item.enabled;
-                                      
-                                      // Log the state switch
+                        {/* Scrollable list of Rules */}
+                        <div className="my-2 overflow-y-auto max-h-[170px] space-y-1.5 pr-1 font-mono text-[11px] scrollbar-thin scrollbar-thumb-slate-805 flex-1">
+                          {learnedSkills.map((sk) => {
+                            const isSelected = activeSelectedSkillId === sk.id;
+                            return (
+                              <div
+                                key={sk.id}
+                                onClick={() => setActiveSelectedSkillId(sk.id)}
+                                className={`p-2.5 rounded-lg border text-left cursor-pointer transition-all flex items-start justify-between gap-3 ${
+                                  isSelected 
+                                    ? 'bg-[#0f1420]/70 border-indigo-500 text-indigo-200' 
+                                    : 'bg-[#12151b] border-slate-850 hover:bg-[#151921] hover:border-slate-700 text-slate-300'
+                                }`}
+                              >
+                                <div className="space-y-1 truncate flex-1 block">
+                                  <div className="flex items-center gap-1.5 font-mono">
+                                    <span className={`w-1.5 h-1.5 rounded-full ${sk.enabled ? 'bg-emerald-450 animate-pulse' : 'bg-slate-600'}`} />
+                                    <strong className="text-xs text-white truncate max-w-[150px]" title={sk.name}>
+                                      {sk.name}
+                                    </strong>
+                                    <span className="text-[7.5px] bg-[#1a1f29] border border-slate-805 text-slate-400 px-1 rounded-sm uppercase tracking-wider font-semibold font-mono">
+                                      {sk.type}
+                                    </span>
+                                  </div>
+                                  <p className="text-[9.5px] text-slate-400 truncate whitespace-nowrap overflow-hidden">
+                                    {sk.userPrompt}
+                                  </p>
+                                  <div className="text-[7.5px] text-slate-500 flex items-center gap-1 font-semibold uppercase mt-0.5 font-mono">
+                                    <span>Ref: {sk.origin}</span>
+                                    <span>•</span>
+                                    <span>Confidence: {sk.confidence}%</span>
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setLearnedSkills(prev => prev.map(item => {
+                                        if (item.id === sk.id) {
+                                          const nextState = !item.enabled;
+                                          
+                                          // Log the state switch
+                                          const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                          setSkillsTerminalLogs(logs => [
+                                            ...logs,
+                                            `[${nowStr}] [NANO] Skill "${item.name}" changed state: ${nextState ? 'HOT_RELOAD' : 'FROZEN_BYPASS'}`
+                                          ]);
+                                          return { ...item, enabled: nextState };
+                                        }
+                                        return item;
+                                      }));
+                                    }}
+                                    className={`px-1.5 py-0.5 text-[8.5px] rounded-sm font-bold transition-all border font-mono cursor-pointer ${
+                                      sk.enabled 
+                                        ? 'bg-emerald-950/20 border-emerald-900/60 text-emerald-400 hover:bg-emerald-950/40' 
+                                        : 'bg-slate-900 border-slate-800 text-slate-500 hover:text-white'
+                                    }`}
+                                  >
+                                    {sk.enabled ? 'ACTIVE' : 'MUTED'}
+                                  </button>
+                                  
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setLearnedSkills(prev => prev.filter(item => item.id !== sk.id));
+                                      if (activeSelectedSkillId === sk.id) {
+                                        setActiveSelectedSkillId(null);
+                                      }
                                       const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                                       setSkillsTerminalLogs(logs => [
                                         ...logs,
-                                        `[${nowStr}] [NANO] Skill "${item.name}" changed state: ${nextState ? 'HOT_RELOAD' : 'FROZEN_BYPASS'}`
+                                        `[${nowStr}] [DB] Purged item "${sk.name}" from active memory list.`
                                       ]);
-                                      return { ...item, enabled: nextState };
-                                    }
-                                    return item;
-                                  }));
-                                }}
-                                className={`px-1.5 py-0.5 text-[8.5px] rounded-sm font-bold transition-all border font-mono cursor-pointer ${
-                                  sk.enabled 
-                                    ? 'bg-emerald-950/20 border-emerald-900/60 text-emerald-400 hover:bg-emerald-950/40' 
-                                    : 'bg-slate-900 border-slate-800 text-slate-500 hover:text-white'
-                                }`}
-                              >
-                                {sk.enabled ? 'ACTIVE' : 'MUTED'}
-                              </button>
-                              
-                              <button
-                                onClick={() => {
-                                  setLearnedSkills(prev => prev.filter(item => item.id !== sk.id));
-                                  if (activeSelectedSkillId === sk.id) {
-                                    setActiveSelectedSkillId(null);
-                                  }
-                                  const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                                  setSkillsTerminalLogs(logs => [
-                                    ...logs,
-                                    `[${nowStr}] [DB] Purged item "${sk.name}" from active memory list.`
-                                  ]);
-                                }}
-                                className="p-1 hover:text-rose-400 hover:bg-rose-955/20 rounded text-slate-500 cursor-pointer transition-colors text-xs"
-                                title="Delete Rule"
-                              >
-                                ✕
-                              </button>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* Explanatory inspection panel for the actively selected skill */}
-                    <div className="bg-[#050608] border border-slate-850 p-3 rounded-lg space-y-2 text-[11px] font-mono leading-relaxed h-[145px] overflow-y-auto block text-left">
-                      {activeSelectedSkillId ? (() => {
-                        const currentVal = learnedSkills.find(s => s.id === activeSelectedSkillId);
-                        if (!currentVal) return <div className="text-slate-500 italic text-center h-full flex items-center justify-center">Select an active skill above to audit compiled memory layers.</div>;
-                        return (
-                          <div className="space-y-1.5">
-                            <div className="flex items-center justify-between pb-1 border-b border-slate-900">
-                              <span className="text-[9px] text-[#00d2ff] uppercase font-bold tracking-wider">
-                                Guardrails Compiler Output Inspector
-                              </span>
-                              <span className="text-[8px] text-slate-500 uppercase">
-                                ID: {currentVal.id}
-                              </span>
-                            </div>
-                            <div className="space-y-1">
-                              <span className="text-[9.5px] font-sans font-bold text-slate-400 block uppercase">
-                                Custom Prompt Injected Into Docker Swarm Memory Layer:
-                              </span>
-                              <div className="p-2 bg-[#020204] border border-slate-900 text-[10px] text-emerald-450 rounded italic whitespace-pre-wrap leading-normal block">
-                                {`/* CRITICAL MEMORY SYSTEM GUARDRAIL (Extracted constraint: ${currentVal.name}) */\n- CONTEXT: ${currentVal.userPrompt}\n- IMPACT BOUND: Global Swarm | Node level: ${currentVal.type}`}
+                                    }}
+                                    className="p-1 hover:text-rose-400 hover:bg-rose-955/20 rounded text-slate-500 cursor-pointer transition-colors text-xs"
+                                    title="Delete Rule"
+                                  >
+                                    ✕
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        );
-                      })() : (
-                        <div className="text-slate-500 italic text-center h-full flex items-center justify-center">Select an active skill above to audit compiled memory layers.</div>
-                      )}
-                    </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Explanatory inspection panel for the actively selected skill */}
+                        <div className="bg-[#050608] border border-slate-850 p-3 rounded-lg space-y-2 text-[11px] font-mono leading-relaxed h-[135px] overflow-y-auto block text-left">
+                          {activeSelectedSkillId ? (() => {
+                            const currentVal = learnedSkills.find(s => s.id === activeSelectedSkillId);
+                            if (!currentVal) return <div className="text-slate-500 italic text-center h-full flex items-center justify-center">Select an active skill above to audit compiled memory layers.</div>;
+                            return (
+                              <div className="space-y-1.5">
+                                <div className="flex items-center justify-between pb-1 border-b border-slate-900">
+                                  <span className="text-[9px] text-[#00d2ff] uppercase font-bold tracking-wider">
+                                    Guardrails Compiler Output Inspector
+                                  </span>
+                                  <span className="text-[8px] text-slate-500 uppercase">
+                                    ID: {currentVal.id}
+                                  </span>
+                                </div>
+                                <div className="space-y-1">
+                                  <span className="text-[9.5px] font-sans font-bold text-slate-400 block uppercase">
+                                    Custom Prompt Injected Into Docker Swarm Memory Layer:
+                                  </span>
+                                  <div className="p-2 bg-[#020204] border border-slate-900 text-[10px] text-emerald-450 rounded italic whitespace-pre-wrap leading-normal block">
+                                    {`/* CRITICAL MEMORY SYSTEM GUARDRAIL (Extracted constraint: ${currentVal.name}) */\n- CONTEXT: ${currentVal.userPrompt}\n- IMPACT BOUND: Global Swarm | Node level: ${currentVal.type}`}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })() : (
+                            <div className="text-slate-500 italic text-center h-full flex items-center justify-center">Select an active skill above to audit compiled memory layers.</div>
+                          )}
+                        </div>
+                      </>
+                    )}
 
                   </div>
                 </div>
 
+              </div>
+
+              {/* Dynamic Rule Impact Telemetry HUD */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 bg-[#0a0d14]/75 border border-slate-850 p-4 rounded-xl items-center font-sans">
+                <div className="md:col-span-4 space-y-2 text-left">
+                  <span className="text-[8px] font-mono tracking-widest text-indigo-400 block font-bold">COGNITIVE COMPLIANCE HUD</span>
+                  <h5 className="text-[11px] font-bold text-white uppercase font-mono tracking-tight">Swarm Focus Strictness</h5>
+                  <p className="text-[9.5px] text-slate-450 leading-relaxed font-sans">
+                    Finetune the precision threshold of rule execution. Rigid temperature enforces absolute compliance; fluid temperature lets the agent draft creative architecture.
+                  </p>
+                  
+                  {/* Slider controller */}
+                  <div className="flex items-center gap-2 pt-1 font-mono text-[9.5px]">
+                    <span className="text-emerald-450 font-bold">Rigid</span>
+                    <input 
+                      type="range" 
+                      min={10} 
+                      max={90}
+                      value={swarmTemperature}
+                      onChange={(e) => setSwarmTemperature(Number(e.target.value))}
+                      className="flex-1 accent-indigo-600 cursor-pointer h-1 rounded bg-slate-900" 
+                    />
+                    <span className="text-indigo-400 font-bold">Fluid</span>
+                    <span className="bg-[#12151b] border border-slate-850 text-indigo-300 p-0.5 px-2.5 rounded text-[10px] font-bold shrink-0 font-mono">
+                      {(swarmTemperature / 100).toFixed(2)}k
+                    </span>
+                  </div>
+                </div>
+
+                <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {/* Gauge 1: Context window footprint */}
+                  {(() => {
+                    const activeCount = learnedSkills.filter(s => s.enabled).length;
+                    const tokenUsage = activeCount * 450 + (100 - swarmTemperature) * 85 + 2450;
+                    return (
+                      <div className="p-3 bg-[#05060b] border border-[#141824] rounded-lg space-y-1.5 text-left font-mono">
+                        <span className="text-[9px] text-slate-500 font-bold block uppercase tracking-wider">Prompt Context Footprint</span>
+                        <strong className="text-sm text-indigo-400 flex items-center justify-between font-bold text-[12.5px]">{tokenUsage} <span className="text-[8px] text-slate-650">Tokens</span></strong>
+                        <div className="w-full bg-slate-900 h-1 rounded-full overflow-hidden">
+                          <div className="bg-indigo-500 h-full transition-all duration-300" style={{ width: `${Math.min(100, (tokenUsage / 10000) * 100)}%` }} />
+                        </div>
+                        <span className="text-[7.5px] text-slate-550 block leading-none">More guidelines = narrower context gate.</span>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Gauge 2: Adherence Score */}
+                  {(() => {
+                    const activeCount = learnedSkills.filter(s => s.enabled).length;
+                    const totalCount = learnedSkills.length || 1;
+                    const hasTailwindAndPaths = learnedSkills.some(s => s.id === 'ls-1' && s.enabled) && learnedSkills.some(s => s.id === 'ls-2' && s.enabled);
+                    let complianceRate = 60 + ((activeCount / totalCount) * 28) - (swarmTemperature * 0.15);
+                    if (hasTailwindAndPaths) complianceRate += 10;
+                    complianceRate = Math.min(99.9, Math.max(45, complianceRate));
+                    return (
+                      <div className="p-3 bg-[#05060b] border border-[#141824] rounded-lg space-y-1.5 text-left font-mono">
+                        <span className="text-[9px] text-[#00d2ff] font-bold block uppercase tracking-wider">Swarm Adherence Score</span>
+                        <strong className="text-sm text-emerald-400 flex items-center justify-between font-bold text-[12.5px]">{complianceRate.toFixed(1)}% <span className="text-[8px] text-slate-655">Accuracy</span></strong>
+                        <div className="w-full bg-slate-900 h-1 rounded-full overflow-hidden">
+                          <div className="bg-emerald-500 h-full transition-all duration-300" style={{ width: `${complianceRate}%` }} />
+                        </div>
+                        <span className="text-[7.5px] text-slate-550 block leading-none">Muted guidelines cause structural drift.</span>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Gauge 3: Simulated cost per turn */}
+                  {(() => {
+                    const activeCount = learnedSkills.filter(s => s.enabled).length;
+                    const centsValue = (activeCount * 0.04) + (2.1 * (100 - swarmTemperature) / 100);
+                    return (
+                      <div className="p-3 bg-[#05060b] border border-[#141824] rounded-lg space-y-1.5 text-left font-mono">
+                        <span className="text-[9px] text-slate-500 font-bold block uppercase tracking-wider">Cognitive Cost Margin</span>
+                        <strong className="text-sm text-amber-500 flex items-center justify-between font-bold text-[12.5px]">${centsValue.toFixed(4)} <span className="text-[8px] text-slate-655 font-bold">Per Call</span></strong>
+                        <div className="w-full bg-slate-900 h-1 rounded-full overflow-hidden">
+                          <div className="bg-amber-400 h-full transition-all duration-300" style={{ width: `${Math.min(100, centsValue * 3.5 * 100)}%` }} />
+                        </div>
+                        <span className="text-[7.5px] text-slate-550 block leading-none">Strict filters avoid circular loops.</span>
+                      </div>
+                    );
+                  })()}
+                </div>
               </div>
 
               {/* Memory expansion, synaptic density metrics and synapse sync button */}

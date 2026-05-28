@@ -7,11 +7,13 @@ import { LogsExplorer } from './components/LogsExplorer';
 import { SecuritySandbox } from './components/SecuritySandbox';
 import { VentureIncubator } from './components/VentureIncubator';
 import { LandingPage } from './components/LandingPage';
+import { CommandPalette } from './components/CommandPalette';
 import { Activity, Circle, Terminal, ShieldAlert, Sparkles, Home } from 'lucide-react';
 
 export default function App() {
   // --- Landing page & Open Source documentation content states ---
   const [showLanding, setShowLanding] = useState(true);
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
   const [docReadme, setDocReadme] = useState('');
   const [docArchitecture, setDocArchitecture] = useState('');
   const [docInstall, setDocInstall] = useState('');
@@ -102,6 +104,162 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('vac_sandbox_logs', JSON.stringify(sandboxLogs));
   }, [sandboxLogs]);
+
+  const handlePaletteAction = (actionId: string) => {
+    setIsPaletteOpen(false);
+    switch (actionId) {
+      case 'go-dashboard':
+        setActiveTab('hq');
+        setShowLanding(false);
+        break;
+      case 'go-kanban':
+        setActiveTab('kanban');
+        setShowLanding(false);
+        break;
+      case 'go-logs':
+        setActiveTab('logs');
+        setShowLanding(false);
+        break;
+      case 'go-gates':
+        setActiveTab('gates');
+        setShowLanding(false);
+        break;
+      case 'go-incubator':
+        setActiveTab('incubator');
+        setShowLanding(false);
+        break;
+      case 'toggle-landing':
+        setShowLanding(prev => !prev);
+        break;
+      case 'toggle-simulation':
+        setIsSimulating(prev => !prev);
+        break;
+      case 'toggle-kill':
+        setIsSystemKilled(prev => !prev);
+        break;
+      case 'inspect-ceo':
+        setSelectedAgentId('CEO');
+        setActiveTab('logs');
+        setShowLanding(false);
+        break;
+      case 'inspect-pm':
+        setSelectedAgentId('PM');
+        setActiveTab('logs');
+        setShowLanding(false);
+        break;
+      case 'inspect-dev':
+        setSelectedAgentId('DEV');
+        setActiveTab('logs');
+        setShowLanding(false);
+        break;
+      case 'inspect-qa':
+        setSelectedAgentId('QA');
+        setActiveTab('logs');
+        setShowLanding(false);
+        break;
+      case 'inspect-mkt':
+        setSelectedAgentId('MKT');
+        setActiveTab('logs');
+        setShowLanding(false);
+        break;
+      default:
+        break;
+    }
+  };
+
+  // --- Global Keyboard Shortcuts ---
+  useEffect(() => {
+    const handleGlobalShortcuts = (e: KeyboardEvent) => {
+      const activeEl = document.activeElement;
+      const isInputFocused = activeEl && (
+        activeEl.tagName === 'INPUT' || 
+        activeEl.tagName === 'TEXTAREA' || 
+        activeEl.hasAttribute('contenteditable')
+      );
+
+      // Ctrl + Enter: Toggle simulation cycle
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        setIsSimulating(prev => !prev);
+        return;
+      }
+
+      // Ctrl + K: Toggle command palette
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsPaletteOpen(prev => !prev);
+        return;
+      }
+
+      // Alt modifier shortcuts (always allowed to prevent clash with text inputs)
+      if (e.altKey) {
+        if (e.key === '1') {
+          e.preventDefault();
+          setActiveTab('hq');
+          setShowLanding(false);
+        } else if (e.key === '2') {
+          e.preventDefault();
+          setActiveTab('kanban');
+          setShowLanding(false);
+        } else if (e.key === '3') {
+          e.preventDefault();
+          setActiveTab('logs');
+          setShowLanding(false);
+        } else if (e.key === '4') {
+          e.preventDefault();
+          setActiveTab('gates');
+          setShowLanding(false);
+        } else if (e.key === '5') {
+          e.preventDefault();
+          setActiveTab('incubator');
+          setShowLanding(false);
+        } else if (e.key.toLowerCase() === 'l') {
+          e.preventDefault();
+          setShowLanding(prev => !prev);
+        } else if (e.key.toLowerCase() === 'x') {
+          e.preventDefault();
+          setIsSystemKilled(prev => !prev);
+        }
+        return;
+      }
+
+      // Single-key/Shift shortcuts are blocked inside focus input states
+      if (isInputFocused) return;
+
+      if (e.shiftKey) {
+        const keyLower = e.key.toLowerCase();
+        if (keyLower === 'c') {
+          e.preventDefault();
+          setSelectedAgentId('CEO');
+          setActiveTab('logs');
+          setShowLanding(false);
+        } else if (keyLower === 'p') {
+          e.preventDefault();
+          setSelectedAgentId('PM');
+          setActiveTab('logs');
+          setShowLanding(false);
+        } else if (keyLower === 'd') {
+          e.preventDefault();
+          setSelectedAgentId('DEV');
+          setActiveTab('logs');
+          setShowLanding(false);
+        } else if (keyLower === 'q') {
+          e.preventDefault();
+          setSelectedAgentId('QA');
+          setActiveTab('logs');
+          setShowLanding(false);
+        } else if (keyLower === 'm') {
+          e.preventDefault();
+          setSelectedAgentId('MKT');
+          setActiveTab('logs');
+          setShowLanding(false);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalShortcuts);
+    return () => window.removeEventListener('keydown', handleGlobalShortcuts);
+  }, []);
 
   // --- Simulation Running Tick ---
   useEffect(() => {
@@ -686,6 +844,14 @@ export default function App() {
           />
         )}
       </main>
+
+      <CommandPalette
+        isOpen={isPaletteOpen}
+        onClose={() => setIsPaletteOpen(false)}
+        onSelectAction={handlePaletteAction}
+        isSimulating={isSimulating}
+        isSystemKilled={isSystemKilled}
+      />
     </div>
   );
 }

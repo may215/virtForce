@@ -110,6 +110,78 @@ function rebuildAgentsMarkdown(skills: any[]) {
   }
 }
 
+function parseAgentsMarkdown(md: string): any[] {
+  const skills: any[] = [];
+  try {
+    // Split by Markdown headers (e.g. ### 🧠 or ### )
+    const sections = md.split(/(?:^|\n)##+ (?:🧠)?\s*/);
+    
+    // Skip the main document title metadata if it occupies the first segment
+    const startIdx = sections[0].includes('Agent Instructions') ? 1 : 0;
+    
+    for (let i = startIdx; i < sections.length; i++) {
+      const section = sections[i].trim();
+      if (!section) continue;
+      
+      const lines = section.split('\n');
+      const nameLine = lines[0].trim();
+      // Skip generic guide headers that aren't rules
+      if (nameLine.toLowerCase().includes('active learning guardrails') || nameLine.toLowerCase().includes('agent instructions')) {
+        continue;
+      }
+      
+      let type: 'coding' | 'safety' | 'integration' | 'compliance' = 'coding';
+      let confidence = 95;
+      let userPrompt = '';
+      
+      const typeMatch = section.match(/Focus Type\*\*:\s*`([^`]+)`/i);
+      if (typeMatch) {
+         const rawT = typeMatch[1].toLowerCase().trim();
+         if (['coding', 'safety', 'integration', 'compliance'].includes(rawT)) {
+           type = rawT as any;
+         }
+      }
+      
+      const confMatch = section.match(/Confidence Level\*\*:\s*`([^%`]+)%`/i);
+      if (confMatch) {
+         confidence = parseInt(confMatch[1], 10) || 95;
+      }
+      
+      const ruleMatch = section.match(/Rule \/ Instruction\*\*:\s*\n?\s*>\s*([^\n]+)/i);
+      if (ruleMatch) {
+         userPrompt = ruleMatch[1].trim();
+      } else {
+         const generalQuote = section.match(/>\s*([^\n]+)/);
+         if (generalQuote) {
+           userPrompt = generalQuote[1].trim();
+          } else {
+           const contentLines = lines.filter(l => !l.startsWith('-') && l.trim().length > 0 && l !== lines[0]);
+           if (contentLines.length > 0) {
+             userPrompt = contentLines.join(' ').replace(/>/g, '').trim();
+           } else {
+             userPrompt = "Standard synthesized memory constraint.";
+           }
+         }
+      }
+      
+      skills.push({
+        id: `ls-parsed-${i}-${Date.now()}`,
+        name: nameLine || 'Parsed Guardrail',
+        origin: 'Compiled from AGENTS.md edit',
+        type,
+        confidence,
+        enabled: true,
+        userPrompt,
+        matchesCount: Math.floor(Math.random() * 5) + 1,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+    }
+  } catch (err) {
+    console.error("[SKILLS SYSTEM] Failed parsing markdown to JSON", err);
+  }
+  return skills;
+}
+
 /**
  * Robust mock fallbacks for safe sandbox environments when API keys are missing.
  */
@@ -462,6 +534,43 @@ async function startServer() {
       res.json({ success: true, skills });
     } catch (err: any) {
       res.status(500).json({ error: "Failed to persist skills update: " + err.message });
+    }
+  });
+
+  // --- API Endpoint: GET Raw AGENTS.md content ---
+  app.get("/api/skills/agents-md", (req, res) => {
+    try {
+      if (!fs.existsSync(AGENTS_MARKDOWN_FILE)) {
+        const skills = readSkillsFromFile();
+        rebuildAgentsMarkdown(skills);
+      }
+      const markdown = fs.readFileSync(AGENTS_MARKDOWN_FILE, "utf-8");
+      res.json({ markdown });
+    } catch (err: any) {
+      res.status(500).json({ error: "Failed to read AGENTS.md: " + err.message });
+    }
+  });
+
+  // --- API Endpoint: POST Raw AGENTS.md content to parse and save ---
+  app.post("/api/skills/agents-md", (req, res) => {
+    try {
+      const { markdown } = req.body;
+      if (typeof markdown !== "string") {
+        return res.status(400).json({ error: "Invalid format. Expected string under markdown key." });
+      }
+      
+      // Write to AGENTS.md directly
+      fs.writeFileSync(AGENTS_MARKDOWN_FILE, markdown, "utf-8");
+      
+      // Parse rules out of the markdown and overwrite skills.json
+      const parsedSkills = parseAgentsMarkdown(markdown);
+      if (parsedSkills.length > 0) {
+        fs.writeFileSync(SKILLS_FILE, JSON.stringify(parsedSkills, null, 2), "utf-8");
+      }
+      
+      res.json({ success: true, count: parsedSkills.length, parsedSkills });
+    } catch (err: any) {
+      res.status(500).json({ error: "Failed to sync AGENTS.md: " + err.message });
     }
   });
 
