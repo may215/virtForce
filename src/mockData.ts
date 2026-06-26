@@ -1,4 +1,4 @@
-import { Agent, Task, SwarmLog, TaskState, AgentRole, SimulationStep } from './types';
+import { Agent, Task, SwarmLog, TaskState, AgentRole, SimulationStep, Incident } from './types';
 
 export const INITIAL_AGENTS: Agent[] = [
   {
@@ -155,7 +155,96 @@ export const INITIAL_AGENTS: Agent[] = [
   }
 ];
 
+export const INITIAL_INCIDENTS: Incident[] = [
+  {
+    id: 'INC-9942',
+    status: 'RESOLVED',
+    severity: 'SEV-1',
+    source: 'Sentry Webhook',
+    title: 'TypeError: Cannot read properties of undefined (reading \'map\')',
+    stackTrace: `TypeError: Cannot read properties of undefined (reading 'map')
+    at UserProfile (src/components/UserProfile.tsx:112:35)
+    at renderWithHooks (node_modules/react-dom/cjs/react-dom.development.js:16305:18)`,
+    createdAt: '2026-06-25T14:30:00Z',
+    resolvedAt: '2026-06-25T14:34:12Z',
+    report: `# Incident Post-Mortem: INC-9942
+
+## Summary
+A SEV-1 incident was triggered by a \`TypeError\` in the \`UserProfile\` component in production. The system was failing to render user profiles for accounts that did not have an explicit \`permissions\` array defined in their database payload.
+
+## Swarm Response Timeline
+- **T+0m:** Sentry Webhook triggered incident creation.
+- **T+0.5m:** Director-CEO routed incident to QA-DevOps for isolation.
+- **T+1m:** QA Agent successfully reproduced the error in the air-gapped Docker sandbox.
+- **T+1.5m:** Engineer-Dev drafted a fix using optional chaining (\`user.permissions?.map\`) and added a fallback empty array.
+- **T+2m:** QA Agent executed the regression test suite. All tests passed.
+- **T+3m:** Engineer-Dev committed the hotfix.
+- **T+4m:** DevOps Agent automatically deployed the fix to production.
+
+## Resolution
+The swarm successfully handled the incident autonomously. The production environment has stabilized, and zero human intervention was required.`,
+    fixDiff: {
+      file: 'src/components/UserProfile.tsx',
+      additions: [
+        '  // Swarm Hotfix: Added optional chaining and default empty array',
+        '  const permissions = user.permissions || [];',
+        '  return (',
+        '    <div className="flex flex-wrap gap-2">',
+        '      {permissions.map((perm) => (',
+      ],
+      deletions: [
+        '  return (',
+        '    <div className="flex flex-wrap gap-2">',
+        '      {user.permissions.map((perm) => (',
+      ]
+    },
+    terminalOutput: `[Sandbox] Cloning production repository... OK
+[Sandbox] Applying Sentry crash state context... OK
+[Sandbox] Reproducing error... FAILED (Expected)
+[Sandbox] Applying hotfix patch... OK
+[Sandbox] Running tests... 
+PASS  src/components/UserProfile.test.tsx
+✓ renders user profile safely when permissions are undefined (12ms)
+[Sandbox] Tests passed. Triggering Prod Deployment webhook.`
+  },
+  {
+    id: 'INC-9945',
+    status: 'INVESTIGATING',
+    severity: 'SEV-2',
+    source: 'Datadog',
+    title: 'High latency detected in /api/v1/billing/sync endpoint',
+    stackTrace: `TimeoutError: Query execution exceeded 15000ms
+    at executeQuery (src/db/connection.ts:88:15)
+    at syncBillingWorker (src/workers/billing.ts:42:12)`,
+    createdAt: new Date().toISOString(),
+  }
+];
+
 export const INITIAL_TASKS: Task[] = [
+  {
+    id: 'TASK-004',
+    title: 'Uncaught TypeError: Cannot read properties of undefined (reading \'user\')',
+    description: 'Sentry Webhook Payload: App crashed on profile page due to null user object during session expiry.',
+    state: 'MERGED',
+    source: 'sre',
+    assignedTo: 'DEV',
+    githubBranch: 'hotfix/sentry-user-profile-crash',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    costAccumulated: 0.85,
+    tokensUsed: 42000,
+    terminalOutput: '> CRASH VERIFIED: Reproducible in sandbox.\n> DEV Agent: Patch applied. Handoff to QA.\n> 142 tests passed in 4.2s.',
+    codeDiff: {
+      file: 'src/components/UserProfile.tsx',
+      additions: ['<div className="user-name">{user?.profile?.name || "Guest"}</div>'],
+      deletions: ['<div className="user-name">{user.profile.name}</div>']
+    },
+    innerMonologue: {
+      CEO: 'Critical SRE incident received. Wake up DEV and QA immediately.',
+      DEV: 'Found the null reference. Adding optional chaining and guest fallback.',
+      QA: 'Regression sandbox tests pass. Fix is solid.',
+    }
+  },
   {
     id: 'TASK-001',
     title: 'Resolve application crash in checkout coupon validation',

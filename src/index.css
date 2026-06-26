@@ -5,8 +5,8 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   
-  --color-bg-density-dark: #0f1115;
-  --color-bg-density-card: #16191f;
-  --color-bg-density-sidebar: #12151a;
-  --color-bg-density-tab: #1c2128;
+  --color-bg-density-dark: #121016; /* Top nav */
+  --color-bg-density-card: #222529; /* Cards */
+  --color-bg-density-sidebar: #19171d; /* Sidebar */
+  --color-bg-density-tab: #1164a3; /* Active tab */
 }

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Task, TaskState } from '../types';
+import { Task, TaskState, SwarmLog } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { Calendar, DollarSign, BookOpen, AlertCircle, Sparkles, CheckCircle2, RefreshCw, Layers } from 'lucide-react';
+import { IncidentReporter } from './IncidentReporter';
 
 interface KanbanBoardProps {
   tasks: Task[];
+  logs?: SwarmLog[];
   onMoveTask?: (taskId: string, newState: TaskState) => void;
-  onAddTask?: (title: string, desc: string, source: 'customer' | 'strategy' | 'internal') => void;
+  onAddTask?: (title: string, desc: string, source: 'customer' | 'strategy' | 'internal' | 'sre') => void;
 }
 
-export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) {
+export function KanbanBoard({ tasks, logs = [], onMoveTask, onAddTask }: KanbanBoardProps) {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [newTitle, setNewTitle] = useState('');
@@ -41,7 +43,7 @@ export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) 
   return (
     <div className="space-y-4">
       {/* Header operations bar */}
-      <div className="flex items-center justify-between border border-slate-800 bg-bg-density-card p-3 rounded">
+      <div className="flex items-center justify-between border border-slate-800 bg-[#222529] p-3 rounded">
         <div>
           <h2 className="text-xs font-bold text-white flex items-center gap-1.5 uppercase font-mono tracking-tight">
             <Layers className="w-4 h-4 text-blue-550 text-blue-400" />
@@ -67,12 +69,12 @@ export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) 
           return (
             <div
               key={col.id}
-              className={`bg-bg-density-sidebar border border-slate-850 rounded p-2.5 flex flex-col justify-start h-full min-w-[170px] border-t-2 ${col.color}`}
+              className={`bg-[#19171d] border border-slate-850 rounded p-2.5 flex flex-col justify-start h-full min-w-[170px] border-t-2 ${col.color}`}
             >
               <div className="mb-2.5 space-y-0.5">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-mono font-bold text-slate-250 uppercase tracking-wider">{col.title}</span>
-                  <span className="text-[9px] font-mono font-bold bg-[#0f1115] border border-slate-800 text-slate-400 px-1.5 rounded">
+                  <span className="text-[9px] font-mono font-bold bg-[#1a1d21] border border-slate-800 text-slate-400 px-1.5 rounded">
                     {colTasks.length}
                   </span>
                 </div>
@@ -104,8 +106,8 @@ export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) 
                         layoutId={`task-card-${task.id}`}
                         onClick={() => setSelectedTask(task)}
                         id={`task-card-click-${task.id}`}
-                        className={`bg-[#16191f] border border-slate-850 hover:border-slate-700 hover:bg-[#1c2128] rounded p-2.5 space-y-2 cursor-pointer transition-all duration-150 relative group overflow-hidden ${
-                          task.state === 'HITL' ? 'border-indigo-500/50 shadow-[0_0_8px_rgba(99,102,241,0.15)] bg-[#12151a]' : ''
+                        className={`bg-[#222529] border border-slate-850 hover:border-slate-700 hover:bg-[#222529] rounded p-2.5 space-y-2 cursor-pointer transition-all duration-150 relative group overflow-hidden ${
+                          task.state === 'HITL' ? 'border-indigo-500/50 shadow-[0_0_8px_rgba(99,102,241,0.15)] bg-[#19171d]' : ''
                         }`}
                       >
                         <div className="flex items-center justify-between">
@@ -142,9 +144,9 @@ export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) 
           <div className="fixed inset-0 bg-[#000000]/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <motion.div
               layoutId={`task-card-${selectedTask.id}`}
-              className="bg-bg-density-card border border-slate-800 rounded max-w-2xl w-full overflow-hidden flex flex-col shadow-2xl"
+              className="bg-[#222529] border border-slate-800 rounded max-w-2xl w-full overflow-hidden flex flex-col shadow-2xl"
             >
-              <div className="bg-bg-density-tab px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
+              <div className="bg-[#1164A3] px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] font-mono text-slate-500 font-bold">{selectedTask.id}</span>
@@ -156,7 +158,7 @@ export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) 
                 </div>
                 <button
                   onClick={() => setSelectedTask(null)}
-                  className="p-1 px-2.5 bg-[#12151a] hover:bg-[#16191f] text-[10px] font-mono rounded text-slate-300 border border-slate-800 transition-colors"
+                  className="p-1 px-2.5 bg-[#19171d] hover:bg-[#222529] text-[10px] font-mono rounded text-slate-300 border border-slate-800 transition-colors"
                 >
                   CLOSE
                 </button>
@@ -169,11 +171,11 @@ export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) 
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 pb-3 border-b border-slate-800/60 text-[10px] font-mono">
-                  <div className="bg-bg-density-sidebar p-2 border border-slate-800 rounded">
+                  <div className="bg-[#19171d] p-2 border border-slate-800 rounded">
                     <span className="text-[8px] text-slate-500 font-bold block">ACCUMULATED SPEND</span>
                     <strong className="text-emerald-400 text-xs mt-0.5 block">${selectedTask.costAccumulated.toFixed(3)}</strong>
                   </div>
-                  <div className="bg-bg-density-sidebar p-2 border border-slate-800 rounded">
+                  <div className="bg-[#19171d] p-2 border border-slate-800 rounded">
                     <span className="text-[8px] text-slate-500 font-bold block">CONTEXT BURNT</span>
                     <strong className="text-blue-400 text-xs mt-0.5 block">{selectedTask.tokensUsed.toLocaleString()} tokens</strong>
                   </div>
@@ -186,11 +188,11 @@ export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) 
                     Product Manager Specifications (.md schema)
                   </div>
                   {selectedTask.specDoc ? (
-                    <pre className="bg-[#12151a] p-3 border border-slate-850 rounded text-[10px] text-slate-300 font-mono whitespace-pre-wrap leading-relaxed">
+                    <pre className="bg-[#19171d] p-3 border border-slate-850 rounded text-[10px] text-slate-300 font-mono whitespace-pre-wrap leading-relaxed">
                       {selectedTask.specDoc}
                     </pre>
                   ) : (
-                    <div className="bg-[#12151a]/30 border border-dashed border-slate-850 rounded p-4 text-center text-[10px] font-mono text-slate-500 italic">
+                    <div className="bg-[#19171d]/30 border border-dashed border-slate-850 rounded p-4 text-center text-[10px] font-mono text-slate-500 italic">
                       Specifications sheet not yet generated. The Task must advance past BACKLOG to the SPEC stage.
                     </div>
                   )}
@@ -204,8 +206,8 @@ export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) 
                   <div className="space-y-1.5">
                     {Object.entries(selectedTask.innerMonologue || {}).length > 0 ? (
                       Object.entries(selectedTask.innerMonologue || {}).map(([agent, thought]) => (
-                        <div key={agent} className="bg-[#12151a] border border-slate-850 rounded p-2.5 text-[10px]">
-                          <div className="flex items-center gap-1.5 mb-1 bg-[#16191f] px-2 py-0.5 rounded border border-slate-800 max-w-fit">
+                        <div key={agent} className="bg-[#19171d] border border-slate-850 rounded p-2.5 text-[10px]">
+                          <div className="flex items-center gap-1.5 mb-1 bg-[#222529] px-2 py-0.5 rounded border border-slate-800 max-w-fit">
                             <span className="text-[9px]">🧠</span>
                             <span className="font-mono font-bold text-purple-400">[{agent} AGENT]</span>
                           </div>
@@ -219,6 +221,11 @@ export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) 
                     )}
                   </div>
                 </div>
+
+                {/* SRE Incident Reporter */}
+                {selectedTask.state === 'MERGED' && selectedTask.source === 'sre' && (
+                  <IncidentReporter task={selectedTask} logs={logs} />
+                )}
               </div>
             </motion.div>
           </div>
@@ -231,7 +238,7 @@ export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) 
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-bg-density-card border border-slate-850 rounded max-w-md w-full overflow-hidden p-4 shadow-2xl space-y-3"
+            className="bg-[#222529] border border-slate-850 rounded max-w-md w-full overflow-hidden p-4 shadow-2xl space-y-3"
           >
             <div className="flex justify-between items-center pb-2 border-b border-slate-800">
               <h3 className="text-xs font-bold text-white flex items-center gap-1.5 font-mono uppercase">
@@ -254,7 +261,7 @@ export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) 
                   placeholder="e.g. Broken links in billing tabs"
                   value={newTitle}
                   onChange={e => setNewTitle(e.target.value)}
-                  className="w-full bg-[#12151a] border border-slate-800 rounded p-2 text-white text-[10px] font-mono focus:outline-none focus:border-blue-500"
+                  className="w-full bg-[#19171d] border border-slate-800 rounded p-2 text-white text-[10px] font-mono focus:outline-none focus:border-blue-500"
                   required
                 />
               </div>
@@ -266,7 +273,7 @@ export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) 
                   rows={3}
                   value={newDesc}
                   onChange={e => setNewDesc(e.target.value)}
-                  className="w-full bg-[#12151a] border border-slate-800 rounded p-2 text-white text-[10px] font-mono focus:outline-none focus:border-blue-500"
+                  className="w-full bg-[#19171d] border border-slate-800 rounded p-2 text-white text-[10px] font-mono focus:outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -275,7 +282,7 @@ export function KanbanBoard({ tasks, onMoveTask, onAddTask }: KanbanBoardProps) 
                 <select
                   value={newSource}
                   onChange={e => setNewSource(e.target.value as any)}
-                  className="w-full bg-[#12151a] border border-slate-800 rounded p-2 text-white text-[10px] font-mono focus:outline-none focus:border-blue-500"
+                  className="w-full bg-[#19171d] border border-slate-800 rounded p-2 text-white text-[10px] font-mono focus:outline-none focus:border-blue-500"
                 >
                   <option value="customer">🚨 Support Bug Report (SUPPORT)</option>
                   <option value="strategy">💡 Business Strategic Objective (CEO / PM)</option>

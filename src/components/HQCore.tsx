@@ -30,7 +30,7 @@ const PROVIDER_MODELS: Record<string, string[]> = {
 
 export function HQCore({
   agents,
-  logs,
+  logs = [],
   stats,
   isSimulating,
   simulationSpeed,
@@ -79,7 +79,7 @@ export function HQCore({
   return (
     <div className="space-y-4">
       {/* Simulation Master Controller */}
-      <div className="bg-bg-density-card border border-slate-800 rounded p-3 flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="bg-[#222529] border border-slate-800 rounded p-3 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="relative">
             <span className="absolute flex h-3 w-3">
@@ -116,14 +116,14 @@ export function HQCore({
           <button
             onClick={onResetSimulation}
             id="reset-sim-btn"
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded text-[10px] font-bold font-mono text-slate-300 hover:text-white bg-[#1c2128] border border-slate-800 hover:bg-[#222830] cursor-pointer transition-all duration-200"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded text-[10px] font-bold font-mono text-slate-300 hover:text-white bg-[#222529] border border-slate-800 hover:bg-[#222830] cursor-pointer transition-all duration-200"
           >
             <RotateCcw className="w-3 h-3" />
             RESET
           </button>
 
           {/* Speed selectors */}
-          <div className="flex bg-[#12151a] p-0.5 rounded border border-slate-800 gap-1">
+          <div className="flex bg-[#19171d] p-0.5 rounded border border-slate-800 gap-1">
             {([1, 2, 5] as const).map(speed => (
               <button
                 key={speed}
@@ -144,7 +144,7 @@ export function HQCore({
 
       {/* Metrics Widgets */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="bg-bg-density-card border border-slate-800 rounded p-3 flex items-center justify-between">
+        <div className="bg-[#222529] border border-slate-800 rounded p-3 flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-slate-500">OPERATIONAL SPENT</span>
             <div className="text-lg font-bold font-mono text-emerald-400">${totalCost.toFixed(3)}</div>
@@ -155,7 +155,7 @@ export function HQCore({
           </div>
         </div>
 
-        <div className="bg-bg-density-card border border-slate-800 rounded p-3 flex items-center justify-between">
+        <div className="bg-[#222529] border border-slate-800 rounded p-3 flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-slate-500">ACTIVE WORKERS</span>
             <div className="text-lg font-bold font-mono text-white">{activeCount} <span className="text-[11px] text-slate-500">/ {agents.length}</span></div>
@@ -166,7 +166,7 @@ export function HQCore({
           </div>
         </div>
 
-        <div className="bg-bg-density-card border border-slate-800 rounded p-3 flex items-center justify-between">
+        <div className="bg-[#222529] border border-slate-800 rounded p-3 flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-slate-500">TOKEN BURN RATE</span>
             <div className="text-lg font-bold font-mono text-purple-400">{(stats.tokenBurnRate * simulationSpeed).toFixed(0)} <span className="text-[11px] text-slate-550">t/s</span></div>
@@ -177,7 +177,7 @@ export function HQCore({
           </div>
         </div>
 
-        <div className="bg-bg-density-card border border-slate-800 rounded p-3 flex items-center justify-between">
+        <div className="bg-[#222529] border border-slate-800 rounded p-3 flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-slate-500">DEPLOYED PR DELTAS</span>
             <div className="text-lg font-bold font-mono text-sky-450 text-sky-400">{mergedCount}</div>
@@ -190,7 +190,7 @@ export function HQCore({
       </div>
 
       {/* --- AI SWARM DOCKER SANDBOX COMPILATION TEST LAB --- */}
-      <div className="bg-[#090b11] border border-slate-805 rounded-xl p-4 space-y-3 font-sans relative overflow-hidden text-left shadow-lg shadow-indigo-950/20">
+      <div className="bg-[#19171d] border border-slate-805 rounded-xl p-4 space-y-3 font-sans relative overflow-hidden text-left shadow-lg shadow-indigo-950/20">
         <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
         
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-850 pb-3">
@@ -214,7 +214,7 @@ export function HQCore({
             <input 
               type="text"
               required
-              className="w-full bg-[#05060a] border border-slate-800 focus:border-indigo-600 rounded p-2 text-[11px] text-white font-mono placeholder-slate-700 outline-none leading-none h-[34px] text-left block"
+              className="w-full bg-[#222529] border border-slate-800 focus:border-indigo-600 rounded p-2 text-[11px] text-white font-mono placeholder-slate-700 outline-none leading-none h-[34px] text-left block"
               placeholder="e.g. Telemetry Analytics HUD"
               value={customName}
               onChange={e => setCustomName(e.target.value)}
@@ -225,7 +225,7 @@ export function HQCore({
             <label className="text-[9px] font-mono font-bold uppercase text-slate-455 block">MVP Features Description</label>
             <input 
               type="text"
-              className="w-full bg-[#05060a] border border-slate-800 focus:border-indigo-600 rounded p-2 text-[11px] text-white font-mono placeholder-slate-700 outline-none leading-none h-[34px] text-left block"
+              className="w-full bg-[#222529] border border-slate-800 focus:border-indigo-600 rounded p-2 text-[11px] text-white font-mono placeholder-slate-700 outline-none leading-none h-[34px] text-left block"
               placeholder="e.g. React panel with offline caching state."
               value={customDesc}
               onChange={e => setCustomDesc(e.target.value)}
@@ -237,7 +237,7 @@ export function HQCore({
             <select 
               value={selectedProvider} 
               onChange={handleProviderChange}
-              className="w-full bg-[#05060a] border border-slate-800 focus:border-indigo-600 rounded p-2 text-[11px] text-white font-mono outline-none h-[34px] cursor-pointer text-left block"
+              className="w-full bg-[#222529] border border-slate-800 focus:border-indigo-600 rounded p-2 text-[11px] text-white font-mono outline-none h-[34px] cursor-pointer text-left block"
             >
               <option value="gemini">Google Gemini SDK</option>
               <option value="openai">OpenAI GPT Core</option>
@@ -252,7 +252,7 @@ export function HQCore({
             <select 
               value={selectedModel} 
               onChange={e => setSelectedModel(e.target.value)}
-              className="w-full bg-[#05060a] border border-slate-800 focus:border-indigo-600 rounded p-2 text-[11px] text-white font-mono outline-none h-[34px] cursor-pointer text-left block"
+              className="w-full bg-[#222529] border border-slate-800 focus:border-indigo-600 rounded p-2 text-[11px] text-white font-mono outline-none h-[34px] cursor-pointer text-left block"
             >
               {(PROVIDER_MODELS[selectedProvider] || []).map(m => (
                 <option key={m} value={m}>{m}</option>
@@ -353,9 +353,9 @@ export function HQCore({
         // Determine system flags based on actual simulation status
         const activeAg = agents.find(a => a.status === 'ACTIVE' || a.status === 'CODE_RUNNING');
         const activeId = activeAg?.id;
-        const isHITLActive = !isSimulating && logs.length > 0 && logs[logs.length - 1].message.includes('[HITL PAUSED]');
-        const isRecentReject = logs.some((l, idx) => idx > logs.length - 4 && l.message.includes('MERGE DEFERRED'));
-        const isRecentComplete = logs.some((l, idx) => idx > logs.length - 3 && l.message.includes('FEATURE MERGE SUCCESSFUL'));
+        const isHITLActive = !isSimulating && logs.length > 0 && !!logs[logs.length - 1]?.message?.includes('[HITL PAUSED]');
+        const isRecentReject = logs.some((l, idx) => idx > logs.length - 4 && !!l?.message?.includes('MERGE DEFERRED'));
+        const isRecentComplete = logs.some((l, idx) => idx > logs.length - 3 && !!l?.message?.includes('FEATURE MERGE SUCCESSFUL'));
 
         // Extract selected node details to edit
         const selectedNode = canvasNodes.find(n => n.id === selectedNodeId) || canvasNodes[0];
@@ -383,7 +383,7 @@ export function HQCore({
         };
 
         return (
-          <div className="bg-bg-density-card border border-slate-800 rounded p-4 space-y-4">
+          <div className="bg-[#222529] border border-slate-800 rounded p-4 space-y-4">
             
             {/* Header with Title & Live Stats */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-850 pb-3">
@@ -397,7 +397,7 @@ export function HQCore({
                 </h3>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-[9px] bg-[#12151a] border border-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">
+                <span className="text-[9px] bg-[#19171d] border border-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">
                   GRAPH ROUTE: <strong className={isSimulating ? 'text-emerald-400' : 'text-amber-400'}>{isSimulating ? 'STREAMING' : 'STANDBY'}</strong>
                 </span>
                 <span className="text-[9px] bg-indigo-950/40 text-indigo-400 border border-indigo-900/60 font-mono font-bold px-2.5 py-0.5 rounded">
@@ -823,7 +823,7 @@ export function HQCore({
             </div>
 
             {/* Bottom Help block */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px] font-mono leading-relaxed text-slate-400 bg-[#12151a]/60 border border-slate-800/40 rounded p-2.5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px] font-mono leading-relaxed text-slate-400 bg-[#19171d]/60 border border-slate-800/40 rounded p-2.5">
               <div className="flex items-start gap-1.5">
                 <span className="text-blue-400 font-bold">1. Draggable Elements</span>
                 <span>Each supervisor router is represented as an interactive node that can be moved arbitrarily to optimize topological overview.</span>
@@ -872,7 +872,7 @@ export function HQCore({
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className={`border rounded p-3 flex flex-col justify-between hover:border-slate-700 transition-all duration-300 relative overflow-hidden group ${
-                  agent.status === 'ACTIVE' || agent.status === 'CODE_RUNNING' ? 'border-blue-900/40 bg-[#16191f] shadow-[0_0_12px_rgba(59,130,246,0.05)]' : 'border-slate-800 bg-[#12151a]'
+                  agent.status === 'ACTIVE' || agent.status === 'CODE_RUNNING' ? 'border-blue-900/40 bg-[#222529] shadow-[0_0_12px_rgba(59,130,246,0.05)]' : 'border-slate-800 bg-[#19171d]'
                 }`}
               >
                 {/* Dynamic activity glow */}
@@ -883,7 +883,7 @@ export function HQCore({
                 <div className="space-y-2.5">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded bg-[#16191f] border border-slate-850 flex items-center justify-center text-base shadow-inner">
+                      <div className="w-8 h-8 rounded bg-[#222529] border border-slate-850 flex items-center justify-center text-base shadow-inner">
                         {agent.avatar}
                       </div>
                       <div>
@@ -897,7 +897,7 @@ export function HQCore({
                     {agent.description}
                   </p>
 
-                  <div className="bg-[#0f1115] border border-slate-800/60 rounded p-2 space-y-0.5">
+                  <div className="bg-[#1a1d21] border border-slate-800/60 rounded p-2 space-y-0.5">
                     <span className="text-[8px] font-mono text-blue-400 uppercase tracking-wider font-bold block">CURRENT INSTRUCTION</span>
                     <span className="text-[10px] font-mono text-slate-350 block line-clamp-2 leading-relaxed min-h-[1.5rem]">
                       {agent.currentGoal}
@@ -920,7 +920,7 @@ export function HQCore({
                       onClick={() => onSelectAgent(agent.id)}
                       id={`explore-agent-btn-${agent.id}`}
                       title="Inspect Monologues & Settings"
-                      className="p-1 px-2 text-[9px] bg-[#1c2128] border border-slate-800 text-slate-400 hover:text-white hover:border-slate-705 rounded font-mono inline-flex items-center gap-1 cursor-pointer transition-colors duration-200"
+                      className="p-1 px-2 text-[9px] bg-[#222529] border border-slate-800 text-slate-400 hover:text-white hover:border-slate-705 rounded font-mono inline-flex items-center gap-1 cursor-pointer transition-colors duration-200"
                     >
                       <MessageSquare className="w-2.5 h-2.5" />
                       COGNITION
@@ -934,8 +934,8 @@ export function HQCore({
       </div>
 
       {/* Live Logs Channel */}
-      <div className="bg-[#12151a] border border-slate-850 rounded overflow-hidden flex flex-col h-72">
-        <div className="bg-[#1c2128] px-3 py-1.5 border-b border-slate-800 flex items-center justify-between">
+      <div className="bg-[#19171d] border border-slate-850 rounded overflow-hidden flex flex-col h-72">
+        <div className="bg-[#222529] px-3 py-1.5 border-b border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Terminal className="w-3.5 h-3.5 text-blue-400" />
             <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-300">Swarms Event Streaming Pipeline (PostgreSQL Log Lake)</span>

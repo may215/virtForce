@@ -22,8 +22,10 @@ interface LogsExplorerProps {
   selectedAgentId: string;
   onSelectAgent: (id: string | null) => void;
   agents: Agent[];
-  onUpdateAgentConfig: (agentId: string, updates: Partial<Agent>) => void;
-  sandboxLogs: string[];
+  onUpdateAgentConfig?: (agentId: string, updates: Partial<Agent>) => void;
+  sandboxLogs?: string[];
+  logs?: SwarmLog[];
+  tasks?: Task[];
 }
 
 export function LogsExplorer({
@@ -31,22 +33,14 @@ export function LogsExplorer({
   onSelectAgent,
   agents,
   onUpdateAgentConfig,
-  sandboxLogs
+  sandboxLogs = [],
+  logs = [],
+  tasks = []
 }: LogsExplorerProps) {
   const [activeSubTab, setActiveSubTab] = useState<'monologue' | 'chat' | 'config' | 'openhands'>('monologue');
   const [chatInput, setChatInput] = useState('');
   const [chatMessages, setChatMessages] = useState<Record<string, { role: 'user' | 'agent'; text: string; timestamp: string }[]>>({});
   const [isChatTyping, setIsChatTyping] = useState(false);
-
-  // Fallback load of logs and tasks for analytics
-  const [logs] = useState<SwarmLog[]>(() => {
-    const saved = localStorage.getItem('vac_logs');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [tasks] = useState<Task[]>(() => {
-    const saved = localStorage.getItem('vac_tasks');
-    return saved ? JSON.parse(saved) : [];
-  });
   
   // Custom CrewAI Config weights
   const [model, setModel] = useState('gemini-3.5-flash');
@@ -151,7 +145,7 @@ export function LogsExplorer({
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 antialiased">
       {/* Left Column: Swarm agent select rail */}
-      <div className="md:col-span-1 bg-bg-density-card border border-slate-800 rounded p-3 space-y-3">
+      <div className="md:col-span-1 bg-[#222529] border border-slate-800 rounded p-3 space-y-3">
         <div className="flex items-center gap-1.5 border-b border-slate-850 pb-2">
           <Bot className="w-4 h-4 text-blue-400" />
           <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-slate-300">SWARM HIERARCHY</span>
@@ -166,7 +160,7 @@ export function LogsExplorer({
                 className={`w-full text-left p-2 rounded border transition-all cursor-pointer flex items-center justify-between group ${
                   isSelected 
                     ? 'bg-blue-950/20 border-blue-900 text-white' 
-                    : 'bg-[#12151a] border-slate-850 hover:bg-[#1c2128] text-slate-400'
+                    : 'bg-[#19171d] border-slate-850 hover:bg-[#222529] text-slate-400'
                 }`}
               >
                 <div className="space-y-0.5 min-w-0 flex-1">
@@ -192,9 +186,9 @@ export function LogsExplorer({
       </div>
 
       {/* Right Column: Custom Agent Cockpit Tab Controllers */}
-      <div className="md:col-span-3 bg-bg-density-card border border-slate-800 rounded flex flex-col overflow-hidden min-h-[500px]">
+      <div className="md:col-span-3 bg-[#222529] border border-slate-800 rounded flex flex-col overflow-hidden min-h-[500px]">
         {/* Sub tabs picker */}
-        <div className="bg-bg-density-tab border-b border-slate-850 flex flex-wrap items-center justify-between text-[10px] p-1 gap-1">
+        <div className="bg-[#1164A3] border-b border-slate-850 flex flex-wrap items-center justify-between text-[10px] p-1 gap-1">
           <div className="flex items-center gap-1">
             {[
               { id: 'monologue', name: 'AGENT ANALYTICS & INTERNALS', icon: Layers },
@@ -220,7 +214,7 @@ export function LogsExplorer({
               );
             })}
           </div>
-          <div className="flex items-center gap-2 px-2 py-1 bg-[#12151a] border border-slate-800 rounded font-mono text-[9px] text-slate-400">
+          <div className="flex items-center gap-2 px-2 py-1 bg-[#19171d] border border-slate-800 rounded font-mono text-[9px] text-slate-400">
             ACTIVE TARGET: <strong className="text-white uppercase">{activeAgent.id}</strong>
           </div>
         </div>
@@ -245,7 +239,7 @@ export function LogsExplorer({
                           ? 'bg-blue-950/10 border-blue-900/20 text-blue-300' 
                           : log.level === 'ERROR' 
                             ? 'bg-rose-950/10 border-rose-900/20 text-rose-300' 
-                            : 'bg-[#12151a] border-slate-850 text-slate-350'
+                            : 'bg-[#19171d] border-slate-850 text-slate-350'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1 text-[8px] text-slate-500 font-bold border-b border-slate-850/40 pb-0.5">
@@ -266,13 +260,13 @@ export function LogsExplorer({
 
               {/* Tasks & Associated Context metadata */}
               <div className="lg:col-span-2 space-y-4">
-                <div className="bg-[#0f1115] border border-slate-850 rounded p-3">
+                <div className="bg-[#1a1d21] border border-slate-850 rounded p-3">
                   <div className="flex items-center gap-1 border-b border-slate-850 pb-1.5 mb-2.5">
                     <span className="text-[9px] font-mono font-bold tracking-wider uppercase text-slate-400">Assigned Operational Backlog</span>
                   </div>
                   <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1">
                     {activeAgentTasks.map(task => (
-                      <div key={task.id} className="p-2 rounded bg-[#12151a] border border-slate-805 space-y-1">
+                      <div key={task.id} className="p-2 rounded bg-[#19171d] border border-slate-805 space-y-1">
                         <div className="flex items-center justify-between text-[8px] font-mono">
                           <span className="text-blue-400 font-bold">TASK-{task.id}</span>
                           <span className={`px-1 py-0.2 rounded font-bold ${
@@ -300,7 +294,7 @@ export function LogsExplorer({
                   </div>
                 </div>
 
-                <div className="bg-[#0f1115] border border-slate-850 rounded p-3 space-y-2 font-mono text-[9px] leading-relaxed text-slate-400">
+                <div className="bg-[#1a1d21] border border-slate-850 rounded p-3 space-y-2 font-mono text-[9px] leading-relaxed text-slate-400">
                   <div className="flex items-center gap-1 text-slate-300 font-bold uppercase pb-1 border-b border-slate-850">
                     <HelpCircle className="w-3 h-3 text-emerald-400" />
                     <span>CrewAI Context Engine</span>
@@ -317,7 +311,7 @@ export function LogsExplorer({
             <div className="flex flex-col flex-1 h-[420px] gap-3">
               <div className="grid grid-cols-1 md:grid-cols-4 border border-slate-850 rounded overflow-hidden flex-1 select-none">
                 {/* Left Side: Virtual Sandbox File Explorer */}
-                <div className="md:col-span-1 bg-[#0f1115] border-r border-slate-850 p-3 space-y-2 text-[10px] font-mono">
+                <div className="md:col-span-1 bg-[#1a1d21] border-r border-slate-850 p-3 space-y-2 text-[10px] font-mono">
                   <div className="text-[8px] font-bold text-slate-500 uppercase flex items-center gap-1 pb-1.5 border-b border-slate-850">
                     <Folder className="w-3 h-3 text-amber-500" />
                     <span>WORKSPACE REPO ROOT</span>
@@ -337,8 +331,8 @@ export function LogsExplorer({
                           <button
                             key={f.name}
                             onClick={() => setSelectedFileName(f.name)}
-                            className={`w-full flex items-center gap-1.5 text-left p-1 rounded hover:bg-[#1c2128]/50 cursor-pointer transition-all ${
-                              isSel ? 'bg-[#1c2128] text-white font-bold' : 'text-slate-400'
+                            className={`w-full flex items-center gap-1.5 text-left p-1 rounded hover:bg-[#222529]/50 cursor-pointer transition-all ${
+                              isSel ? 'bg-[#222529] text-white font-bold' : 'text-slate-400'
                             }`}
                           >
                             <Icon className={`w-3 h-3 ${isSel ? 'text-[#00d2ff]' : 'text-slate-500'}`} />
@@ -353,7 +347,7 @@ export function LogsExplorer({
                 {/* Right Side: Virtual IDE Editor View */}
                 <div className="md:col-span-3 flex flex-col bg-[#07090c] overflow-hidden min-h-[300px]">
                   {/* Editor headers tabs */}
-                  <div className="bg-[#0f1115] border-b border-slate-850 px-3 py-1 flex items-center justify-between">
+                  <div className="bg-[#1a1d21] border-b border-slate-850 px-3 py-1 flex items-center justify-between">
                     <div className="flex items-center gap-1 px-1 py-0.5 bg-[#07090c] border border-slate-850 border-b-0 text-[10px] font-mono text-white font-bold">
                       <FileCode className="w-3 h-3 text-[#00d2ff]" />
                       <span>{selectedFileName}</span>
@@ -507,12 +501,12 @@ export function LogsExplorer({
               </div>
 
               {/* Mini Terminal inside the thinker view */}
-              <div className="flex flex-col h-44 bg-bg-density-dark border border-slate-850 rounded overflow-hidden">
-                <div className="bg-bg-density-tab px-3 py-1.5 border-b border-slate-855 flex items-center gap-2 text-[9px] font-mono text-slate-400">
+              <div className="flex flex-col h-44 bg-[#121016] border border-slate-850 rounded overflow-hidden">
+                <div className="bg-[#1164A3] px-3 py-1.5 border-b border-slate-855 flex items-center gap-2 text-[9px] font-mono text-slate-400">
                   <Terminal className="w-2.5 h-2.5 text-[#00d2ff]" />
                   <span>OpenHands Air-Gapped Sandbox Terminal Session Output</span>
                 </div>
-                <div className="p-2 font-mono text-[10px] text-slate-300 overflow-y-auto flex-1 select-text bg-[#0f1115]/80 scrollbar-thin scrollbar-thumb-slate-800">
+                <div className="p-2 font-mono text-[10px] text-slate-300 overflow-y-auto flex-1 select-text bg-[#1a1d21]/80 scrollbar-thin scrollbar-thumb-slate-800">
                   {sandboxLogs.map((log, i) => (
                     <div key={i} className="whitespace-pre-wrap leading-relaxed">
                       {log}
@@ -543,7 +537,7 @@ export function LogsExplorer({
                       className={`max-w-md p-2 rounded text-[11px] leading-relaxed font-mono ${
                         msg.role === 'user'
                           ? 'bg-blue-600 border border-blue-500 text-white rounded-tr-none'
-                          : 'bg-[#12151a] border border-slate-850 text-slate-300 rounded-tl-none'
+                          : 'bg-[#19171d] border border-slate-850 text-slate-300 rounded-tl-none'
                       }`}
                     >
                       {msg.text}
@@ -553,7 +547,7 @@ export function LogsExplorer({
                 {isChatTyping && (
                   <div className="flex flex-col items-start animate-pulse">
                     <span className="text-[8px] font-mono text-slate-500 mb-0.5">Agent is formulating thought stream...</span>
-                    <div className="bg-[#12151a] border border-slate-850 p-2 rounded text-[11px] text-slate-500 font-mono italic">
+                    <div className="bg-[#19171d] border border-slate-850 p-2 rounded text-[11px] text-slate-500 font-mono italic">
                       Formulating response metrics...
                     </div>
                   </div>
@@ -568,7 +562,7 @@ export function LogsExplorer({
                   placeholder={`Consult directly with ${activeAgent.id} on goals...`}
                   value={chatInput}
                   onChange={e => setChatInput(e.target.value)}
-                  className="flex-1 bg-[#12151a] border border-slate-805 rounded px-2.5 py-1.5 text-white text-[11px] font-mono focus:outline-none focus:border-blue-500"
+                  className="flex-1 bg-[#19171d] border border-slate-805 rounded px-2.5 py-1.5 text-white text-[11px] font-mono focus:outline-none focus:border-blue-500"
                 />
                 <button
                   type="submit"
@@ -596,7 +590,7 @@ export function LogsExplorer({
                     <select
                       value={model}
                       onChange={e => setModel(e.target.value)}
-                      className="w-full bg-[#12151a] border border-slate-800 rounded p-1.5 text-slate-200 text-[10px] font-mono focus:outline-none focus:border-slate-700"
+                      className="w-full bg-[#19171d] border border-slate-800 rounded p-1.5 text-slate-200 text-[10px] font-mono focus:outline-none focus:border-slate-700"
                     >
                       <option value="gemini-3.5-flash">gemini-3.5-flash</option>
                       <option value="gemini-3.1-pro-preview">gemini-3.1-pro-preview</option>
@@ -660,7 +654,7 @@ export function LogsExplorer({
                     value={backstory}
                     onChange={e => setBackstory(e.target.value)}
                     placeholder="E.g., An expert SRE agent with deep caffeine addictions..."
-                    className="w-full bg-[#12151a] border border-slate-805 rounded p-2 text-slate-300 text-[10px] font-mono focus:outline-none focus:border-slate-700 leading-normal"
+                    className="w-full bg-[#19171d] border border-slate-805 rounded p-2 text-slate-300 text-[10px] font-mono focus:outline-none focus:border-slate-700 leading-normal"
                   />
                 </div>
 
@@ -683,7 +677,7 @@ export function LogsExplorer({
                           className={`flex items-center gap-2 p-1.5 rounded border text-[10px] font-mono cursor-pointer transition-colors ${
                             isChecked 
                               ? 'bg-blue-950/20 border-blue-900/40 text-blue-300' 
-                              : 'bg-[#12151a] border-slate-850 hover:bg-[#1c2128]/40 text-slate-400'
+                              : 'bg-[#19171d] border-slate-850 hover:bg-[#222529]/40 text-slate-400'
                           }`}
                         >
                           <input 
@@ -711,7 +705,7 @@ export function LogsExplorer({
                     rows={2.5}
                     value={sysInst}
                     onChange={e => setSysInst(e.target.value)}
-                    className="w-full bg-[#12151a] border border-slate-805 rounded p-2 text-slate-300 text-[10px] font-mono focus:outline-none focus:border-slate-700 leading-relaxed"
+                    className="w-full bg-[#19171d] border border-slate-805 rounded p-2 text-slate-300 text-[10px] font-mono focus:outline-none focus:border-slate-700 leading-relaxed"
                   />
                 </div>
               </div>

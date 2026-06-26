@@ -19,11 +19,12 @@ import {
   Compass,
   ArrowRight,
   Sparkles,
-  Database
+  Database,
+  ShieldAlert
 } from 'lucide-react';
 
 interface LandingPageProps {
-  onEnterDashboard: () => void;
+  onEnterDashboard: (tabId?: string) => void;
   readmeText: string;
   architectureText: string;
   installText: string;
@@ -83,7 +84,7 @@ export function LandingPage({
       <div className="absolute bottom-20 right-1/4 w-[600px] h-[600px] bg-purple-900/5 rounded-full blur-[150px] pointer-events-none translate-x-1/2" />
 
       {/* --- Global Promo Header --- */}
-      <header className="border-b border-slate-900 bg-[#0c0e14]/95 backdrop-blur sticky top-0 z-50 px-4 py-3 sm:px-6">
+      <header className="border-b border-slate-900 bg-[#19171d]/95 backdrop-blur sticky top-0 z-50 px-4 py-3 sm:px-6">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           
           {/* Logo Brand */}
@@ -126,7 +127,7 @@ export function LandingPage({
             </a>
 
             <button 
-              onClick={onEnterDashboard}
+              onClick={() => onEnterDashboard()}
               id="header-dashboard-launch-btn"
               className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-mono font-bold rounded shadow-[0_0_15px_rgba(37,99,235,0.2)] hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] cursor-pointer transition-all active:scale-98 flex items-center gap-1"
             >
@@ -144,18 +145,18 @@ export function LandingPage({
         
         {/* Left column hero text */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="inline-flex items-center gap-1.5 bg-blue-955/20 border border-blue-900 px-2.5 py-1 rounded text-[10px] text-blue-400 font-mono font-bold tracking-wider uppercase">
-            <Zap className="w-3 h-3 animate-pulse text-blue-400" />
-            The Lightweight Alternative to OpenClaw
+          <div className="inline-flex items-center gap-1.5 bg-red-950/20 border border-red-900 px-2.5 py-1 rounded text-[10px] text-red-400 font-mono font-bold tracking-wider uppercase">
+            <ShieldAlert className="w-3 h-3 animate-pulse text-red-400" />
+            Zero-Downtime Autonomous SRE
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-[1.1] font-sans">
-            Your Personal. <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">Containerized.</span> <br />
-            Secure AI Agent Swarm.
+            Your Production. <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-orange-400 to-amber-400">Self-Healing.</span> <br />
+            Autonomous Agent Swarm.
           </h1>
 
           <p className="text-sm text-slate-400 leading-relaxed max-w-xl">
-            virtForce is a highly secure, offline-first multi-agent development swarm that compiles code, runs linters, and handles databases—entirely isolated in private, local Docker sandbox containers. Zero exposed api keys. Zero cloud lock-ins. Custom-built for single developers.
+            virtForce is an autonomous Site Reliability Engineering (SRE) team that instantly wakes up when a production crash occurs. 10 specialized agents parse stack traces, reproduce bugs in an isolated sandbox, validate fixes, and trigger hotfix deployments with zero human intervention.
           </p>
 
           {/* Quickstart Command Widget */}
@@ -179,7 +180,7 @@ export function LandingPage({
           {/* Action buttons CTAs */}
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <button
-              onClick={onEnterDashboard}
+              onClick={() => onEnterDashboard()}
               id="hero-launch-dashboard-btn"
               className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-mono font-bold rounded shadow-[0_4px_20px_rgba(79,70,229,0.3)] hover:shadow-[0_4px_25px_rgba(79,70,229,0.5)] cursor-pointer transition-all active:scale-98 flex items-center gap-1.5 uppercase"
             >
@@ -218,15 +219,15 @@ export function LandingPage({
 
             {/* Terminal Body content */}
             <div className="p-4 h-64 overflow-y-auto select-none space-y-1.5 text-slate-400">
-              <div className="text-slate-500">Creating network &quot;virtforce_default&quot; with driver &quot;bridge&quot;</div>
-              <div className="text-slate-500">Creating virtforce-container-dev ... <span className="text-emerald-400">done</span></div>
-              <div className="text-slate-500">Creating virtforce-host-orchestrator ... <span className="text-emerald-400">done</span></div>
-              <div className="text-blue-400">virtforce-host | [HOST SERVER] Active and listening at http://0.0.0.0:3000</div>
-              <div className="text-blue-400">virtforce-host | [SECURE INIT] Active credentials verified: Sandbox keys locked in virtual environments.</div>
-              <div className="text-indigo-400">virtforce-dev  | [SANDBOX] Running yarn install ... OK</div>
-              <div className="text-indigo-400">virtforce-dev  | [SANDBOX] Spawning lint workspace compiler and vulnerability auditer.</div>
-              <div className="text-emerald-400 animate-pulse">virtforce-host | [GATEWAY] WhatsApp webhook safely online on Port 10304!</div>
-              <div className="text-emerald-400">virtforce-host | [SUBSCRIBE] Listening for commands on Telegram channel &quot;@virtForceBot&quot;...</div>
+              <div className="text-slate-500">Listening on Sentry webhook port 3000... <span className="text-emerald-400">active</span></div>
+              <div className="text-red-400 font-bold">[CRITICAL] Webhook payload received: SEV-1 Production Crash</div>
+              <div className="text-red-400">Error: TypeError: Cannot read properties of undefined (reading 'map')</div>
+              <div className="text-orange-400 animate-pulse">virtforce-host | [SWARM WAKEUP] Waking 10 autonomous agents...</div>
+              <div className="text-blue-400">virtforce-qa   | [ISOLATION] Reproducing state in local Docker container... OK</div>
+              <div className="text-indigo-400">virtforce-dev  | [REMEDIATION] Optional chaining hotfix drafted.</div>
+              <div className="text-indigo-400">virtforce-qa   | [TESTING] Running 140 regression tests... PASS</div>
+              <div className="text-emerald-400">virtforce-ceo  | [APPROVAL] Fix verified. Triggering production redeployment.</div>
+              <div className="text-emerald-400 animate-pulse">virtforce-ops  | [DEPLOY] Hotfix successfully deployed to production!</div>
               <div className="text-slate-500 pt-2">$ _</div>
             </div>
 
@@ -324,51 +325,51 @@ export function LandingPage({
         {/* Feature Bento Grid Row */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
-          {/* Card 0: Topological CAD Swarm Orchestration Canvas & Inspector */}
+          {/* Card 1: Live Swarm Incident War Room Canvas & Inspector */}
           <div className="lg:col-span-12 bg-[#0d1017] border border-slate-800 p-6 md:p-8 rounded-xl space-y-6 shadow-2xl relative overflow-hidden group hover:border-slate-700 transition-all">
             {/* Visual background gradient accents */}
-            <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-10 -left-10 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-80 h-80 bg-red-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-10 -left-10 w-80 h-80 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               
               {/* Product value copy (col-span-5) */}
               <div className="lg:col-span-5 space-y-4">
                 <span className="text-[9px] font-mono tracking-widest font-extrabold text-[#00d2ff] uppercase bg-[#00d2ff]/10 border border-[#00d2ff]/20 px-2 py-0.5 rounded">
-                  INDUSTRY-LEADING ORCHESTRATION PRESET
+                  INCIDENT COMMAND CENTER
                 </span>
                 <h3 className="text-xl md:text-2xl font-extrabold text-white tracking-tight uppercase font-mono">
-                  Interactive CAD Swarm Canvas
+                  Live Swarm War Room
                 </h3>
                 <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                  Unlike traditional platforms like <strong>SwarmClaw</strong> or <strong>ClawTeam</strong>, which only display non-interactive, read-only text lists or static logs, virtForce introduces an active <strong>Modular CAD Swarm Canvas</strong>.
+                  When a production incident triggers, virtForce doesn't just send an alert. It instantiates an interactive <strong>Modular Incident Canvas</strong>.
                 </p>
                 <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                  This lets you physically reposition specialized agents (CEO Supervisor, Specs PM, Containerized Dev, Vulnerability QA, Secure DevOps Infrastructure, and Organic Growth Marketer), visualize data pathways, configure container parameters inside the live attributes inspector (RAM boundaries, socket ports, LLM presets), and execute simulated webhook signal pulses in real-time.
+                  Watch in real-time as the specialized agents (CEO Supervisor, Code-Mutant, Vulnerability QA, and DevOps) securely connect. You can visualize their RCA (Root Cause Analysis) pathways, configure sandbox constraints inside the live attributes inspector, and execute simulated webhook signal pulses.
                 </p>
 
                 <div className="space-y-2 pt-2">
                   <div className="flex items-center gap-2 text-xs font-mono text-slate-350">
-                    <span className="text-emerald-400">✔</span>
-                    <span>Fully interactive drag-and-drop orchestration nodes</span>
+                     <span className="text-red-400">✔</span>
+                    <span>Live multi-agent incident triage and discussion</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs font-mono text-slate-350">
-                    <span className="text-emerald-400">✔</span>
-                    <span>Live container constraints inspector (RAM, Ports, Models)</span>
+                     <span className="text-red-400">✔</span>
+                    <span>Container constraints inspector (RAM, Ports, Models)</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs font-mono text-slate-350">
-                    <span className="text-emerald-400">✔</span>
-                    <span>Real-time webhook impulse testing simulation</span>
+                     <span className="text-red-400">✔</span>
+                    <span>Real-time webhook ingestion testing simulation</span>
                   </div>
                 </div>
 
                 <div className="pt-3">
                   <button 
-                    onClick={onEnterDashboard}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-500 hover:text-white text-white font-mono font-bold text-xs rounded transition-all flex items-center gap-1.5 shadow-lg shadow-blue-900/40 cursor-pointer"
+                    onClick={() => onEnterDashboard()}
+                    className="px-4 py-2 bg-red-600 hover:bg-red-500 hover:text-white text-white font-mono font-bold text-xs rounded transition-all flex items-center gap-1.5 shadow-lg shadow-red-900/40 cursor-pointer"
                   >
                     <Play className="w-3.5 h-3.5 fill-current" />
-                    <span>Launch Sandbox Controls</span>
+                    <span>View Active Incidents</span>
                   </button>
                 </div>
               </div>
@@ -381,10 +382,10 @@ export function LandingPage({
                 {/* Micro dashboard stats */}
                 <div className="relative z-10 flex items-center justify-between border-b border-slate-900 pb-2">
                   <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-[8px] font-mono text-slate-400 uppercase tracking-wide">Topology Preview Status: Stream Active</span>
+                    <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
+                    <span className="text-[8px] font-mono text-slate-400 uppercase tracking-wide">Incident Triage: SEV-1 ACTIVE</span>
                   </div>
-                  <span className="text-[8px] font-mono text-blue-400 bg-blue-950/40 border border-blue-900/40 px-1.5 py-0.5 rounded uppercase">SIMULATED INTEGRITY</span>
+                  <span className="text-[8px] font-mono text-red-400 bg-red-950/40 border border-red-900/40 px-1.5 py-0.5 rounded uppercase">CRASH SIMULATION</span>
                 </div>
 
                 {/* Animated graphic representation of connected circles */}
@@ -392,53 +393,48 @@ export function LandingPage({
                   <svg className="w-full h-full max-h-[160px]" viewBox="0 0 500 130">
                     <defs>
                       <linearGradient id="gradientLine" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#ef4444" stopOpacity="0.2" />
-                        <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.8" />
+                        <stop offset="0%" stopColor="#ef4444" stopOpacity="0.8" />
+                        <stop offset="50%" stopColor="#f97316" stopOpacity="0.8" />
                         <stop offset="100%" stopColor="#22c55e" stopOpacity="0.8" />
                       </linearGradient>
                     </defs>
 
                     {/* Connection wires */}
-                    <path d="M 50 65 Q 130 25 210 65 T 370 40 T 450 65" fill="none" stroke="url(#gradientLine)" strokeWidth="2" strokeDasharray="5,5" className="animate-[flow-pulse_20s_linear_infinite]" />
+                    <path d="M 50 65 Q 130 25 210 65 T 370 40 T 450 65" fill="none" stroke="url(#gradientLine)" strokeWidth="2" strokeDasharray="5,5" className="animate-[flow-pulse_5s_linear_infinite]" />
                     <path d="M 450 65 Q 250 120 50 65" fill="none" stroke="#22c55e" strokeWidth="1" strokeDasharray="3,3" />
 
                     {/* Nodes with custom names and interactive looks */}
                     {[
-                      { id: 'CEO', x: 50, y: 65, avatar: '🎯', label: 'Supervisor' },
-                      { id: 'PM', x: 130, y: 40, avatar: '📋', label: 'Crew Specs' },
-                      { id: 'DEV', x: 210, y: 65, avatar: '💻', label: 'OpenHands' },
+                      { id: 'CEO', x: 50, y: 65, avatar: '🎯', label: 'Incident Lead' },
+                      { id: 'SENTRY', x: 130, y: 40, avatar: '🚨', label: 'Telemetry' },
+                      { id: 'DEV', x: 210, y: 65, avatar: '💻', label: 'Hotfix Coder' },
                       { id: 'QA', x: 290, y: 90, avatar: '🛡️', label: 'Test Sandbox' },
-                      { id: 'DEVOPS', x: 370, y: 40, avatar: '⚙️', label: 'GitOps Pipeline' },
-                      { id: 'MKT', x: 450, y: 65, avatar: '✨', label: 'Ad Copy' }
+                      { id: 'DEVOPS', x: 370, y: 40, avatar: '⚙️', label: 'Prod Deployer' },
+                      { id: 'PM', x: 450, y: 65, avatar: '📋', label: 'Post-Mortem' }
                     ].map(node => (
                       <g key={node.id} className="cursor-default">
-                        <circle cx={node.x} cy={node.y} r="18" fill="#0d1017" stroke="#3b82f6" strokeWidth="2" className="transition-transform hover:scale-110 duration-200" />
+                        <circle cx={node.x} cy={node.y} r="18" fill="#0d1017" stroke={node.id === 'SENTRY' ? '#ef4444' : '#3b82f6'} strokeWidth="2" className="transition-transform hover:scale-110 duration-200" />
                         <text x={node.x} y={node.y + 4} textAnchor="middle" fontSize="11">{node.avatar}</text>
                         <text x={node.x} y={node.y + 26} textAnchor="middle" fontSize="8" fontFamily="monospace" fill="#aeacc8" fontWeight="bold">{node.id}</text>
                         <text x={node.x} y={node.y - 24} textAnchor="middle" fontSize="7" fontFamily="monospace" fill="#64748b">{node.label}</text>
                       </g>
                     ))}
                   </svg>
-
-                  {/* Drag cursor indicator overlay */}
-                  <div className="absolute top-1/2 left-[53%] -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white rounded-full p-1 shadow-lg border border-white animate-bounce pointer-events-none">
-                    <span className="text-[10px] block leading-none">👆 Drag</span>
-                  </div>
                 </div>
 
                 {/* Simulated parameter feedback list */}
                 <div className="grid grid-cols-3 gap-2 border-t border-slate-900 pt-2 text-[8px] font-mono">
-                  <div className="bg-[#0c0e14] p-1.5 rounded border border-slate-800">
-                    <span className="text-slate-500 block uppercase">Orchestrator Mode</span>
-                    <span className="text-[#00d2ff] font-bold">LangGraph Hierarchy</span>
+                  <div className="bg-[#19171d] p-1.5 rounded border border-slate-800">
+                    <span className="text-slate-500 block uppercase">Webhook Source</span>
+                    <span className="text-[#00d2ff] font-bold">Sentry / Datadog</span>
                   </div>
-                  <div className="bg-[#0c0e14] p-1.5 rounded border border-slate-800">
-                    <span className="text-slate-500 block uppercase">Docker Protection</span>
-                    <span className="text-emerald-400 font-bold">Iso V2 [Low, Med, High]</span>
+                  <div className="bg-[#19171d] p-1.5 rounded border border-slate-800">
+                    <span className="text-slate-500 block uppercase">Sandbox Target</span>
+                    <span className="text-emerald-400 font-bold">Docker Image (Prod)</span>
                   </div>
-                  <div className="bg-[#0c0e14] p-1.5 rounded border border-slate-800">
-                    <span className="text-slate-500 block uppercase">Signal Testing</span>
-                    <span className="text-purple-400 font-bold">Impulse Injection Ready</span>
+                  <div className="bg-[#19171d] p-1.5 rounded border border-slate-800">
+                    <span className="text-slate-500 block uppercase">Deployment</span>
+                    <span className="text-red-400 font-bold">Hotfix Pipeline Ready</span>
                   </div>
                 </div>
 
@@ -446,336 +442,82 @@ export function LandingPage({
             </div>
           </div>
 
-          {/* Card 0A: Selective Web Ingress & Topological Influx Connection Graph */}
-          <div className="lg:col-span-12 bg-[#090b11] border border-slate-800/70 p-6 md:p-8 rounded-xl space-y-6 shadow-2xl relative overflow-hidden group hover:border-[#00d2ff]/40 transition-all">
+          {/* Card 0.5: Autonomous SRE & Production Incident Defense */}
+          <div className="lg:col-span-12 bg-[#090b14] border border-slate-800/80 p-6 md:p-8 rounded-xl space-y-6 shadow-2xl relative overflow-hidden group hover:border-red-500/40 transition-all">
             {/* Visual background gradient accents */}
-            <div className="absolute top-0 left-0 w-96 h-96 bg-[#00d2ff]/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-10 right-0 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-red-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-10 left-0 w-80 h-80 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              {/* Left Column Graphic Mockup of Topological Context Graph Node Ledger (col-span-7) */}
-              <div className="lg:col-span-7 bg-[#050608] border border-slate-850 rounded-lg p-5 relative shadow-inner flex flex-col justify-between min-h-[300px]">
-                {/* Simulated workspace dots */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#0e111a_1px,transparent_1px),linear-gradient(to_bottom,#0e111a_1px,transparent_1px)] bg-[size:18px_18px] opacity-55 pointer-events-none" />
+              {/* Left Column Graphic Mockup of Datadog/Sentry incident stream (col-span-7) */}
+              <div className="lg:col-span-7 bg-[#222529] border border-slate-850 rounded-lg p-5 relative shadow-inner flex flex-col justify-between min-h-[300px]">
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#110e0e_1px,transparent_1px),linear-gradient(to_bottom,#110e0e_1px,transparent_1px)] bg-[size:18px_18px] opacity-55 pointer-events-none" />
 
                 {/* Micro panel stats */}
                 <div className="relative z-10 flex items-center justify-between border-b border-slate-900 pb-2">
                   <div className="flex items-center gap-1.5 font-mono text-[9px]">
-                    <span className="p-0.5 px-1.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-900/60 font-bold">SERIALIZER ACTIVE</span>
-                    <span className="text-slate-500">Node Identifier: Ingress-V2-Crawler</span>
+                    <span className="p-0.5 px-1.5 rounded bg-red-950 text-red-400 border border-red-900/60 font-bold animate-pulse">SEV-1 INCIDENT DETECTED</span>
+                    <span className="text-slate-500">Source: Sentry Webhook</span>
                   </div>
-                  <span className="text-[8px] font-mono text-[#00d2ff] bg-[#00d2ff]/10 border border-[#00d2ff]/20 px-1.5 py-0.5 rounded uppercase font-bold">92.1% Token Save</span>
+                  <span className="text-[8px] font-mono text-orange-400 bg-orange-950/40 border border-orange-900/40 px-1.5 py-0.5 rounded uppercase font-bold">10-Agent Swarm Engaged</span>
                 </div>
 
-                {/* Animated SVG relational context graph hierarchy exactly like Claude! */}
-                <div className="relative flex-grow flex items-center justify-center py-6">
-                  <svg className="w-full max-w-[480px] h-[160px] relative z-10" viewBox="0 0 500 160">
-                    <defs>
-                      <marker id="arrow-lp" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155" />
-                      </marker>
-                      <marker id="arrow-active-lp" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#00d2ff" />
-                      </marker>
-                    </defs>
-
-                    {/* Connection wires */}
-                    <line x1="50" y1="80" x2="160" y2="40" stroke="#00d2ff" strokeWidth="2" strokeDasharray="3,3" markerEnd="url(#arrow-active-lp)" />
-                    <line x1="160" y1="40" x2="270" y2="80" stroke="#00d2ff" strokeWidth="2" markerEnd="url(#arrow-active-lp)" />
-                    <line x1="270" y1="80" x2="410" y2="40" stroke="#00d2ff" strokeWidth="2" markerEnd="url(#arrow-active-lp)" />
-                    <line x1="270" y1="80" x2="410" y2="120" stroke="#334155" strokeWidth="1.2" markerEnd="url(#arrow-lp)" />
-
-                    {/* Nodes with custom names and interactive looks */}
-                    {[
-                      { id: 'HTML', x: 50, y: 80, name: 'index.html', label: 'HTML Ingress Engine', fill: '#0a0d14', stroke: '#1e293b', emoji: '🌐' },
-                      { id: 'BOOT', x: 160, y: 40, name: 'main.tsx', label: 'Vite Bootstrap Target', fill: '#0a0d14', stroke: '#1e293b', emoji: '⚡' },
-                      { id: 'CORE', x: 270, y: 80, name: 'App.tsx', label: 'App Shell Router', fill: '#141a24', stroke: '#00d2ff', emoji: '📦' },
-                      { id: 'MAPS', x: 410, y: 40, name: 'MapboxRoute.tsx', label: 'GPS Coordinates API', fill: '#1b2332', stroke: '#00d2ff', emoji: '🗺️' },
-                      { id: 'DBMS', x: 410, y: 120, name: 'TechnicianDb.ts', label: 'SQLite Persistence Layer', fill: '#0a0d14', stroke: '#1e293b', emoji: '💾' }
-                    ].map(node => (
-                      <g key={node.id}>
-                        <circle cx={node.x} cy={node.y} r="15" fill={node.fill} stroke={node.stroke} strokeWidth="1.5" />
-                        <text x={node.x} y={node.y + 3.5} textAnchor="middle" fontSize="10">{node.emoji}</text>
-                        <text x={node.x} y={node.y + 22} textAnchor="middle" fontSize="8" fontFamily="monospace" fill="#e2e8f0" fontWeight="bold">{node.name}</text>
-                        <text x={node.x} y={node.y - 18} textAnchor="middle" fontSize="7" fontFamily="monospace" fill="#475569">{node.id}</text>
-                      </g>
-                    ))}
-                  </svg>
-                </div>
-
-                {/* Comparison Stats */}
-                <div className="grid grid-cols-2 gap-3 border-t border-slate-900 pt-3 text-[9px] font-mono">
-                  <div className="bg-[#090b10] p-2 rounded border border-slate-850/80">
-                    <span className="text-rose-400 font-bold block uppercase mb-0.5">Cold Workspace Crawl:</span>
-                    <span className="text-slate-400">~148K Tokens (Slow 25s parse)</span>
+                <div className="relative flex-grow flex flex-col justify-center gap-3 py-4 z-10">
+                  <div className="bg-[#0b0c10] border border-red-900/40 rounded p-3 text-xs font-mono">
+                     <span className="text-red-400 font-bold">[PRODUCTION CRASH]</span> <span className="text-slate-300">TypeError: Cannot read properties of undefined (reading 'map') at UserProfile.tsx:112</span>
                   </div>
-                  <div className="bg-[#090b10] p-2 rounded border border-slate-850/80">
-                    <span className="text-emerald-400 font-bold block uppercase mb-0.5">virtForce Cache Match:</span>
-                    <span className="text-white font-extrabold">~11.8K Tokens (Instant 0.1s run)</span>
+                  
+                  {/* Swarm activity log */}
+                  <div className="space-y-1.5 pt-2 pl-2 border-l-2 border-slate-800">
+                     <div className="text-[10px] font-mono text-slate-400">
+                       <span className="text-blue-400 font-bold">[1] Ingestion:</span> Sentry webhook parsed. Stack trace mapped to /src/components/UserProfile.tsx
+                     </div>
+                     <div className="text-[10px] font-mono text-slate-400">
+                       <span className="text-purple-400 font-bold">[2] Swarm Wakeup:</span> 10 Agents Activated. QA reproducing issue in Isolated Sandbox...
+                     </div>
+                     <div className="text-[10px] font-mono text-slate-400">
+                       <span className="text-emerald-400 font-bold">[3] Dev Remediation:</span> Code-Mutant drafted hotfix (added optional chaining).
+                     </div>
+                     <div className="text-[10px] font-mono text-slate-400">
+                       <span className="text-emerald-400 font-bold">[4] Validation:</span> Regression tests passed in Container Sandbox.
+                     </div>
+                     <div className="text-[10px] font-mono text-slate-400 flex items-center gap-2">
+                       <span className="text-orange-400 font-bold">[5] Deployment:</span> CEO Approved. DevOps Agent triggering production deployment... <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse"></span>
+                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Right Column Product value copy (col-span-5) */}
               <div className="lg:col-span-5 space-y-4">
-                <span className="text-[9px] font-mono tracking-widest font-extrabold text-[#00d2ff] uppercase bg-[#00d2ff]/10 border border-[#00d2ff]/20 px-2 py-0.5 rounded">
-                  CLAUDE-STYLE HIGHEST PERFORMANCE INITIALIZER
+                <span className="text-[9px] font-mono tracking-widest font-extrabold text-red-400 uppercase bg-red-400/10 border border-red-400/20 px-2 py-0.5 rounded">
+                  AUTONOMOUS INCIDENT RESPONSE
                 </span>
                 <h3 className="text-xl md:text-2xl font-extrabold text-white tracking-tight uppercase font-mono">
-                  Topological Ingress Crawler
+                  Prod Sentry Swarm
                 </h3>
                 <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                  Ready to let the virtForce self-contained swarm code on any other project (like a live operational tracking dashboard or retail payment pipeline)? 
+                  Convert the swarm into an <strong>Autonomous Site Reliability Engineer (SRE)</strong> team. Wire up incoming webhooks from Datadog, Sentry, or AWS CloudWatch.
                 </p>
                 <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                  Simply feed any domain URL, Docker webhook, or Git SSH credentials! Our <strong>Remote Ingress Crawler</strong> downloads public code blocks, parses operational frameworks, and converts the metadata into active agent developer backlogs.
-                </p>
-                <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                  By compiling directory structures into lightweight, serialized <strong>context-graphs</strong> (exactly like Claude’s topological memory maps), changes are tracked using fast delta hashes, bypassing slow repository walkthroughs on successive sessions to save more than <strong>$92.1% runtime LLM token expenses</strong>.
+                  When a production crash occurs, the orchestrator instantly wakes up the entire 10-agent team. The agents parse logs, replicate the bug locally in an isolated sandbox, draft a fix, validate it against your test suite, and—once approved by the CEO agent—automatically push a hotfix deployment to production.
                 </p>
 
-                <div className="space-y-2 pt-1">
+                <div className="space-y-2 pt-2">
                   <div className="flex items-center gap-2 text-xs font-mono text-slate-350">
-                    <span className="text-emerald-400">⚡</span>
-                    <span>1-Click Project Ingestion via Crawl & Git Pipeling</span>
+                    <span className="text-red-400">✔</span>
+                    <span>Instant ingestion of crash dumps & stack traces</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs font-mono text-slate-350">
-                    <span className="text-emerald-400">⚡</span>
-                    <span>92.1% Token savings via Claude-style serialization caching</span>
+                    <span className="text-red-400">✔</span>
+                    <span>Automated reproduction in local sandboxes</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs font-mono text-slate-350">
-                    <span className="text-emerald-400">⚡</span>
-                    <span>Adaptive backlog generator for special apps/targets</span>
+                    <span className="text-red-400">✔</span>
+                    <span>Zero-human hotfix verification & prod deployment</span>
                   </div>
-                </div>
-
-                <div className="pt-2">
-                  <button 
-                    onClick={onEnterDashboard}
-                    className="px-4 py-2 bg-gradient-to-r from-blue-600 to-[#00d2ff] hover:from-blue-500 hover:to-[#05dcff] text-white font-mono font-bold text-xs uppercase rounded cursor-pointer transition-all shadow-md flex items-center justify-center gap-1.5"
-                  >
-                    <ArrowRight className="w-3.5 h-3.5" />
-                    <span>Try Ingress In Developer Sandbox</span>
-                  </button>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Card 0B: Open-Source Multica Daemon Integration Companion */}
-          <div className="lg:col-span-12 bg-[#090b11] border border-slate-800/70 p-6 md:p-8 rounded-xl space-y-6 shadow-2xl relative overflow-hidden group hover:border-indigo-500/40 transition-all">
-            {/* Visual background gradient accents */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-10 left-0 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              {/* Left Column Product value copy (col-span-5) */}
-              <div className="lg:col-span-5 space-y-4">
-                <span className="text-[9px] font-mono tracking-widest font-extrabold text-indigo-400 bg-indigo-950/40 border border-indigo-900/60 px-2 py-0.5 rounded uppercase">
-                  ACTIVE MULTICA TEAMMATE COOPERATION
-                </span>
-                <h3 className="text-xl md:text-2xl font-extrabold text-white tracking-tight uppercase font-mono">
-                  Multica Daemon Sync
-                </h3>
-                <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                  Looking to run secure development agents directly in your native workspace or hook up model context protocols inside Cursor or Claude Desktop?
-                </p>
-                <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                  virtForce is now fully compatible with the open-source <strong>Multica</strong> platform! Connect to the background <code>multicad</code> daemon locally to fetch preset teammates, merge skills compound pathways, and execute CLI commands. 
-                </p>
-                <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                  Through the interactive virtForce control panel, you can supervise active local daemon teammates (CEO-Copilot, Code-Mutant, Aero-DevOps), execute integrated diagnostics, and inspect localized file persistence structures instantly.
-                </p>
-
-                <div className="space-y-2 pt-1">
-                  <div className="flex items-center gap-2 text-xs font-mono text-slate-350">
-                    <span className="text-indigo-400">🐙</span>
-                    <span>Standard multicad daemon connection (localhost:5902)</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs font-mono text-slate-350">
-                    <span className="text-indigo-400">🐙</span>
-                    <span>Compound & recursive teammate skill-sets logic configuration</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs font-mono text-slate-350">
-                    <span className="text-indigo-400">🐙</span>
-                    <span>Cross-MCP ready (expose sandbox tools directly to Cursor & Claude)</span>
-                  </div>
-                </div>
-
-                <div className="pt-2">
-                  <button 
-                    onClick={onEnterDashboard}
-                    className="px-4 py-2 bg-gradient-to-r from-indigo-700 to-indigo-500 hover:from-indigo-600 hover:to-indigo-400 text-white font-mono font-bold text-xs uppercase rounded cursor-pointer transition-all shadow-md flex items-center justify-center gap-1.5"
-                  >
-                    <span>VIEW MULTICA DAEMON CONSOLE</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Right Column Graphic Mockup of Multica Sync deck (col-span-7) */}
-              <div className="lg:col-span-7 bg-[#050608] border border-slate-850 rounded-lg p-5 relative shadow-inner flex flex-col justify-between min-h-[300px]">
-                {/* Simulated workspace dots */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#0e111a_1px,transparent_1px),linear-gradient(to_bottom,#0e111a_1px,transparent_1px)] bg-[size:18px_18px] opacity-55 pointer-events-none" />
-
-                {/* Header panel */}
-                <div className="relative z-10 flex items-center justify-between border-b border-slate-900 pb-2">
-                  <div className="flex items-center gap-1.5 font-mono text-[9px]">
-                    <span className="p-0.5 px-1.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-900/60 font-bold">MULTICAD CONNECTED</span>
-                    <span className="text-slate-500">Daemon: localhost:5902</span>
-                  </div>
-                  <span className="text-[8px] font-mono text-emerald-400 bg-emerald-950/45 border border-emerald-900/65 px-1.5 py-0.5 rounded uppercase font-bold">3 ACTIVE WORKERS</span>
-                </div>
-
-                {/* Center visual: 3 loaded teammates & compound skill matrix */}
-                <div className="relative z-10 my-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  {[
-                    { name: 'CEO-Copilot', role: 'Supervisor', accent: 'border-indigo-900/60', icon: '🎯' },
-                    { name: 'Code-Mutant', role: 'Coder Agent', accent: 'border-emerald-900/60', icon: '💻' },
-                    { name: 'Aero-DevOps', role: 'DevOps Build', accent: 'border-purple-900/60', icon: '⚙%' }
-                  ].map((mate, i) => (
-                    <div key={i} className={`bg-[#090b11] border ${mate.accent} p-3 rounded-lg text-center font-mono space-y-1`}>
-                      <span className="text-xl block">{mate.icon === '⚙%' ? '⚙️' : mate.icon}</span>
-                      <span className="text-[10px] text-white font-bold block">{mate.name}</span>
-                      <span className="text-[8px] text-slate-500 uppercase block">{mate.role}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Simulated Terminal commands output */}
-                <div className="relative z-10 bg-[#020305]/90 border border-slate-900 p-3 rounded font-mono text-[9.5px] text-slate-400 leading-normal space-y-1">
-                  <div className="flex text-[#00d2ff]">
-                    <span>$ multica sync-skills --virtforce</span>
-                  </div>
-                  <div className="text-indigo-400">
-                    <span>[multicad] sync completed. Exposing skill: code_refiner (Type: MCP) - OK</span>
-                  </div>
-                  <div className="text-indigo-400">
-                    <span>[multicad] sync completed. Exposing skill: ingress_crawler (Type: MCP) - OK</span>
-                  </div>
-                  <div className="text-emerald-400 font-bold">
-                    <span>[SUCCESS] 2 secure virtForce developer tools hot-loaded inside Multica teammate database.</span>
-                  </div>
-                </div>
-
-                {/* Footer status credits line */}
-                <div className="relative z-10 flex items-center justify-between text-[8px] text-slate-500 font-mono italic pt-2 border-t border-slate-900 leading-none">
-                  <span>* Config file ~/.multica/configs/teammates.json synchronized successfully.</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 0C: Self-Seeding Swarm Memory & Rules Compiler */}
-          <div className="lg:col-span-12 bg-[#0a0d14] border border-slate-800/80 p-6 md:p-8 rounded-xl space-y-6 shadow-2xl relative overflow-hidden group hover:border-emerald-500/40 transition-all">
-            {/* Visual background gradient accents */}
-            <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-10 right-0 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              
-              {/* Left Column Product value copy (col-span-5) */}
-              <div className="lg:col-span-5 space-y-4 text-left">
-                <span className="text-[9px] font-mono tracking-widest font-extrabold text-emerald-400 bg-emerald-950/40 border border-emerald-900/60 px-2 py-0.5 rounded uppercase">
-                  PERSISTENT SWARM MEMORY SYSTEM
-                </span>
-                <h3 className="text-xl md:text-2xl font-extrabold text-white tracking-tight uppercase font-mono">
-                  Autonomous Self-Learning Skills
-                </h3>
-                <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                  Tired of telling your development agents the same configuration adjustments and style preferences over and over? virtForce now compiles and remembers your guidelines automatically!
-                </p>
-                <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                  Our system features a live <strong>Incremental Swarm Memory Matrix</strong> that captures your instructions, resolves conflicting rules, and compiles them into persistent <code>.json</code> schemas. These instructions are physically translated into active prompt instruction sets inside your local <code>AGENTS.md</code> file context.
-                </p>
-                <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                  Subsequent agent sessions instantly read these rule vectors to prevent regression or repetition, offering a true, dynamic, <strong>self-reinforcing workflow integration</strong>.
-                </p>
-
-                <div className="space-y-2 pt-1 font-mono text-[11px] text-slate-350">
-                  <div className="flex items-center gap-2">
-                    <span className="text-emerald-400">✔</span>
-                    <span>Live feedback capture (auto-saves style preferences & api habits)</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-emerald-400">✔</span>
-                    <span>Full file persistence (synchronous updates in AGENTS.md for turn-agnoness)</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-emerald-400">✔</span>
-                    <span>Interactive controls (toggle, parameter tuning & prompt tweaking)</span>
-                  </div>
-                </div>
-
-                <div className="pt-2">
-                  <button 
-                    onClick={onEnterDashboard}
-                    className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-mono font-bold text-xs uppercase rounded cursor-pointer transition-all shadow-md flex items-center justify-center gap-1.5"
-                  >
-                    <span>COMPILE CUSTOM SKILL VECTORS</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Right Column Interactive Preview Card (col-span-7) */}
-              <div className="lg:col-span-7 bg-[#05060a] border border-slate-850 rounded-lg p-5 relative shadow-inner flex flex-col justify-between min-h-[300px] text-left">
-                {/* Dots background */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1018_1px,transparent_1px),linear-gradient(to_bottom,#0c1018_1px,transparent_1px)] bg-[size:16px_16px] opacity-40 pointer-events-none" />
-
-                {/* Header panel */}
-                <div className="relative z-10 flex items-center justify-between border-b border-slate-900 pb-2">
-                  <div className="flex items-center gap-1.5 font-mono text-[9px]">
-                    <span className="p-0.5 px-1.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-900/60 text-[8px] font-bold uppercase animate-pulse">MATRIX LINKED</span>
-                    <span className="text-slate-500">Target File: /AGENTS.md (Hot Injected)</span>
-                  </div>
-                  <span className="text-[8px] font-mono text-emerald-400 bg-emerald-950/20 border border-emerald-900/40 px-1.5 py-0.5 rounded font-extrabold pb-0.5">ACTIVE PERSISTENCE</span>
-                </div>
-
-                {/* Interactive Simulation items */}
-                <div className="relative z-10 my-4 space-y-2 block text-left">
-                  <div className="bg-[#0b0d13] border border-emerald-950/65 p-2.5 rounded-lg flex items-start gap-2.5">
-                    <div className="p-1.5 bg-emerald-950/30 border border-emerald-900/50 rounded-md text-emerald-400 text-xs font-mono">
-                      🧠
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <strong className="text-xs text-white">Tailwind Primacy Protocol</strong>
-                        <span className="text-[7px] bg-emerald-950 border border-emerald-900/40 text-emerald-400 px-1 rounded-sm uppercase tracking-wider font-semibold font-mono">CODING</span>
-                      </div>
-                      <p className="text-[10px] text-slate-400 font-sans leading-tight">
-                        &quot;Always style components using inline Tailwind utility classes. Strict prohibition from writing custom CSS files...&quot;
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="bg-[#0b0d13] border border-blue-955/60 p-2.5 rounded-lg flex items-start gap-2.5 opacity-80">
-                    <div className="p-1.5 bg-blue-955/30 border border-blue-900/50 rounded-md text-blue-400 text-xs font-mono">
-                      🛡️
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <strong className="text-xs text-white">Absolute Path Deflection</strong>
-                        <span className="text-[7px] bg-blue-950 border border-blue-900/40 text-blue-400 px-1 rounded-sm uppercase tracking-wider font-semibold font-mono font-mono">SAFETY</span>
-                      </div>
-                      <p className="text-[10px] text-slate-400 font-sans leading-tight">
-                        &quot;Refuse workspace paths starting with root &quot;/&quot;. Only reference correct relative paths...&quot;
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Live Output Log Stream */}
-                <div className="relative z-10 bg-[#020305]/95 border border-slate-900 rounded p-2.5 font-mono text-[9.5px] leading-relaxed text-slate-400 space-y-1 block text-left">
-                  <div className="text-slate-500 flex items-center justify-between border-b border-slate-900 pb-1">
-                    <span className="text-[8px] uppercase tracking-wide">Learned Guardrail Compiler Logs</span>
-                    <span className="text-[8px] text-emerald-400">STATUS: RE-COMPILING SUCCESS</span>
-                  </div>
-                  <div className="text-slate-400">[HEURISTICS] Extracted pattern turn turns. Compiling...</div>
-                  <div className="text-emerald-400 font-bold">[SUCCESS] Rebuilt AGENTS.md with 3 active dynamic system instructions. Exposing and feeding memory blocks to model.</div>
-                </div>
-              </div>
-
             </div>
           </div>
 
@@ -810,7 +552,7 @@ export function LandingPage({
             </div>
 
             <button 
-              onClick={onEnterDashboard}
+              onClick={() => onEnterDashboard()}
               className="text-[10px] font-mono font-bold text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1.5 self-start cursor-pointer group"
             >
               Test HITL Review Console <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
@@ -829,14 +571,20 @@ export function LandingPage({
           </div>
 
           {/* Card 4 - Bento Bottom 3 Columns Center */}
-          <div className="lg:col-span-4 bg-[#0e1117] border border-slate-850 p-6 rounded-xl space-y-3">
+          <div className="lg:col-span-4 bg-[#0e1117] border border-slate-850 p-6 rounded-xl space-y-3 flex flex-col">
             <div className="w-8 h-8 rounded bg-amber-950/50 border border-amber-900/60 flex items-center justify-center text-amber-500">
-              <Star className="w-4 h-4" />
+              <ShieldAlert className="w-4 h-4" />
             </div>
-            <h3 className="text-sm font-bold text-white uppercase font-mono">Zero-Spend Launchpad</h3>
-            <p className="text-xs text-slate-400 font-sans leading-relaxed">
-              Features organic outreach templates, public waiting list setups, and social copywriting engines optimized to secure product retention and early developer adopters without advertising budgets.
+            <h3 className="text-sm font-bold text-white uppercase font-mono">Zero-Human Remediation</h3>
+            <p className="text-xs text-slate-400 font-sans leading-relaxed mb-4 flex-1">
+              Automatically parse incoming stack traces, reconstruct state in local Docker sandboxes, generate hotfixes, and deploy them—without waking up your human team.
             </p>
+            <button 
+              onClick={() => onEnterDashboard('sre')}
+              className="text-[10px] font-mono font-bold text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1.5 self-start cursor-pointer group pt-2 mt-auto border-t border-slate-800/60 w-full"
+            >
+              ▶ View Sentry Incident Simulation <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform ml-auto" />
+            </button>
           </div>
 
           {/* Card 5 - Bento Bottom 3 Columns Right */}
@@ -897,8 +645,8 @@ export function LandingPage({
                       <td className="p-4 text-slate-500">Requires complex web interfaces or persistent browser logins</td>
                     </tr>
                     <tr className="hover:bg-slate-900/40 transition-colors">
-                      <td className="p-4 font-bold text-white">Startup Launchpad</td>
-                      <td className="p-4 text-emerald-400 bg-emerald-950/10">Outreach engine, budget simulators, and waiting lists</td>
+                      <td className="p-4 font-bold text-white">Autonomous SRE Defense</td>
+                      <td className="p-4 text-emerald-400 bg-emerald-950/10">Zero-human incident reproduction, fixing, and hotfix redeployment</td>
                       <td className="p-4 text-slate-500">Strictly focused on coding pipelines or generic graph nodes</td>
                     </tr>
                     <tr className="hover:bg-slate-900/40 transition-colors">
@@ -928,7 +676,7 @@ export function LandingPage({
                 </p>
               </div>
               <button 
-                onClick={onEnterDashboard}
+                onClick={() => onEnterDashboard()}
                 className="w-full py-2.5 bg-[#141822] hover:bg-[#1a2130] border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white rounded text-xs font-mono font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5"
               >
                 <Terminal className="w-3.5 h-3.5 text-blue-400" />
@@ -1020,7 +768,7 @@ export function LandingPage({
           {/* Action Call to enter the dashboard */}
           <div className="text-center pt-4">
             <button
-              onClick={onEnterDashboard}
+              onClick={() => onEnterDashboard()}
               id="docs-launch-terminal-btn"
               className="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-mono font-bold rounded shadow-[0_4px_25px_rgba(79,70,229,0.35)] hover:shadow-[0_4px_30px_rgba(79,70,229,0.55)] cursor-pointer transition-all active:scale-98 inline-flex items-center gap-2 uppercase tracking-wide"
             >
@@ -1053,7 +801,7 @@ export function LandingPage({
       </section>
 
       {/* --- FOOTER --- */}
-      <footer className="border-t border-slate-950 bg-[#05060a] py-12 px-4 sm:px-6 text-center text-xs text-slate-500 relative z-10 font-mono">
+      <footer className="border-t border-slate-950 bg-[#222529] py-12 px-4 sm:px-6 text-center text-xs text-slate-500 relative z-10 font-mono">
         <div className="max-w-7xl mx-auto space-y-4">
           <div className="flex items-center justify-center gap-2">
             <span>🛡️</span>

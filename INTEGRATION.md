@@ -9,7 +9,7 @@ Use this handbook to integrate the virtForce multi-agent orchestration shell, De
 ### 1. Does virtForce have a persistent layer?
 **Yes.** virtForce employs a hybrid, multi-tier persistent storage architecture designed for absolute environment isolation and instant workstation restarts:
 
-*   **Client State Engine (Immediate LocalStorage):** By default, the developer console saves task kanban states (`vac_tasks`), active agent memory allocations (`vac_agents`), network logs (`vac_logs`), and real-time simulator stats (`vac_stats`) inside client-side `localStorage`. This ensures data survives browser refreshes or local server reboots without the overhead of cloud network queries.
+*   **Backend State API (`/api/state`):** The dashboard synchronizes task kanban states (`tasks`), active agent memory allocations (`agents`), network logs (`logs`), and real-time simulator stats (`stats`) seamlessly via an Express REST API backend, providing robust state persistence over raw file outputs.
 *   **Static Delta Cache (.virtforce/ Hash-Registry):** For topological code analysis, virtForce compiles repo directories into lightweight dependency graph structures (`.virtforce/project-context.json`). This works like a static file cache, ensuring the orchestrator avoids expensive multi-source code ingestion runs on every single run.
 *   **Optional Backend Server Persistence:** If running inside production self-hosted clusters, we support standard, air-gapped sqlite database adapters or JSON file-stores.
 
@@ -23,8 +23,8 @@ Follow this guide to inject our 7-agent workspace (CEO, PM, DEV, QA, DevOps, Mar
 In your existing target project, add our core dependencies for handling model operations, state management, and fluid UI animations:
 
 ```bash
-# Install core Google GenAI SDK and styling tools
-npm install @google/genai dotenv motion lucide-react
+# Install core Google GenAI SDK, Sentry for monitoring, and styling tools
+npm install @google/genai dotenv @sentry/react @sentry/browser motion lucide-react
 
 # Install dev testing engine for safety unit verifications
 npm install -D vitest

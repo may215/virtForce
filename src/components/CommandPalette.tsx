@@ -183,7 +183,7 @@ export function CommandPalette({ isOpen, onClose, onSelectAction, isSimulating, 
     >
       <div 
         ref={containerRef}
-        className="w-full max-w-xl bg-[#090b11] border border-slate-800 rounded-xl shadow-2xl shadow-indigo-500/10 flex flex-col overflow-hidden max-h-[80vh] md:max-h-[600px] animate-scale-up"
+        className="w-full max-w-xl bg-[#19171d] border border-slate-800 rounded-xl shadow-2xl shadow-indigo-500/10 flex flex-col overflow-hidden max-h-[80vh] md:max-h-[600px] animate-scale-up"
         id="command-palette-modal"
       >
         {/* Search header bar */}
@@ -280,7 +280,7 @@ export function CommandPalette({ isOpen, onClose, onSelectAction, isSimulating, 
         </div>
 
         {/* Footer shortcuts helper view */}
-        <div className="px-4 py-2 border-t border-slate-850 bg-[#05060a]/90 flex flex-wrap justify-between items-center text-[9px] text-slate-500 font-mono gap-y-1">
+        <div className="px-4 py-2 border-t border-slate-850 bg-[#222529]/90 flex flex-wrap justify-between items-center text-[9px] text-slate-500 font-mono gap-y-1">
           <div className="flex gap-3">
             <span className="flex items-center gap-0.5"><Command className="w-2.5 h-2.5" /> + K to close</span>
             <span>•</span>

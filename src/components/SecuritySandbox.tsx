@@ -381,13 +381,13 @@ export function SecuritySandbox({
   // --- Multi-channel Messenger Gateway State ---
   const [activeChannel, setActiveChannel] = useState<'whatsapp' | 'telegram' | 'slack'>('whatsapp');
   const [textInput, setTextInput] = useState('');
-  const [messages, setMessages] = useState<{
+  const [messages, setMessages] = useState<Array<{
     id: string;
     sender: 'user' | 'agent-ceo' | 'agent-dev' | 'system';
     text: string;
     time: string;
     avatar?: string;
-  }>([
+  }>>([
     { id: 'm1', sender: 'agent-ceo', text: "Welcome to virtForce Messenger Gateway! Connect your personal AI agent groups to Telegram and WhatsApp. How can I help you scale today?", time: '11:00 AM' }
   ]);
   const [isTyping, setIsTyping] = useState(false);
@@ -829,7 +829,7 @@ export function SecuritySandbox({
   return (
     <div className="space-y-4">
       {/* Alert Header Banner */}
-      <div className={`border rounded p-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3 text-slate-350 bg-bg-density-card border-slate-800`}>
+      <div className={`border rounded p-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3 text-slate-350 bg-[#222529] border-slate-800`}>
         <div className="flex items-center gap-2.5">
           <div className={`w-8 h-8 rounded flex items-center justify-center bg-blue-500/10 border border-blue-500/20 text-blue-400`}>
             <ShieldCheck className="w-4 h-4" />
@@ -895,7 +895,7 @@ export function SecuritySandbox({
       </div>
 
       {isSystemKilled ? (
-        <div className="bg-bg-density-card border border-rose-950 rounded p-10 text-center max-w-lg mx-auto space-y-2.5">
+        <div className="bg-[#222529] border border-rose-950 rounded p-10 text-center max-w-lg mx-auto space-y-2.5">
           <XCircle className="w-10 h-10 text-rose-400 mx-auto animate-pulse" />
           <h3 className="text-xs font-bold text-slate-200 uppercase font-mono tracking-wide">Orchestration Runners Frozen</h3>
           <p className="text-[11px] text-slate-450 leading-relaxed font-mono">
@@ -913,7 +913,7 @@ export function SecuritySandbox({
               className="space-y-4"
             >
               {tasks.filter(t => t.state === 'HITL').length === 0 ? (
-                <div className="bg-bg-density-card border border-slate-805 rounded p-12 text-center max-w-lg mx-auto space-y-3">
+                <div className="bg-[#222529] border border-slate-805 rounded p-12 text-center max-w-lg mx-auto space-y-3">
                   <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
                   <h3 className="text-xs font-bold text-slate-200 uppercase font-mono tracking-wide">All Gates Secure</h3>
                   <p className="text-[11px] text-slate-450 leading-relaxed font-mono">
@@ -923,7 +923,7 @@ export function SecuritySandbox({
               ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
                   {/* Staged PRs selection block */}
-                  <div className="lg:col-span-1 bg-bg-density-sidebar border border-slate-855 rounded p-2.5 space-y-2">
+                  <div className="lg:col-span-1 bg-[#19171d] border border-slate-855 rounded p-2.5 space-y-2">
                     <h3 className="text-[9px] font-mono font-bold tracking-wider text-slate-500 uppercase px-1 italic">
                       Staged Releases ({hitlTasks.length})
                     </h3>
@@ -937,8 +937,8 @@ export function SecuritySandbox({
                             onClick={() => setSelectedTaskId(task.id)}
                             className={`w-full text-left p-2.5 rounded border text-[11px] font-mono transition-all duration-150 cursor-pointer ${
                               isSelected
-                                ? 'bg-[#1c2128] border-slate-700 text-white font-bold'
-                                : 'bg-[#12151a]/30 hover:bg-[#12151a]/60 border-transparent text-slate-400 hover:text-white'
+                                ? 'bg-[#222529] border-slate-700 text-white font-bold'
+                                : 'bg-[#19171d]/30 hover:bg-[#19171d]/60 border-transparent text-slate-400 hover:text-white'
                             }`}
                           >
                             <div className="flex items-center gap-1 font-bold mb-0.5">
@@ -959,8 +959,8 @@ export function SecuritySandbox({
                   {activeTask && (
                     <div className="lg:col-span-2 flex flex-col space-y-3">
                       {/* Git diff viewer card */}
-                      <div className="bg-[#12151a] border border-slate-855 rounded overflow-hidden">
-                        <div className="bg-bg-density-tab px-3 py-1.5 border-b border-slate-800 flex items-center justify-between">
+                      <div className="bg-[#19171d] border border-slate-855 rounded overflow-hidden">
+                        <div className="bg-[#1164A3] px-3 py-1.5 border-b border-slate-800 flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <GitPullRequest className="w-3.5 h-3.5 text-blue-400" />
                             <span className="text-[10px] font-mono font-bold text-slate-300 uppercase">
@@ -970,7 +970,7 @@ export function SecuritySandbox({
                         </div>
 
                         {/* Simulated Diff Codeblock markup */}
-                        <div className="bg-bg-density-dark p-3 font-mono text-[10px] leading-relaxed overflow-x-auto select-text max-h-72 overflow-y-auto">
+                        <div className="bg-[#121016] p-3 font-mono text-[10px] leading-relaxed overflow-x-auto select-text max-h-72 overflow-y-auto">
                           {/* File header snippet */}
                           <div className="text-slate-500 border-b border-slate-800/80 pb-1.5 mb-1.5">
                             @@ -109,10 +109,14 @@ in {activeTask.codeDiff?.file || '/src/components/CheckoutScreen.tsx'}
@@ -998,14 +998,14 @@ export function SecuritySandbox({
                       </div>
 
                       {/* Accept & Reject Action Board */}
-                      <div className="bg-bg-density-card border border-slate-800 rounded p-4 space-y-4">
+                      <div className="bg-[#222529] border border-slate-800 rounded p-4 space-y-4">
                         <span className="text-[9px] font-mono font-bold tracking-wider text-slate-505 uppercase block">
                           MANUAL ROUTING & HITL APPROVAL BOARD
                         </span>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           {/* Option 1: Direct Approval */}
-                          <div className="space-y-2.5 bg-[#0f1115] border border-slate-855 rounded p-3 flex flex-col justify-between">
+                          <div className="space-y-2.5 bg-[#1a1d21] border border-slate-855 rounded p-3 flex flex-col justify-between">
                             <div className="space-y-1">
                               <h4 className="text-xs font-bold text-slate-200 uppercase font-mono flex items-center gap-1.5">
                                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
@@ -1032,7 +1032,7 @@ export function SecuritySandbox({
                           </div>
 
                           {/* Option 2: Reject & Retrain with feedback comment */}
-                          <div className="space-y-2.5 bg-[#0f1115] border border-slate-855 rounded p-3">
+                          <div className="space-y-2.5 bg-[#1a1d21] border border-slate-855 rounded p-3">
                             <h4 className="text-xs font-bold text-slate-200 uppercase font-mono flex items-center gap-1.5">
                               <RotateCcw className="w-3.5 h-3.5 text-rose-450 text-rose-400" />
                               Option B: Reject & Retrain
@@ -1044,7 +1044,7 @@ export function SecuritySandbox({
                                 rows={3}
                                 value={feedbackText}
                                 onChange={e => setFeedbackText(e.target.value)}
-                                className="w-full bg-[#12151a] border border-slate-800 rounded p-2 text-slate-300 text-[10px] font-mono focus:outline-none focus:border-blue-500"
+                                className="w-full bg-[#19171d] border border-slate-800 rounded p-2 text-slate-300 text-[10px] font-mono focus:outline-none focus:border-blue-500"
                                 required
                               />
                               <button
@@ -1078,7 +1078,7 @@ export function SecuritySandbox({
               <div className="lg:col-span-2 space-y-4">
                 
                 {/* Configuration: Isolation Levels */}
-                <div className="bg-[#0f1115] border border-slate-850 p-4 rounded space-y-3">
+                <div className="bg-[#1a1d21] border border-slate-850 p-4 rounded space-y-3">
                   <div className="flex items-center justify-between border-b border-slate-850 pb-2">
                     <h3 className="text-xs font-mono font-bold text-white uppercase flex items-center gap-1.5 leading-none">
                       <Layers className="w-4 h-4 text-purple-400" />
@@ -1112,7 +1112,7 @@ export function SecuritySandbox({
                           className={`p-3 rounded border text-left cursor-pointer transition-all flex flex-col justify-between space-y-1.5 ${
                             isSel 
                               ? 'bg-blue-950/20 border-blue-900 text-white' 
-                              : 'bg-[#12151a] border-slate-800 text-slate-450 hover:bg-[#151921]'
+                              : 'bg-[#19171d] border-slate-800 text-slate-450 hover:bg-[#151921]'
                           }`}
                         >
                           <div className="flex items-center justify-between w-full">
@@ -1127,7 +1127,7 @@ export function SecuritySandbox({
                 </div>
 
                 {/* Active Micro-Containers list */}
-                <div className="bg-bg-density-card border border-slate-800 rounded p-4 space-y-3.5">
+                <div className="bg-[#222529] border border-slate-800 rounded p-4 space-y-3.5">
                   <h3 className="text-xs font-mono font-bold text-white uppercase flex items-center gap-1.5 border-b border-slate-850 pb-2">
                     <Cpu className="w-4 h-4 text-emerald-400 animate-pulse" />
                     Active Isolated Nano-Containers
@@ -1188,7 +1188,7 @@ export function SecuritySandbox({
               <div className="space-y-4">
                 
                 {/* Extensions Loader (Self Registering SDK) */}
-                <div className="bg-[#0f1115] border border-slate-800 rounded p-4 space-y-3">
+                <div className="bg-[#1a1d21] border border-slate-800 rounded p-4 space-y-3">
                   <div>
                     <h4 className="text-xs font-bold text-white uppercase tracking-tight font-mono flex items-center gap-1.5">
                       <Database className="w-4 h-4 text-blue-400" />
@@ -1221,7 +1221,7 @@ export function SecuritySandbox({
                 </div>
 
                 {/* Micro-Console console logs */}
-                <div className="bg-[#0f1115] border border-slate-800 rounded p-4 space-y-2">
+                <div className="bg-[#1a1d21] border border-slate-800 rounded p-4 space-y-2">
                   <div className="flex justify-between items-center pb-2 border-b border-slate-850">
                     <span className="text-[10px] text-white font-mono font-bold uppercase block">Interactive Sandbox Log</span>
                     <button
@@ -1232,7 +1232,7 @@ export function SecuritySandbox({
                     </button>
                   </div>
 
-                  <div className="bg-bg-density-dark p-3 rounded font-mono text-[9px] text-slate-400 h-48 overflow-y-auto space-y-1 pr-2 scrollbar-thin scrollbar-thumb-slate-805">
+                  <div className="bg-[#121016] p-3 rounded font-mono text-[9px] text-slate-400 h-48 overflow-y-auto space-y-1 pr-2 scrollbar-thin scrollbar-thumb-slate-805">
                     {sandboxSystemLogs.map((log, i) => (
                       <div key={i} className="leading-relaxed hover:text-white transition-colors duration-100">
                         {log}
@@ -1255,7 +1255,7 @@ export function SecuritySandbox({
               className="space-y-4 text-slate-300"
             >
               {/* Remote Control Modes switcher header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-[#090b11] border border-slate-805 rounded-xl gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-[#19171d] border border-slate-805 rounded-xl gap-3">
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-[9px] font-mono bg-blue-950 text-blue-400 border border-blue-900/60 px-2 py-0.5 rounded font-extrabold tracking-wider uppercase">
@@ -1270,7 +1270,7 @@ export function SecuritySandbox({
                   </p>
                 </div>
 
-                <div className="flex bg-[#050608] border border-slate-850 p-1 rounded-lg gap-1.5 self-start sm:self-center font-mono text-[10px]">
+                <div className="flex bg-[#222529] border border-slate-850 p-1 rounded-lg gap-1.5 self-start sm:self-center font-mono text-[10px]">
                   <button
                     onClick={() => setRemoteGateMode('messenger')}
                     className={`px-3 py-1.5 rounded-md font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -1335,7 +1335,7 @@ export function SecuritySandbox({
                     </div>
 
                     {/* Messages Streams Area */}
-                    <div className="flex-1 overflow-y-auto bg-bg-density-dark/60 border border-slate-900 rounded p-4 my-3 space-y-3 font-mono text-[11px] scrollbar-thin scrollbar-thumb-slate-805">
+                    <div className="flex-1 overflow-y-auto bg-[#121016]/60 border border-slate-900 rounded p-4 my-3 space-y-3 font-mono text-[11px] scrollbar-thin scrollbar-thumb-slate-805">
                       {messages.map((m) => {
                         if (m.sender === 'system') {
                           return (
@@ -1380,10 +1380,10 @@ export function SecuritySandbox({
 
                       {isTyping && (
                         <div className="flex gap-3 max-w-[85%] mr-auto">
-                          <div className="w-7 h-7 rounded bg-[#1c2128] border border-slate-805 text-slate-300 font-bold flex items-center justify-center text-[10px] self-end animate-pulse">
+                          <div className="w-7 h-7 rounded bg-[#222529] border border-slate-805 text-slate-300 font-bold flex items-center justify-center text-[10px] self-end animate-pulse">
                             W
                           </div>
-                          <div className="bg-[#1c2128] border border-slate-805 p-2 rounded text-slate-400 italic font-mono text-[9px] flex items-center gap-1">
+                          <div className="bg-[#222529] border border-slate-805 p-2 rounded text-slate-400 italic font-mono text-[9px] flex items-center gap-1">
                             <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" />
                             <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce delay-100" />
                             <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce delay-200" />
@@ -1408,7 +1408,7 @@ export function SecuritySandbox({
                         value={textInput}
                         onChange={(e) => setTextInput(e.target.value)}
                         placeholder={`Compose raw simulator message for air-gapped ${activeChannel.toUpperCase()} container...`}
-                        className="flex-1 bg-bg-density-dark border border-slate-800 text-slate-200 p-2 text-xs rounded focus:outline-none focus:border-blue-600 font-mono"
+                        className="flex-1 bg-[#121016] border border-slate-800 text-slate-200 p-2 text-xs rounded focus:outline-none focus:border-blue-600 font-mono"
                       />
                       <button
                         type="submit"
@@ -1422,7 +1422,7 @@ export function SecuritySandbox({
                   </div>
 
                   {/* Right Column: Pre-rolled Telegram/WhatsApp Command Simulator scripts */}
-                  <div className="bg-[#0f1115] border border-slate-800 rounded p-4 space-y-4">
+                  <div className="bg-[#1a1d21] border border-slate-800 rounded p-4 space-y-4">
                     <div>
                       <h4 className="text-xs font-bold text-white uppercase tracking-tight font-mono flex items-center gap-1.5">
                         <MessageCircle className="w-4 h-4 text-emerald-400" />
@@ -1441,7 +1441,7 @@ export function SecuritySandbox({
                         <button
                           key={sc.cmd}
                           onClick={() => handleSendMessage(sc.payload)}
-                          className="w-full text-left p-2.5 rounded border border-[#1d222a] bg-[#12151a] hover:bg-[#161a21] hover:border-slate-705 group transition-all text-[11px] font-mono flex flex-col justify-between cursor-pointer space-y-1"
+                          className="w-full text-left p-2.5 rounded border border-[#1d222a] bg-[#19171d] hover:bg-[#161a21] hover:border-slate-705 group transition-all text-[11px] font-mono flex flex-col justify-between cursor-pointer space-y-1"
                         >
                           <div className="flex items-center justify-between w-full">
                             <strong className="text-blue-400 font-mono font-bold">{sc.cmd}</strong>
@@ -1464,7 +1464,7 @@ export function SecuritySandbox({
                 /* Interactive Admin Remote SSH Terminal Console */
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 animate-fadeIn">
                   {/* Left Column - Main UNIX/Bash CLI interface (col-span-2) */}
-                  <div className="lg:col-span-2 bg-[#050608] border border-slate-850 rounded-xl overflow-hidden flex flex-col justify-between h-[450px]">
+                  <div className="lg:col-span-2 bg-[#222529] border border-slate-850 rounded-xl overflow-hidden flex flex-col justify-between h-[450px]">
                     
                     {/* Console Header Frame */}
                     <div className="bg-[#0c0f16] border-b border-slate-850 px-4 py-2.5 flex items-center justify-between">
@@ -1515,7 +1515,7 @@ export function SecuritySandbox({
                         e.preventDefault();
                         handleCliExecuteCommand(cliInputText);
                       }}
-                      className="border-t border-slate-850 bg-[#090b11] p-3 flex gap-2 items-center"
+                      className="border-t border-slate-850 bg-[#19171d] p-3 flex gap-2 items-center"
                     >
                       <span className="font-mono text-xs text-emerald-400 font-bold ml-1 shrink-0">meir@virtforce:~$</span>
                       <input
@@ -1537,7 +1537,7 @@ export function SecuritySandbox({
                   </div>
 
                   {/* Right Column - Console Quick Exec Shortcuts Deck */}
-                  <div className="bg-[#0f1115] border border-slate-800 rounded p-4 flex flex-col justify-between space-y-4">
+                  <div className="bg-[#1a1d21] border border-slate-800 rounded p-4 flex flex-col justify-between space-y-4">
                     <div className="space-y-4">
                       <div>
                         <h4 className="text-xs font-bold text-white uppercase tracking-tight font-mono flex items-center gap-1.5">
@@ -1593,7 +1593,7 @@ export function SecuritySandbox({
               className="space-y-4 text-slate-300 pointer-events-auto"
             >
               {/* Dynamic Header */}
-              <div className="p-4 bg-[#090b11] border border-slate-805 rounded-xl flex items-start gap-3">
+              <div className="p-4 bg-[#19171d] border border-slate-805 rounded-xl flex items-start gap-3">
                 <div className="p-2.5 bg-blue-900/10 border border-blue-900/30 rounded-lg text-blue-400 shrink-0">
                   <Cpu className="w-5 h-5 animate-pulse" />
                 </div>
@@ -1779,7 +1779,7 @@ export function SecuritySandbox({
                 </div>
 
                 {/* Right block - Immutable Learned Rules Database (col-span-6) */}
-                <div className="lg:col-span-6 bg-[#0f1115] border border-slate-800 rounded-xl p-4 flex flex-col justify-between h-[480px]">
+                <div className="lg:col-span-6 bg-[#1a1d21] border border-slate-800 rounded-xl p-4 flex flex-col justify-between h-[480px]">
                   <div className="space-y-3 flex-1 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between pb-1.5 border-b border-slate-850">
@@ -2000,7 +2000,7 @@ export function SecuritySandbox({
                         </div>
 
                         {/* Explanatory inspection panel for the actively selected skill */}
-                        <div className="bg-[#050608] border border-slate-850 p-3 rounded-lg space-y-2 text-[11px] font-mono leading-relaxed h-[135px] overflow-y-auto block text-left">
+                        <div className="bg-[#222529] border border-slate-850 p-3 rounded-lg space-y-2 text-[11px] font-mono leading-relaxed h-[135px] overflow-y-auto block text-left">
                           {activeSelectedSkillId ? (() => {
                             const currentVal = learnedSkills.find(s => s.id === activeSelectedSkillId);
                             if (!currentVal) return <div className="text-slate-500 italic text-center h-full flex items-center justify-center">Select an active skill above to audit compiled memory layers.</div>;
@@ -2037,7 +2037,7 @@ export function SecuritySandbox({
               </div>
 
               {/* Dynamic Rule Impact Telemetry HUD */}
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 bg-[#0a0d14]/75 border border-slate-850 p-4 rounded-xl items-center font-sans">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 bg-[#1a1d21]/75 border border-slate-850 p-4 rounded-xl items-center font-sans">
                 <div className="md:col-span-4 space-y-2 text-left">
                   <span className="text-[8px] font-mono tracking-widest text-indigo-400 block font-bold">COGNITIVE COMPLIANCE HUD</span>
                   <h5 className="text-[11px] font-bold text-white uppercase font-mono tracking-tight">Swarm Focus Strictness</h5>
@@ -2119,7 +2119,7 @@ export function SecuritySandbox({
               </div>
 
               {/* Memory expansion, synaptic density metrics and synapse sync button */}
-              <div className="bg-[#090b11] border border-slate-805 rounded-xl p-4 space-y-3">
+              <div className="bg-[#19171d] border border-slate-805 rounded-xl p-4 space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2.5 border-b border-slate-850">
                   <div>
                     <h4 className="text-xs font-bold text-white uppercase tracking-tight font-mono flex items-center gap-1.5">
@@ -2168,7 +2168,7 @@ export function SecuritySandbox({
                     const isDev = agt.id === 'vf-dev';
                     const activeCount = learnedSkills.filter(s => s.enabled).length;
                     return (
-                      <div key={agt.id} className="p-3 bg-bg-density-dark/60 border border-slate-850 rounded-lg flex flex-col justify-between space-y-2">
+                      <div key={agt.id} className="p-3 bg-[#121016]/60 border border-slate-850 rounded-lg flex flex-col justify-between space-y-2">
                         <div className="flex justify-between items-start">
                           <div>
                             <strong className="text-white text-[11px] block">{agt.alias}</strong>
@@ -2245,7 +2245,7 @@ export function SecuritySandbox({
                           value={ingestUrl}
                           onChange={(e) => setIngestUrl(e.target.value)}
                           disabled={ingestStep !== 'IDLE'}
-                          className="w-full bg-bg-density-dark border border-slate-800 p-2 text-xs rounded text-slate-200 focus:outline-none focus:border-[#00d2ff] disabled:opacity-55"
+                          className="w-full bg-[#121016] border border-slate-800 p-2 text-xs rounded text-slate-200 focus:outline-none focus:border-[#00d2ff] disabled:opacity-55"
                           placeholder="https://myproject.run.app/"
                         />
                       </div>
@@ -2257,7 +2257,7 @@ export function SecuritySandbox({
                           value={ingestMethod}
                           onChange={(e) => setIngestMethod(e.target.value)}
                           disabled={ingestStep !== 'IDLE'}
-                          className="w-full bg-bg-density-dark border border-slate-800 p-2 text-xs rounded text-slate-200 focus:outline-none focus:border-[#00d2ff] disabled:opacity-55 cursor-pointer"
+                          className="w-full bg-[#121016] border border-slate-800 p-2 text-xs rounded text-slate-200 focus:outline-none focus:border-[#00d2ff] disabled:opacity-55 cursor-pointer"
                         >
                           <option value="web_crawl">🌐 Direct Production Website Domain Crawler</option>
                           <option value="github_ssh">🦀 Git SSH Repository Clone Pipeline</option>
@@ -2272,7 +2272,7 @@ export function SecuritySandbox({
                           value={ingestCategory}
                           onChange={(e) => setIngestCategory(e.target.value)}
                           disabled={ingestStep !== 'IDLE'}
-                          className="w-full bg-bg-density-dark border border-slate-800 p-2 text-xs rounded text-slate-200 focus:outline-none focus:border-[#00d2ff] disabled:opacity-55 cursor-pointer"
+                          className="w-full bg-[#121016] border border-slate-800 p-2 text-xs rounded text-slate-200 focus:outline-none focus:border-[#00d2ff] disabled:opacity-55 cursor-pointer"
                         >
                           <option value="field_service">🛠️ Field Service & Location Routing App (Fieldiz Preset)</option>
                           <option value="retail_checkout">🛍️ Retail checkout & payment sanitizer gateway</option>
@@ -2291,14 +2291,14 @@ export function SecuritySandbox({
                           value={ingestToken}
                           onChange={(e) => setIngestToken(e.target.value)}
                           disabled={ingestStep !== 'IDLE'}
-                          className="w-full bg-bg-density-dark border border-slate-800 p-2 text-xs rounded text-slate-200 focus:outline-none focus:border-[#00d2ff] disabled:opacity-55"
+                          className="w-full bg-[#121016] border border-slate-800 p-2 text-xs rounded text-slate-200 focus:outline-none focus:border-[#00d2ff] disabled:opacity-55"
                           placeholder="None required for public domains"
                         />
                       </div>
                     </div>
 
                     {/* Serialization Caching configuration schema block */}
-                    <div className="p-3 bg-[#0a0d14] border border-slate-800 rounded space-y-2 font-mono text-[9px]">
+                    <div className="p-3 bg-[#1a1d21] border border-slate-800 rounded space-y-2 font-mono text-[9px]">
                       <span className="text-blue-400 font-bold uppercase block tracking-wider">💾 INLINE CONTEXT GRAPH METHOD</span>
                       
                       <div className="flex items-center justify-between">
@@ -2360,7 +2360,7 @@ export function SecuritySandbox({
                           setIngestProgress(0);
                           setIngestConsole([]);
                         }}
-                        className="w-full py-1.5 bg-[#161a22] hover:bg-[#1c222e] border border-slate-800 hover:border-slate-705 text-slate-350 text-[10px] font-mono font-bold uppercase rounded cursor-pointer transition-colors"
+                        className="w-full py-1.5 bg-[#222529] hover:bg-[#1c222e] border border-slate-800 hover:border-slate-705 text-slate-350 text-[10px] font-mono font-bold uppercase rounded cursor-pointer transition-colors"
                       >
                         Clear Inbound Channel (Re-Audit)
                       </button>
@@ -2386,7 +2386,7 @@ export function SecuritySandbox({
                     </div>
 
                     {/* Log Viewport */}
-                    <div className="flex-grow bg-[#050608] border border-slate-905 p-3.5 rounded font-mono text-[9.5px] leading-relaxed select-text text-slate-400 overflow-y-auto max-h-[220px] scrollbar-thin scrollbar-thumb-slate-805 space-y-1 shadow-inner">
+                    <div className="flex-grow bg-[#222529] border border-slate-905 p-3.5 rounded font-mono text-[9.5px] leading-relaxed select-text text-slate-400 overflow-y-auto max-h-[220px] scrollbar-thin scrollbar-thumb-slate-805 space-y-1 shadow-inner">
                       {ingestConsole.length === 0 ? (
                         <div className="text-center text-slate-600 text-[11px] py-16 italic">
                           -- Waiting for Cloud Ingress Compile Directive --<br />
@@ -2579,7 +2579,7 @@ export function SecuritySandbox({
                 {/* Left block - Daemon settings & CLI Emulator (col-span-12 or col-span-7) */}
                 <div className="lg:col-span-7 space-y-4">
                   {/* Status Card */}
-                  <div className="bg-[#090b11] border border-slate-800 p-5 rounded-xl space-y-4 relative overflow-hidden">
+                  <div className="bg-[#19171d] border border-slate-800 p-5 rounded-xl space-y-4 relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4 opacity-15">
                       <span className="text-4xl">🐙</span>
                     </div>
@@ -2623,7 +2623,7 @@ export function SecuritySandbox({
                       Multica is an open-source teammate platform designed to run AI teammates directly inside your workspace via the <code>multicad</code> daemon. Connect virtForce with your local Multica configuration to synchronize agent code backlogs, compound modular skills, and map deployment streams.
                     </p>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] font-mono bg-[#050608]/80 p-3 rounded-lg border border-slate-850">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] font-mono bg-[#222529]/80 p-3 rounded-lg border border-slate-850">
                       <div>
                         <span className="text-slate-550 block text-[9px]">DAEMON STATUS:</span>
                         <strong className={isMulticaConnected ? "text-emerald-450 text-emerald-400" : "text-rose-450 text-rose-400"}>
@@ -2646,7 +2646,7 @@ export function SecuritySandbox({
                   </div>
 
                   {/* Interactive Terminal CLI Emulator */}
-                  <div className="bg-[#050608] border border-slate-850 rounded-xl overflow-hidden flex flex-col justify-between min-h-[300px]">
+                  <div className="bg-[#222529] border border-slate-850 rounded-xl overflow-hidden flex flex-col justify-between min-h-[300px]">
                     {/* Header */}
                     <div className="bg-[#0b0d13] px-4 py-2 flex items-center justify-between border-b border-slate-850">
                       <div className="flex items-center gap-1.5 font-mono text-[10px]">
@@ -2787,7 +2787,7 @@ export function SecuritySandbox({
                 {/* Right block - Teammate alignment config & Skill compound chart (col-span-5) */}
                 <div className="lg:col-span-5 space-y-4">
                   {/* Local Teammates List */}
-                  <div className="bg-[#090b11]/70 border border-slate-850 p-4 md:p-5 rounded-xl space-y-3">
+                  <div className="bg-[#19171d]/70 border border-slate-850 p-4 md:p-5 rounded-xl space-y-3">
                     <div className="flex justify-between items-center border-b border-slate-850 pb-2.5">
                       <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">
                         Configured Teammate Presets
@@ -2799,7 +2799,7 @@ export function SecuritySandbox({
 
                     <div className="space-y-2">
                       {multicaTeammates.map(agent => (
-                        <div key={agent.id} className="bg-[#050608]/90 border border-slate-850 p-3 rounded-lg flex items-center justify-between font-mono text-[10.5px]">
+                        <div key={agent.id} className="bg-[#222529]/90 border border-slate-850 p-3 rounded-lg flex items-center justify-between font-mono text-[10.5px]">
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded bg-indigo-950/20 border border-indigo-900/40 text-sm flex items-center justify-center">
                               {agent.id === 'MC-1' ? '🎯' : agent.id === 'MC-2' ? '💻' : '⚙️'}
@@ -2845,7 +2845,7 @@ export function SecuritySandbox({
                   </div>
 
                   {/* Skills Compounding Matrix Card */}
-                  <div className="bg-[#090b11] border border-slate-850 p-5 rounded-xl space-y-3.5">
+                  <div className="bg-[#19171d] border border-slate-850 p-5 rounded-xl space-y-3.5">
                     <span className="text-[10px] font-mono font-bold text-[#00d2ff] uppercase block tracking-wider">
                       🛠️ Teammate Skills Compounding
                     </span>
@@ -2854,7 +2854,7 @@ export function SecuritySandbox({
                       Unlike static AI systems, Multica lets teammates compound skills recursively. When Aero-DevOps passes logs to Code-Mutant, the mutant gains CI/CD pipeline affinity rules!
                     </p>
 
-                    <div className="space-y-2 font-mono text-[9px] bg-[#050608]/50 p-3 rounded-lg border border-slate-850">
+                    <div className="space-y-2 font-mono text-[9px] bg-[#222529]/50 p-3 rounded-lg border border-slate-850">
                       <div className="flex justify-between items-center border-b border-slate-900 pb-1.5">
                         <span className="text-slate-440 text-slate-450 uppercase">Compounded Skill Area</span>
                         <span className="text-slate-440 text-slate-450 uppercase">Accumulated Sync</span>
@@ -2898,7 +2898,7 @@ export function SecuritySandbox({
                 
                 {/* Left block - Orchestrator Hub & Credential Tests (col-span-5) */}
                 <div className="lg:col-span-5 space-y-4">
-                  <div className="bg-[#090b11] border border-slate-805 p-5 rounded-xl space-y-4">
+                  <div className="bg-[#19171d] border border-slate-805 p-5 rounded-xl space-y-4">
                     <div className="flex items-center gap-2">
                       <span className="text-[9px] font-mono bg-indigo-950 text-indigo-400 border border-indigo-900/60 px-2 py-0.5 rounded font-extrabold pb-1">
                         LLM ROUTER ENGINE
@@ -2930,7 +2930,7 @@ export function SecuritySandbox({
                             className={`w-full p-2.5 rounded-lg border text-left flex items-center justify-between transition-all cursor-pointer ${
                               isActive 
                                 ? 'bg-[#101422] border-indigo-500 text-white shadow-lg' 
-                                : 'bg-[#050608]/80 border-slate-850 hover:border-slate-700 text-slate-400'
+                                : 'bg-[#222529]/80 border-slate-850 hover:border-slate-700 text-slate-400'
                             }`}
                           >
                             <div className="flex items-center gap-2.5">
@@ -2952,7 +2952,7 @@ export function SecuritySandbox({
                   </div>
 
                   {/* Fallback Isolation Orchestration Settings */}
-                  <div className="bg-[#090b11] border border-slate-805 p-5 rounded-xl space-y-4">
+                  <div className="bg-[#19171d] border border-slate-805 p-5 rounded-xl space-y-4">
                     <span className="text-[10px] font-mono font-bold text-[#00d2ff] uppercase block tracking-wider">
                       🛡️ Failover & Isolation Rules
                     </span>
@@ -2960,7 +2960,7 @@ export function SecuritySandbox({
                       Enable autonomous fallbacks to maintain uninterrupted multi-agent compiler pipelines if the primary API endpoint returns error codes.
                     </p>
 
-                    <div className="flex items-center justify-between p-2.5 bg-[#050608] border border-slate-850 rounded-lg">
+                    <div className="flex items-center justify-between p-2.5 bg-[#222529] border border-slate-850 rounded-lg">
                       <div className="font-mono text-[10.5px]">
                         <span className="text-white block font-bold">FAILOVER ACTIVE</span>
                         <span className="text-[8.5px] text-slate-500 block">Try alternative engine if error occurs</span>
@@ -3001,7 +3001,7 @@ export function SecuritySandbox({
                 <div className="lg:col-span-7 space-y-4">
                   
                   {/* Fine-Tuning Params Card */}
-                  <div className="bg-[#090b11] border border-slate-805 p-6 rounded-xl space-y-5">
+                  <div className="bg-[#19171d] border border-slate-805 p-6 rounded-xl space-y-5">
                     
                     {/* Active editing header */}
                     <div className="flex justify-between items-center border-b border-slate-850 pb-3">
@@ -3055,7 +3055,7 @@ export function SecuritySandbox({
                             });
                           }}
                           placeholder={editingProvider === 'gemini' ? "https://generativelanguage.googleapis.com" : editingProvider === 'openai' ? "https://api.openai.com/v1" : editingProvider === 'anthropic' ? "https://api.anthropic.com/v1" : editingProvider === 'deepseek' ? "https://api.deepseek.com/v1" : "http://localhost:11434/v1"}
-                          className="w-full bg-[#050608] border border-slate-800 p-2 text-white rounded focus:outline-none focus:border-indigo-400"
+                          className="w-full bg-[#222529] border border-slate-800 p-2 text-white rounded focus:outline-none focus:border-indigo-400"
                         />
                       </div>
 
@@ -3079,7 +3079,7 @@ export function SecuritySandbox({
                                 });
                               }}
                               placeholder={`Enter custom secure secret ${editingProvider.toUpperCase()}_API_KEY...`}
-                              className="w-full bg-[#050608] border border-slate-800 p-2 pr-10 text-white rounded focus:outline-none focus:border-indigo-400 font-mono tracking-widest text-xs"
+                              className="w-full bg-[#222529] border border-slate-800 p-2 pr-10 text-white rounded focus:outline-none focus:border-indigo-400 font-mono tracking-widest text-xs"
                             />
                             <button
                               type="button"
@@ -3107,7 +3107,7 @@ export function SecuritySandbox({
                             });
                           }}
                           placeholder={editingProvider === 'gemini' ? "gemini-3.5-flash" : editingProvider === 'openai' ? "gpt-4o-mini" : editingProvider === 'anthropic' ? "claude-3-5-haiku-20241022" : editingProvider === 'deepseek' ? "deepseek-chat" : "llama3"}
-                          className="w-full bg-[#050608] border border-slate-800 p-2 text-white rounded focus:outline-none focus:border-indigo-400"
+                          className="w-full bg-[#222529] border border-slate-800 p-2 text-white rounded focus:outline-none focus:border-indigo-400"
                         />
                       </div>
 
@@ -3115,7 +3115,7 @@ export function SecuritySandbox({
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                         
                         {/* Temperature */}
-                        <div className="space-y-1.5 p-3 bg-[#050608]/40 border border-slate-850 rounded">
+                        <div className="space-y-1.5 p-3 bg-[#222529]/40 border border-slate-850 rounded">
                           <div className="flex justify-between text-[9px] font-bold">
                             <span className="text-slate-400">🌡️ TEMPERATURE (Tuning)</span>
                             <span className="text-[#00d2ff]">{aiProvidersConfig.providers[editingProvider].temperature}</span>
@@ -3140,7 +3140,7 @@ export function SecuritySandbox({
                         </div>
 
                         {/* Max Completion Tokens */}
-                        <div className="space-y-1.5 p-3 bg-[#050608]/40 border border-slate-850 rounded">
+                        <div className="space-y-1.5 p-3 bg-[#222529]/40 border border-slate-850 rounded">
                           <div className="flex justify-between text-[9px] font-bold">
                             <span className="text-slate-400">📏 MAX COMPLETION TOKENS</span>
                             <span className="text-[#00d2ff]">{aiProvidersConfig.providers[editingProvider].maxTokens} / 8k</span>
@@ -3159,13 +3159,13 @@ export function SecuritySandbox({
                                 return updated;
                               });
                             }}
-                            className="w-full bg-[#050608] border border-slate-850 p-1 text-white rounded text-[10.5px] focus:outline-none"
+                            className="w-full bg-[#222529] border border-slate-850 p-1 text-white rounded text-[10.5px] focus:outline-none"
                           />
                           <p className="text-[8px] text-slate-500 font-sans">Hard caps length of output completion to prevent budget overflow.</p>
                         </div>
 
                         {/* Top P Slider */}
-                        <div className="space-y-1.5 p-3 bg-[#050608]/40 border border-slate-850 rounded">
+                        <div className="space-y-1.5 p-3 bg-[#222529]/40 border border-slate-850 rounded">
                           <div className="flex justify-between text-[9px] font-bold">
                             <span className="text-slate-400">🎯 TOP P (Nucleus Sampling)</span>
                             <span className="text-[#00d2ff]">{aiProvidersConfig.providers[editingProvider].topP}</span>
@@ -3190,7 +3190,7 @@ export function SecuritySandbox({
                         </div>
 
                         {/* Penalties multipliers */}
-                        <div className="space-y-1.5 p-3 bg-[#050608]/40 border border-slate-850 rounded">
+                        <div className="space-y-1.5 p-3 bg-[#222529]/40 border border-slate-850 rounded">
                           <div className="flex justify-between text-[9px] font-bold">
                             <span className="text-slate-400">🛡️ PENALTIES ADJUSTMENT</span>
                             <span className="text-emerald-400 text-[9px]">Freq Pen: {aiProvidersConfig.providers[editingProvider].frequencyPenalty}</span>
@@ -3212,7 +3212,7 @@ export function SecuritySandbox({
                                     return updated;
                                   });
                                 }}
-                                className="w-full bg-[#050608]/80 border border-slate-800 p-1 rounded text-[10px] text-slate-300 focus:outline-none"
+                                className="w-full bg-[#222529]/80 border border-slate-800 p-1 rounded text-[10px] text-slate-300 focus:outline-none"
                               />
                             </div>
                             <div>
@@ -3231,7 +3231,7 @@ export function SecuritySandbox({
                                     return updated;
                                   });
                                 }}
-                                className="w-full bg-[#050608]/80 border border-slate-800 p-1 rounded text-[10px] text-slate-300 focus:outline-none"
+                                className="w-full bg-[#222529]/80 border border-slate-800 p-1 rounded text-[10px] text-slate-300 focus:outline-none"
                               />
                             </div>
                           </div>
@@ -3266,7 +3266,7 @@ export function SecuritySandbox({
                   </div>
 
                   {/* Diagnostic Console Panel */}
-                  <div className="bg-[#050608] border border-slate-850 rounded-xl overflow-hidden flex flex-col justify-between min-h-[160px]">
+                  <div className="bg-[#222529] border border-slate-850 rounded-xl overflow-hidden flex flex-col justify-between min-h-[160px]">
                     <div className="bg-[#0b0d13] px-4 py-2 flex items-center justify-between border-b border-slate-850">
                       <span className="text-[9px] font-mono font-extrabold text-slate-400 uppercase tracking-wider">
                         📡 Connection Handshake Console Output

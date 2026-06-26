@@ -508,6 +508,30 @@ async function startServer() {
 
   app.use(express.json());
 
+  // --- API Endpoint: Application State ---
+  const STATE_FILE = path.join(process.cwd(), "app_state.json");
+  app.get("/api/state", (req, res) => {
+    try {
+      if (fs.existsSync(STATE_FILE)) {
+        const data = fs.readFileSync(STATE_FILE, "utf-8");
+        res.json(JSON.parse(data));
+      } else {
+        res.json(null);
+      }
+    } catch (err: any) {
+      res.status(500).json({ error: "Failed to read state: " + err.message });
+    }
+  });
+
+  app.post("/api/state", (req, res) => {
+    try {
+      fs.writeFileSync(STATE_FILE, JSON.stringify(req.body, null, 2), "utf-8");
+      res.json({ success: true });
+    } catch (err: any) {
+      res.status(500).json({ error: "Failed to persist state: " + err.message });
+    }
+  });
+
   // --- API Endpoint: Root Health Check ---
   app.get("/api/health", (req, res) => {
     res.json({ systemState: "ACTIVE", version: "2.5.0-CJS", database: "INTERNAL_IN_MEMORY" });

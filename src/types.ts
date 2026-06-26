@@ -28,7 +28,7 @@ export interface Task {
   title: string;
   description: string;
   state: TaskState;
-  source: 'customer' | 'strategy' | 'internal';
+  source: 'customer' | 'strategy' | 'internal' | 'sre';
   assignedTo?: AgentRole;
   githubBranch?: string;
   specDoc?: string;
@@ -52,6 +52,24 @@ export interface SwarmLog {
   level: 'THOUGHT' | 'TOOL_CALL' | 'INFO' | 'SUCCESS' | 'ERROR';
   message: string;
   detail?: string;
+}
+
+export interface Incident {
+  id: string;
+  status: 'INVESTIGATING' | 'REPRODUCING' | 'FIXING' | 'VALIDATING' | 'RESOLVED';
+  severity: 'SEV-1' | 'SEV-2' | 'SEV-3';
+  source: 'Sentry Webhook' | 'Datadog' | 'Custom SDK';
+  title: string;
+  stackTrace: string;
+  createdAt: string;
+  resolvedAt?: string;
+  report?: string;
+  fixDiff?: {
+    file: string;
+    additions: string[];
+    deletions: string[];
+  };
+  terminalOutput?: string;
 }
 
 export interface SwarmStats {

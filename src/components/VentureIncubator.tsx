@@ -416,7 +416,7 @@ export function VentureIncubator({
     <div className="space-y-4 antialiased selection:bg-blue-500/20">
       
       {/* Dynamic Sub Tabs Navigation bar */}
-      <div className="bg-bg-density-card border border-slate-800 rounded p-1.5 flex items-center justify-between text-[11px] font-mono font-bold">
+      <div className="bg-[#222529] border border-slate-800 rounded p-1.5 flex items-center justify-between text-[11px] font-mono font-bold">
         <div className="flex items-center gap-1.5">
           {[
             { id: 'launcher', name: '🛸 Swarm Venture Launcher', icon: Rocket },
@@ -443,7 +443,7 @@ export function VentureIncubator({
           })}
         </div>
         
-        <div className="text-[10px] text-slate-500 bg-[#0f1115] border border-slate-800/80 px-2 py-1 rounded">
+        <div className="text-[10px] text-slate-500 bg-[#1a1d21] border border-slate-800/80 px-2 py-1 rounded">
           VENTURE LAB MODULE: <strong className="text-emerald-400 uppercase">ACTIVE</strong>
         </div>
       </div>
@@ -459,7 +459,7 @@ export function VentureIncubator({
             className="grid grid-cols-1 lg:grid-cols-3 gap-4"
           >
             {/* Left Col: Setup Form */}
-            <div className="lg:col-span-2 bg-bg-density-card border border-slate-800 rounded p-4 space-y-4 flex flex-col justify-between">
+            <div className="lg:col-span-2 bg-[#222529] border border-slate-800 rounded p-4 space-y-4 flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="border-b border-slate-850 pb-2">
                   <h3 className="text-xs font-bold text-white uppercase tracking-tight font-mono flex items-center gap-2">
@@ -477,7 +477,7 @@ export function VentureIncubator({
                       placeholder="e.g. HealthTracker AI"
                       value={ventureName}
                       onChange={e => setVentureName(e.target.value)}
-                      className="w-full bg-[#12151a] border border-slate-800 rounded p-2.5 text-white text-[11px] font-mono focus:outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-950"
+                      className="w-full bg-[#19171d] border border-slate-800 rounded p-2.5 text-white text-[11px] font-mono focus:outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-950"
                       disabled={companyInitialized}
                     />
                   </div>
@@ -489,7 +489,7 @@ export function VentureIncubator({
                       placeholder="e.g. Next.js, FastAPI, PostgreSQL"
                       value={techStack}
                       onChange={e => setTechStack(e.target.value)}
-                      className="w-full bg-[#12151a] border border-slate-800 rounded p-2.5 text-white text-[11px] font-mono focus:outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-950"
+                      className="w-full bg-[#19171d] border border-slate-800 rounded p-2.5 text-white text-[11px] font-mono focus:outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-950"
                       disabled={companyInitialized}
                     />
                   </div>
@@ -502,7 +502,7 @@ export function VentureIncubator({
                     placeholder="e.g. An automated platform that tracks metrics for local dental clinics and sends automated sms recalls to clients to secure peak booking metrics."
                     value={pitch}
                     onChange={e => setPitch(e.target.value)}
-                    className="w-full bg-[#12151a] border border-slate-800 rounded p-2.5 text-white text-[11px] font-mono focus:outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-950 leading-relaxed"
+                    className="w-full bg-[#19171d] border border-slate-800 rounded p-2.5 text-white text-[11px] font-mono focus:outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-950 leading-relaxed"
                     disabled={companyInitialized}
                   />
                 </div>
@@ -515,7 +515,7 @@ export function VentureIncubator({
                       placeholder="e.g. Low database latency, strict JWT tokens authentication"
                       value={focusMetric}
                       onChange={e => setFocusMetric(e.target.value)}
-                      className="w-full bg-[#12151a] border border-slate-800 rounded p-2.5 text-white text-[11px] font-mono focus:outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-950"
+                      className="w-full bg-[#19171d] border border-slate-800 rounded p-2.5 text-white text-[11px] font-mono focus:outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-950"
                       disabled={companyInitialized}
                     />
                   </div>
@@ -537,7 +537,7 @@ export function VentureIncubator({
                             className={`p-2 rounded border text-left cursor-pointer transition-all ${
                               isSel 
                                 ? 'bg-blue-950/20 border-blue-900 text-white' 
-                                : 'bg-[#12151a] border-slate-800 text-slate-500 hover:text-slate-350 hover:bg-[#161a22]'
+                                : 'bg-[#19171d] border-slate-800 text-slate-500 hover:text-slate-350 hover:bg-[#222529]'
                             }`}
                           >
                             <span className="font-mono font-bold text-[9px] block">{opt.name}</span>
@@ -583,7 +583,7 @@ export function VentureIncubator({
             </div>
 
             {/* Right Col: Venture Blueprint presets */}
-            <div className="bg-[#0f1115] border border-slate-800 rounded p-4 space-y-3.5">
+            <div className="bg-[#1a1d21] border border-slate-800 rounded p-4 space-y-3.5">
               <div>
                 <h3 className="text-xs font-bold text-white uppercase tracking-tight font-mono flex items-center gap-1.5">
                   <Zap className="w-4 h-4 text-amber-400" />
@@ -597,7 +597,7 @@ export function VentureIncubator({
                   <button
                     key={p.name}
                     onClick={() => handleApplyPreset(idx)}
-                    className="w-full text-left p-2.5 rounded border border-slate-850 bg-[#12151a] hover:bg-[#16191f] hover:border-slate-705 group transition-all text-xs flex flex-col justify-between cursor-pointer space-y-1"
+                    className="w-full text-left p-2.5 rounded border border-slate-850 bg-[#19171d] hover:bg-[#222529] hover:border-slate-705 group transition-all text-xs flex flex-col justify-between cursor-pointer space-y-1"
                   >
                     <div className="flex items-center justify-between w-full">
                       <strong className="text-white group-hover:text-blue-400 font-mono text-[11px]">{p.name}</strong>
@@ -621,7 +621,7 @@ export function VentureIncubator({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="bg-bg-density-card border border-slate-800 rounded p-4 space-y-4"
+            className="bg-[#222529] border border-slate-800 rounded p-4 space-y-4"
           >
             {/* Real-time intercepted comms view */}
             <div className="border-b border-slate-850 pb-2 flex items-center justify-between">
@@ -653,7 +653,7 @@ export function VentureIncubator({
                     key={chat.id}
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="p-2.5 rounded border border-slate-850/60 bg-[#121516]/20 relative flex flex-col sm:flex-row sm:items-start gap-2.5 hover:bg-[#12151a]/60 transition-colors"
+                    className="p-2.5 rounded border border-slate-850/60 bg-[#121516]/20 relative flex flex-col sm:flex-row sm:items-start gap-2.5 hover:bg-[#19171d]/60 transition-colors"
                   >
                     <div className="flex items-center gap-1.5 sm:flex-col sm:items-start min-w-[125px]">
                       <span className="text-[8px] text-slate-505 font-bold">{chat.timestamp}</span>
@@ -679,7 +679,7 @@ export function VentureIncubator({
               )}
             </div>
 
-            <div className="p-3 bg-bg-density-sidebar border border-slate-800 rounded font-mono text-[9px] leading-relaxed text-slate-450 text-slate-400">
+            <div className="p-3 bg-[#19171d] border border-slate-800 rounded font-mono text-[9px] leading-relaxed text-slate-450 text-slate-400">
               💡 **Context Insight**: While standard LLM orchestrations often hide intermediary communications, our platform intercepts agent-to-agent feedback loops. This allows human developers to understand *why* certain designs or architectures are staged, leading to maximum operational transparency.
             </div>
           </motion.div>
@@ -694,7 +694,7 @@ export function VentureIncubator({
             className="grid grid-cols-1 lg:grid-cols-3 gap-4"
           >
             {/* Left Column: Cost-Efficiency Analytics and charts */}
-            <div className="lg:col-span-2 bg-bg-density-card border border-slate-800 rounded p-4 space-y-4">
+            <div className="lg:col-span-2 bg-[#222529] border border-slate-800 rounded p-4 space-y-4">
               <div className="border-b border-slate-850 pb-2">
                 <span className="text-[8px] font-mono text-purple-400 font-bold uppercase tracking-widest block">COST SAVINGS FORECAST MODULE</span>
                 <h3 className="text-xs font-bold text-white uppercase tracking-tight font-mono mt-0.5">
@@ -809,19 +809,19 @@ export function VentureIncubator({
                     animate={{ opacity: 1, y: 0 }} 
                     className="grid grid-cols-1 sm:grid-cols-3 gap-3"
                   >
-                    <div className="bg-[#12151a] border border-slate-855 rounded p-3 text-center space-y-1">
+                    <div className="bg-[#19171d] border border-slate-855 rounded p-3 text-center space-y-1">
                       <span className="text-[8px] text-slate-550 block font-mono font-bold tracking-wider uppercase">Projected Launch Timeline</span>
                       <div className="text-sm font-bold font-mono text-emerald-400">{aiForecast.launchTimeline} Days</div>
                       <span className="text-[8px] text-slate-500 font-mono">Until deployment candidate is secure</span>
                     </div>
 
-                    <div className="bg-[#12151a] border border-slate-855 rounded p-3 text-center space-y-1">
+                    <div className="bg-[#19171d] border border-slate-855 rounded p-3 text-center space-y-1">
                       <span className="text-[8px] text-slate-550 block font-mono font-bold tracking-wider uppercase font-bold">Projected Beta Acquisitions</span>
                       <div className="text-sm font-bold font-mono text-white">{aiForecast.betaUsers} Testers</div>
                       <span className="text-[8px] text-slate-500 font-mono">Dynamic channel: {aiForecast.socialChannel}</span>
                     </div>
 
-                    <div className="bg-[#12151a] border border-slate-855 rounded p-3 text-center space-y-1">
+                    <div className="bg-[#19171d] border border-slate-855 rounded p-3 text-center space-y-1">
                       <span className="text-[8px] text-slate-550 block font-mono font-bold tracking-wider uppercase font-bold">Feasibility ROI Multiplier</span>
                       <div className="text-sm font-bold font-mono text-blue-400">{aiForecast.roiMultiplier}</div>
                       <span className="text-[8px] text-slate-500 font-mono">{aiForecast.scannedVulnerabilities} threat vectors pre-scanned</span>
@@ -833,19 +833,19 @@ export function VentureIncubator({
                   </motion.div>
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="bg-[#12151a] border border-slate-855 rounded p-3 text-center space-y-1 opacity-70">
+                    <div className="bg-[#19171d] border border-slate-855 rounded p-3 text-center space-y-1 opacity-70">
                       <span className="text-[8px] text-slate-550 block font-mono font-bold tracking-wider uppercase">Projected Launch Timeline</span>
                       <div className="text-sm font-bold font-mono text-slate-400">5 Days</div>
                       <span className="text-[8px] text-slate-500 font-mono">Staging compilation speed</span>
                     </div>
 
-                    <div className="bg-[#12151a] border border-slate-855 rounded p-3 text-center space-y-1 opacity-70">
+                    <div className="bg-[#19171d] border border-slate-855 rounded p-3 text-center space-y-1 opacity-70">
                       <span className="text-[8px] text-slate-550 block font-mono font-bold tracking-wider uppercase">Projected Beta Acquisitions</span>
                       <div className="text-sm font-bold font-mono text-slate-400">320 Users</div>
                       <span className="text-[8px] text-slate-500 font-mono">Estimated via organic channels</span>
                     </div>
 
-                    <div className="bg-[#12151a] border border-slate-855 rounded p-3 text-center space-y-1 opacity-70">
+                    <div className="bg-[#19171d] border border-slate-855 rounded p-3 text-center space-y-1 opacity-70">
                       <span className="text-[8px] text-slate-550 block font-mono font-bold tracking-wider uppercase">Feasibility ROI Multiplier</span>
                       <div className="text-sm font-bold font-mono text-slate-400">4.5x</div>
                       <span className="text-[8px] text-slate-500 font-mono">Based on sandboxed validation</span>
@@ -856,7 +856,7 @@ export function VentureIncubator({
             </div>
 
             {/* Right Column: Custom operational metric gauges */}
-            <div className="bg-[#0f1115] border border-slate-800 rounded p-4 space-y-4">
+            <div className="bg-[#1a1d21] border border-slate-800 rounded p-4 space-y-4">
               <div>
                 <h3 className="text-xs font-bold text-white uppercase tracking-tight font-mono flex items-center gap-1.5">
                   <Gauge className="w-4 h-4 text-purple-450 text-purple-400" />
@@ -877,14 +877,14 @@ export function VentureIncubator({
                       <span>{sla.name}</span>
                       <strong className="text-white">{sla.value}</strong>
                     </div>
-                    <div className="w-full h-1.5 bg-[#12151a] rounded-full overflow-hidden border border-slate-850/60">
+                    <div className="w-full h-1.5 bg-[#19171d] rounded-full overflow-hidden border border-slate-850/60">
                       <div className={`h-full ${sla.color}`} style={{ width: `${sla.percent}%` }} />
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="p-3 border border-[#3b82f6]/20 bg-[#12151a] rounded text-[9px] text-slate-400 font-mono leading-relaxed space-y-1">
+              <div className="p-3 border border-[#3b82f6]/20 bg-[#19171d] rounded text-[9px] text-slate-400 font-mono leading-relaxed space-y-1">
                 <span className="font-bold text-blue-400 block uppercase">💡 BUDGET HEADSHRINK WARNING</span>
                 <p>
                   Setting the engine to **PRO-PREVIEW** triggers maximum model parameters and higher precision specs doc markdown formatting, but uses approximately **16x more budget** than standard balanced cycles. Use carefully!
@@ -903,7 +903,7 @@ export function VentureIncubator({
             className="space-y-4"
           >
             {/* Top overview panel */}
-            <div className="bg-[#0f1115] border border-slate-800 rounded p-4 space-y-3">
+            <div className="bg-[#1a1d21] border border-slate-800 rounded p-4 space-y-3">
               <div className="border-b border-slate-850 pb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
                   <span className="text-[8px] font-mono text-emerald-400 font-bold uppercase tracking-widest block font-extrabold">Zero-Cost Growth Engineering</span>
@@ -1095,7 +1095,7 @@ export function VentureIncubator({
               <div className="space-y-4">
                 
                 {/* Free Acquisition Directories */}
-                <div className="bg-[#0f1115] border border-slate-800 rounded p-4 space-y-3.5">
+                <div className="bg-[#1a1d21] border border-slate-800 rounded p-4 space-y-3.5">
                   <div>
                     <h4 className="text-xs font-bold text-white uppercase tracking-tight font-mono flex items-center gap-1.5">
                       <Globe className="w-4 h-4 text-emerald-400" />
@@ -1112,10 +1112,10 @@ export function VentureIncubator({
                       { name: 'Target Subreddits', cost: 'Free', audience: 'Niche specific users', tip: 'Search for groups already complaining about problems solved by your value statement.' },
                       { name: 'Twitter / X Outbound', cost: 'Free', audience: 'Tech community', tip: 'Search for keywords like "wish there was a tool for..." or "tool that automates..." and reply directly.' }
                     ].map(chan => (
-                      <div key={chan.name} className="p-2.5 rounded border border-[#1e232b] bg-[#12151a] space-y-1 font-mono text-[10px]">
+                      <div key={chan.name} className="p-2.5 rounded border border-[#1e232b] bg-[#19171d] space-y-1 font-mono text-[10px]">
                         <div className="flex justify-between items-center text-white">
                           <strong className="text-emerald-400">{chan.name}</strong>
-                          <span className="text-[8px] border border-slate-800 bg-[#0f1115] text-slate-400 px-1 py-0.2 rounded font-extrabold">{chan.cost}</span>
+                          <span className="text-[8px] border border-slate-800 bg-[#1a1d21] text-slate-400 px-1 py-0.2 rounded font-extrabold">{chan.cost}</span>
                         </div>
                         <p className="text-[9px] text-slate-400 leading-tight"><strong>Audience:</strong> {chan.audience}</p>
                         <p className="text-[9px] text-slate-500 italic leading-tight">{chan.tip}</p>
@@ -1125,7 +1125,7 @@ export function VentureIncubator({
                 </div>
 
                 {/* Interactive Embed widget generator */}
-                <div className="bg-[#0f1115] border border-slate-800 rounded p-4 space-y-3">
+                <div className="bg-[#1a1d21] border border-slate-800 rounded p-4 space-y-3">
                   <div>
                     <h4 className="text-xs font-bold text-white uppercase tracking-tight font-mono flex items-center gap-1.5">
                       <Terminal className="w-4 h-4 text-purple-450 text-purple-400" />

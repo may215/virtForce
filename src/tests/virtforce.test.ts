@@ -181,7 +181,7 @@ describe('virtForce Multi-Agent Core Engine & DevOps Swarm', () => {
         expect(task.id).toBeDefined();
         expect(task.title).toBeTruthy();
         expect(task.state).toBeTypeOf('string');
-        expect(task.source).toMatch(/customer|strategy|internal/);
+        expect(task.source).toMatch(/customer|strategy|internal|sre/);
       });
     });
   });

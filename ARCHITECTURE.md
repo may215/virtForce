@@ -51,7 +51,17 @@ No agent can write directly to the production branch. Once a DEV workspace conta
 
 ---
 
-## 💬 Inbound Messenger Webhook Gateway
+## 💾 State Persistence & Error Handling
+ 
+ Unlike typical architectures that rely entirely on front-end storage, virtForce synchronizes state across boundaries using an Express.js `/api/state` API endpoint. This mechanism robustly manages tasks, agents, logs, and telemetry across reloads without polluting `localStorage`.
+ 
+ For production-grade SRE (Site Reliability Engineering), the system integrates:
+ 1. **React ErrorBoundary:** Catching catastrophic front-end rendering failures dynamically.
+ 2. **Sentry Diagnostics (`@sentry/react`):** Forwarding component crash logs directly to the DevOps container for instantaneous hot-patching.
+
+ ---
+ 
+ ## 💬 Inbound Messenger Webhook Gateway
 
 To let developers trigger status diagnostics or commands remotely (e.g., from a mobile device on the train), virtForce hosts a small, fast webhook endpoint. Any social trigger from WhatsApp, Telegram, or Slack is verified against signing keys:
 
