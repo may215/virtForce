@@ -42,7 +42,7 @@ export function LandingPage({
   const [activeDocTab, setActiveDocTab] = useState<'readme' | 'architecture' | 'install' | 'compose'>('readme');
   const [copiedDoc, setCopiedDoc] = useState(false);
 
-  const quickstartCmd = `git clone https://github.com/virtforce/virtforce.git\ncd virtforce && cp .env.example .env\ndocker-compose up --build`;
+  const quickstartCmd = `git clone https://github.com/Production SRE/Production SRE.git\ncd Production SRE && cp .env.example .env\ndocker-compose up --build`;
 
   const handleCopyQuickstart = () => {
     navigator.clipboard.writeText(quickstartCmd);
@@ -93,7 +93,7 @@ export function LandingPage({
             <div>
               <div className="flex items-center gap-1.5 leading-none">
                 <span className="font-mono text-xs font-black tracking-wider text-white uppercase">
-                  virtForce
+                  Production SRE
                 </span>
                 <span className="bg-blue-955 text-blue-400 border border-blue-900/60 text-[8px] font-mono px-1.5 py-0.2 rounded font-extrabold uppercase">
                   v2.5 Self-Host
@@ -105,7 +105,7 @@ export function LandingPage({
 
           {/* Nav items */}
           <nav className="hidden md:flex items-center gap-6 text-xs font-mono text-slate-400 font-bold">
-            <a href="#motivation" className="hover:text-white transition-colors">Why virtForce?</a>
+            <a href="#motivation" className="hover:text-white transition-colors">Why Production SRE?</a>
             <a href="#features" className="hover:text-white transition-colors">Core Architecture</a>
             <a href="#documentation" className="hover:text-white transition-colors">Open Source Hub</a>
           </nav>
@@ -113,7 +113,7 @@ export function LandingPage({
           {/* Header Action Gateways */}
           <div className="flex items-center gap-3">
             <a 
-              href="https://github.com/virtforce/virtforce" 
+              href="https://github.com/Production SRE/Production SRE" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="flex items-center gap-1.5 bg-[#121620] hover:bg-[#181d2a] border border-slate-800 text-slate-350 text-[11px] font-mono font-bold px-3 py-1.5 rounded transition-all select-none"
@@ -156,7 +156,7 @@ export function LandingPage({
           </h1>
 
           <p className="text-sm text-slate-400 leading-relaxed max-w-xl">
-            virtForce is an autonomous Site Reliability Engineering (SRE) team that instantly wakes up when a production crash occurs. 10 specialized agents parse stack traces, reproduce bugs in an isolated sandbox, validate fixes, and trigger hotfix deployments with zero human intervention.
+            Production SRE is an autonomous Site Reliability Engineering (SRE) team that instantly wakes up when a production crash occurs. 10 specialized agents parse stack traces, reproduce bugs in an isolated sandbox, validate fixes, and trigger hotfix deployments with zero human intervention.
           </p>
 
           {/* Quickstart Command Widget */}
@@ -222,12 +222,12 @@ export function LandingPage({
               <div className="text-slate-500">Listening on Sentry webhook port 3000... <span className="text-emerald-400">active</span></div>
               <div className="text-red-400 font-bold">[CRITICAL] Webhook payload received: SEV-1 Production Crash</div>
               <div className="text-red-400">Error: TypeError: Cannot read properties of undefined (reading 'map')</div>
-              <div className="text-orange-400 animate-pulse">virtforce-host | [SWARM WAKEUP] Waking 10 autonomous agents...</div>
-              <div className="text-blue-400">virtforce-qa   | [ISOLATION] Reproducing state in local Docker container... OK</div>
-              <div className="text-indigo-400">virtforce-dev  | [REMEDIATION] Optional chaining hotfix drafted.</div>
-              <div className="text-indigo-400">virtforce-qa   | [TESTING] Running 140 regression tests... PASS</div>
-              <div className="text-emerald-400">virtforce-ceo  | [APPROVAL] Fix verified. Triggering production redeployment.</div>
-              <div className="text-emerald-400 animate-pulse">virtforce-ops  | [DEPLOY] Hotfix successfully deployed to production!</div>
+              <div className="text-orange-400 animate-pulse">Production SRE-host | [SWARM WAKEUP] Waking 10 autonomous agents...</div>
+              <div className="text-blue-400">Production SRE-qa   | [ISOLATION] Reproducing state in local Docker container... OK</div>
+              <div className="text-indigo-400">Production SRE-dev  | [REMEDIATION] Optional chaining hotfix drafted.</div>
+              <div className="text-indigo-400">Production SRE-qa   | [TESTING] Running 140 regression tests... PASS</div>
+              <div className="text-emerald-400">Production SRE-ceo  | [APPROVAL] Fix verified. Triggering production redeployment.</div>
+              <div className="text-emerald-400 animate-pulse">Production SRE-ops  | [DEPLOY] Hotfix successfully deployed to production!</div>
               <div className="text-slate-500 pt-2">$ _</div>
             </div>
 
@@ -252,7 +252,7 @@ export function LandingPage({
               Why Self-Host Multi-Agent Swarms?
             </h2>
             <p className="text-xs text-slate-400 leading-normal">
-              Most generic AI co-pilots run everything inside remote, insecure cloud APIs. Once you deploy, you open high-privilege credentials and local keys to direct compromise. virtForce turns security upside down.
+              Most generic AI co-pilots run everything inside remote, insecure cloud APIs. Once you deploy, you open high-privilege credentials and local keys to direct compromise. Production SRE turns security upside down.
             </p>
           </div>
 
@@ -277,7 +277,7 @@ export function LandingPage({
               </div>
               <h3 className="text-sm font-bold text-white uppercase font-mono tracking-tight font-bold">Personalized Swarms</h3>
               <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                Not a bloated playground. Rather than multi-tenant remote software boards, virtForce provides a private, lightweight system dedicated to a single owner, executing tasks, staging branch pull requests, and verifying local files.
+                Not a bloated playground. Rather than multi-tenant remote software boards, Production SRE provides a private, lightweight system dedicated to a single owner, executing tasks, staging branch pull requests, and verifying local files.
               </p>
             </div>
 
@@ -300,7 +300,7 @@ export function LandingPage({
             <div className="space-y-1">
               <strong className="text-white">Built for Indie Hackers going to Production:</strong>
               <p className="text-slate-400 leading-normal">
-                virtForce proves you don&apos;t need complex subscription frameworks or massive server bills to run an automated AI workforce. Install the self-contained container images, run your server on any $5/month host container, and manage the entire operations matrix securely.
+                Production SRE proves you don&apos;t need complex subscription frameworks or massive server bills to run an automated AI workforce. Install the self-contained container images, run your server on any $5/month host container, and manage the entire operations matrix securely.
               </p>
             </div>
           </div>
@@ -342,7 +342,7 @@ export function LandingPage({
                   Live Swarm War Room
                 </h3>
                 <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                  When a production incident triggers, virtForce doesn't just send an alert. It instantiates an interactive <strong>Modular Incident Canvas</strong>.
+                  When a production incident triggers, Production SRE doesn't just send an alert. It instantiates an interactive <strong>Modular Incident Canvas</strong>.
                 </p>
                 <p className="text-xs text-slate-400 font-sans leading-relaxed">
                   Watch in real-time as the specialized agents (CEO Supervisor, Code-Mutant, Vulnerability QA, and DevOps) securely connect. You can visualize their RCA (Root Cause Analysis) pathways, configure sandbox constraints inside the live attributes inspector, and execute simulated webhook signal pulses.
@@ -529,7 +529,7 @@ export function LandingPage({
               </div>
               <h3 className="text-base font-bold text-white uppercase font-mono">Strict Air-Gapped Sandboxing V2</h3>
               <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                Rather than executing code on the main backend router, virtForce spins up secure, disposable docker processes. When checking packages or running automated developer test scripts, the operations occur in a dedicated sandbox process limit. If a malicious dependency is detected, the container kills the process and alerts the dashboard immediately.
+                Rather than executing code on the main backend router, Production SRE spins up secure, disposable docker processes. When checking packages or running automated developer test scripts, the operations occur in a dedicated sandbox process limit. If a malicious dependency is detected, the container kills the process and alerts the dashboard immediately.
               </p>
             </div>
 
@@ -602,17 +602,17 @@ export function LandingPage({
 
       </section>
 
-      {/* --- SECTION: COMPARATIVE EDGE (virtForce vs. ClawTeam & SwarmClaw) --- */}
+      {/* --- SECTION: COMPARATIVE EDGE (Production SRE vs. ClawTeam & SwarmClaw) --- */}
       <section className="py-20 border-t border-slate-900 bg-[#080a0f] px-4 sm:px-6 relative z-10 animate-fade-in">
         <div className="max-w-7xl mx-auto space-y-12">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-[10px] tracking-widest font-mono font-bold text-indigo-400 uppercase">THE COMPETITIVE AXIS</span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight text-center">
-              The virtForce Advantage & Edge
+              The Production SRE Advantage & Edge
             </h2>
             <p className="text-xs text-slate-400 leading-normal text-center">
-              While projects like HKUDS/ClawTeam and SwarmClaw build generalized multi-tenant research environments, virtForce is explicitly tailored for local developer execution, rigorous sandbox containment, and low-cost deployment.
+              While projects like HKUDS/ClawTeam and SwarmClaw build generalized multi-tenant research environments, Production SRE is explicitly tailored for local developer execution, rigorous sandbox containment, and low-cost deployment.
             </p>
           </div>
 
@@ -624,7 +624,7 @@ export function LandingPage({
                   <thead>
                     <tr className="bg-[#0a0c11] border-b border-slate-900 text-slate-400 font-bold">
                       <th className="p-4 uppercase tracking-wider text-[10px]">Capabilities</th>
-                      <th className="p-4 uppercase tracking-wider text-[10px] text-indigo-400">virtForce Edge (Local / Indie)</th>
+                      <th className="p-4 uppercase tracking-wider text-[10px] text-indigo-400">Production SRE Edge (Local / Indie)</th>
                       <th className="p-4 uppercase tracking-wider text-[10px] text-slate-500">ClawTeam / SwarmClaw (Research / Cloud)</th>
                     </tr>
                   </thead>
@@ -669,7 +669,7 @@ export function LandingPage({
                 <span className="text-[9px] font-mono tracking-wider font-extrabold text-indigo-400 uppercase bg-indigo-955/20 border border-indigo-900/60 px-2 py-0.5 rounded">Our Philosophy</span>
                 <h3 className="text-base font-bold text-white font-mono uppercase tracking-wide">Developer Sovereignty</h3>
                 <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                  Unlike academic or enterprise research frameworks that optimize for raw multi-agent graph densities (often adding immense overhead and cloud dependencies), <strong>virtForce</strong> is designed as a single-operator system. 
+                  Unlike academic or enterprise research frameworks that optimize for raw multi-agent graph densities (often adding immense overhead and cloud dependencies), <strong>Production SRE</strong> is designed as a single-operator system. 
                 </p>
                 <p className="text-xs text-slate-400 leading-relaxed font-sans">
                   It prioritizes clean local execution and secure, isolated container lifecycles over heavy SaaS configurations. We believe that a developer running isolated containers with an automated, WhatsApp-queryable, zero-ad outreach mechanism can scale products with unmatched agility.
@@ -700,7 +700,7 @@ export function LandingPage({
               Interactive Open-Source Repository Hub
             </h2>
             <p className="text-xs text-slate-400 leading-normal">
-              Inspect the critical project resources and instructions needed to build and operate virtForce sandboxes. Select any file tab to view its content or download locally.
+              Inspect the critical project resources and instructions needed to build and operate Production SRE sandboxes. Select any file tab to view its content or download locally.
             </p>
           </div>
 
@@ -805,13 +805,13 @@ export function LandingPage({
         <div className="max-w-7xl mx-auto space-y-4">
           <div className="flex items-center justify-center gap-2">
             <span>🛡️</span>
-            <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">virtForce Secure Sandbox</span>
+            <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">Production SRE Secure Sandbox</span>
           </div>
           <p className="max-w-md mx-auto leading-relaxed text-[11px] text-slate-500 font-sans">
-            virtForce is an open-source alternative to OpenClaw. Designed, built, and self-hosted with high visual layouts and strict container isolation boundaries. Released under the MIT License.
+            Production SRE is an open-source alternative to OpenClaw. Designed, built, and self-hosted with high visual layouts and strict container isolation boundaries. Released under the MIT License.
           </p>
           <div className="pt-2 text-[10px] text-slate-600">
-            &copy; {new Date().getFullYear()} virtForce Inc. All rights reserved. Self-Hosted Server Online.
+            &copy; {new Date().getFullYear()} Production SRE Inc. All rights reserved. Self-Hosted Server Online.
           </div>
         </div>
       </footer>

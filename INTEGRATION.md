@@ -1,21 +1,21 @@
-# 🔌 virtForce Integration, MCP & Installation Manual
+# 🔌 Production SRE Integration, MCP & Installation Manual
 
-Use this handbook to integrate the virtForce multi-agent orchestration shell, DevOps sandbox, and topological crawler directly into your existing codebase.
+Use this handbook to integrate the Production SRE multi-agent orchestration shell, DevOps sandbox, and topological crawler directly into your existing codebase.
 
 ---
 
 ## 💾 Core Persistence Architecture
 
-### 1. Does virtForce have a persistent layer?
-**Yes.** virtForce employs a hybrid, multi-tier persistent storage architecture designed for absolute environment isolation and instant workstation restarts:
+### 1. Does Production SRE have a persistent layer?
+**Yes.** Production SRE employs a hybrid, multi-tier persistent storage architecture designed for absolute environment isolation and instant workstation restarts:
 
 *   **Backend State API (`/api/state`):** The dashboard synchronizes task kanban states (`tasks`), active agent memory allocations (`agents`), network logs (`logs`), and real-time simulator stats (`stats`) seamlessly via an Express REST API backend, providing robust state persistence over raw file outputs.
-*   **Static Delta Cache (.virtforce/ Hash-Registry):** For topological code analysis, virtForce compiles repo directories into lightweight dependency graph structures (`.virtforce/project-context.json`). This works like a static file cache, ensuring the orchestrator avoids expensive multi-source code ingestion runs on every single run.
+*   **Static Delta Cache (.Production SRE/ Hash-Registry):** For topological code analysis, Production SRE compiles repo directories into lightweight dependency graph structures (`.Production SRE/project-context.json`). This works like a static file cache, ensuring the orchestrator avoids expensive multi-source code ingestion runs on every single run.
 *   **Optional Backend Server Persistence:** If running inside production self-hosted clusters, we support standard, air-gapped sqlite database adapters or JSON file-stores.
 
 ---
 
-## 🛠️ Step-by-Step Flow: Installing virtForce Inside an Existing Project
+## 🛠️ Step-by-Step Flow: Installing Production SRE Inside an Existing Project
 
 Follow this guide to inject our 7-agent workspace (CEO, PM, DEV, QA, DevOps, Marketing, Support) and the associated endpoints into an existing dynamic Express & React application.
 
@@ -126,14 +126,14 @@ app.post("/api/incubator/forecast", async (req, res) => {
 ```
 
 ### Step 3: Copy Front-End Swarm Components
-Migrate virtForce's high-fidelity reactive dashboard views into your React `src/components` tree:
+Migrate Production SRE's high-fidelity reactive dashboard views into your React `src/components` tree:
 1.  **HQCore.tsx:** The visual CAD swarm flowchart displaying active container lines and node memory settings.
 2.  **SecuritySandbox.tsx:** The configuration terminal where you test gateways and perform web crawls.
 3.  **KanbanBoard.tsx:** The active task list displaying the 7 roles progressing work from Backlog through specifications, coder, and QA validation.
 4.  **VentureIncubator.tsx:** Interactive ROI graphs and community copywriter prompts.
 
 ### Step 4: Add Unit Tests Guardrails
-Create unit checks in `src/tests/virtforce.test.ts` to block deploy processes if agent parameter configurations slip or boundary restrictions are violated:
+Create unit checks in `src/tests/Production SRE.test.ts` to block deploy processes if agent parameter configurations slip or boundary restrictions are violated:
 
 ```typescript
 import { describe, it, expect } from 'vitest';
@@ -148,26 +148,26 @@ describe('Local DevOps Pipeline Validation', () => {
 
 ---
 
-## 🔌 Integrating virtForce with Other MCP (Model Context Protocol) Clients
+## 🔌 Integrating Production SRE with Other MCP (Model Context Protocol) Clients
 
-Because virtForce includes a pre-mapped tool specification (`virtforce-ai-skill.json`), you can hook our multi-agent developers directly into other MCP-compatible interfaces (e.g. Claude Desktop, Cursor, Cline, or Windsurf). 
+Because Production SRE includes a pre-mapped tool specification (`Production SRE-ai-skill.json`), you can hook our multi-agent developers directly into other MCP-compatible interfaces (e.g. Claude Desktop, Cursor, Cline, or Windsurf). 
 
 This allows you to control the sandbox orchestrator directly from your preferred development environment.
 
 ### 1. Claude Desktop Integration
-To expose virtForce capabilities to your Claude Desktop chat workspace:
+To expose Production SRE capabilities to your Claude Desktop chat workspace:
 1.  Open your global Claude Desktop configuration file:
     *   **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
     *   **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
-2.  Add `virtforce` inside the custom `mcpServers` parameter node:
+2.  Add `Production SRE` inside the custom `mcpServers` parameter node:
 
 ```json
 {
   "mcpServers": {
-    "virtforce-orchestrator": {
+    "Production SRE-orchestrator": {
       "command": "node",
       "args": [
-        "/path/to/your/virtforce/dist/server.cjs",
+        "/path/to/your/Production SRE/dist/server.cjs",
         "--mcp"
       ],
       "env": {
@@ -177,24 +177,24 @@ To expose virtForce capabilities to your Claude Desktop chat workspace:
   }
 }
 ```
-3.  Restart your Claude Desktop client. Look for the standard 🔌 connector indicator showing that virtForce's tools (`refine_code`, `web_ingress_crawl`, etc.) have registered successfully.
+3.  Restart your Claude Desktop client. Look for the standard 🔌 connector indicator showing that Production SRE's tools (`refine_code`, `web_ingress_crawl`, etc.) have registered successfully.
 
 ### 2. Cursor Integration
-To link virtForce's code refining and crawler tools inside Cursor:
+To link Production SRE's code refining and crawler tools inside Cursor:
 1.  Open **Cursor Settings** > **Features** > **MCP**.
 2.  Click **+ Add New MCP Server**.
 3.  Input the setup parameters:
-    *   **Name:** `virtForce`
+    *   **Name:** `Production SRE`
     *   **Type:** `std-io`
-    *   **Command:** `node /absolute/path/to/virtforce/dist/server.cjs --mcp`
-4.  Save and restart the editor. Cursor's Composer will now be able to execute automated codebase crawler runs using virtForce actions.
+    *   **Command:** `node /absolute/path/to/Production SRE/dist/server.cjs --mcp`
+4.  Save and restart the editor. Cursor's Composer will now be able to execute automated codebase crawler runs using Production SRE actions.
 
 ### 3. Integration with Third-Party MCP Servers
-You can plug other MCP tools (such as database engines, file finders, or slack dispatchers) into virtForce's agent supervisor. Add the following config mappings into `package.json` to daisy-chain MCP tool scopes:
+You can plug other MCP tools (such as database engines, file finders, or slack dispatchers) into Production SRE's agent supervisor. Add the following config mappings into `package.json` to daisy-chain MCP tool scopes:
 
 ```json
 {
-  "virtforce": {
+  "Production SRE": {
     "externalMcpServers": [
       {
         "name": "sqlite-mcp-server",
@@ -205,4 +205,4 @@ You can plug other MCP tools (such as database engines, file finders, or slack d
   }
 }
 ```
-This setups a bidirectional data route where virtForce developers write refined code, and the SQLite MCP automatically commits historical logs directly to the localized persistence layer.
+This setups a bidirectional data route where Production SRE developers write refined code, and the SQLite MCP automatically commits historical logs directly to the localized persistence layer.

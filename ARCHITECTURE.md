@@ -1,12 +1,12 @@
-# 📐 virtForce System Architecture
+# 📐 Production SRE System Architecture
 
-This document describes the high-level design, secure container topology, and execution workflows of virtForce.
+This document describes the high-level design, secure container topology, and execution workflows of Production SRE.
 
 ---
 
 ## 🗺️ High-Level System Design
 
-virtForce is structured as a single lightweight host process controlling localized, ephemeral Docker container sandboxes.
+Production SRE is structured as a single lightweight host process controlling localized, ephemeral Docker container sandboxes.
 
 ```text
  ┌────────────────────────────────────────────────────────┐
@@ -30,7 +30,7 @@ virtForce is structured as a single lightweight host process controlling localiz
 
 Traditional systems spin up raw processes on the host. If an agent installs a malicious Node package or executes custom developer loops on the server, it has complete control over host variables.
 
-virtForce enforces three isolation levels:
+Production SRE enforces three isolation levels:
 
 1.  **Low (Shared Host):** Great for rapid local testing without Docker overhead. All agent cycles execute inside single safe process bounds.
 2.  **Medium (Per-Group Container):** Separates the Strategic CEO and Marketing Gateways from the active DEV Compiler Sandbox. Staves off dependency leaking.
@@ -53,7 +53,7 @@ No agent can write directly to the production branch. Once a DEV workspace conta
 
 ## 💾 State Persistence & Error Handling
  
- Unlike typical architectures that rely entirely on front-end storage, virtForce synchronizes state across boundaries using an Express.js `/api/state` API endpoint. This mechanism robustly manages tasks, agents, logs, and telemetry across reloads without polluting `localStorage`.
+ Unlike typical architectures that rely entirely on front-end storage, Production SRE synchronizes state across boundaries using an Express.js `/api/state` API endpoint. This mechanism robustly manages tasks, agents, logs, and telemetry across reloads without polluting `localStorage`.
  
  For production-grade SRE (Site Reliability Engineering), the system integrates:
  1. **React ErrorBoundary:** Catching catastrophic front-end rendering failures dynamically.
@@ -63,7 +63,7 @@ No agent can write directly to the production branch. Once a DEV workspace conta
  
  ## 💬 Inbound Messenger Webhook Gateway
 
-To let developers trigger status diagnostics or commands remotely (e.g., from a mobile device on the train), virtForce hosts a small, fast webhook endpoint. Any social trigger from WhatsApp, Telegram, or Slack is verified against signing keys:
+To let developers trigger status diagnostics or commands remotely (e.g., from a mobile device on the train), Production SRE hosts a small, fast webhook endpoint. Any social trigger from WhatsApp, Telegram, or Slack is verified against signing keys:
 
 ```text
 Incoming Payload ──► Host Gateway ──► Signature Validation ──► Container Queue

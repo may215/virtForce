@@ -142,7 +142,7 @@ export default function App() {
         <div>
           <div className="h-16 flex items-center justify-center md:justify-start md:px-4 border-b border-slate-800">
             <div className="w-8 h-8 rounded bg-indigo-500 flex items-center justify-center font-bold text-white shadow-lg shrink-0">vF</div>
-            <span className="hidden md:block font-bold text-slate-100 ml-3 tracking-wide">virtForce</span>
+            <span className="hidden md:block font-bold text-slate-100 ml-3 tracking-wide">Production SRE</span>
           </div>
           
           {/* Header Search Integration (Cmd+K) */}
