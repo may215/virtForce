@@ -2,7 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Incident } from '../types';
 import Markdown from 'react-markdown';
 import { INITIAL_INCIDENTS } from '../mockData';
-import { Play } from 'lucide-react';
+import { Play, BarChart2 } from 'lucide-react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+
+const INCIDENT_IMPACT_DATA = [
+  { day: 'Mon', criticalAlerts: 4, avgResolutionTime: 45 },
+  { day: 'Tue', criticalAlerts: 7, avgResolutionTime: 52 },
+  { day: 'Wed', criticalAlerts: 2, avgResolutionTime: 20 },
+  { day: 'Thu', criticalAlerts: 8, avgResolutionTime: 65 },
+  { day: 'Fri', criticalAlerts: 3, avgResolutionTime: 30 },
+  { day: 'Sat', criticalAlerts: 1, avgResolutionTime: 15 },
+  { day: 'Sun', criticalAlerts: 5, avgResolutionTime: 40 }
+];
 
 interface SREIncidentsProps {
   autoStartSimulation?: boolean;
@@ -24,6 +35,22 @@ export const SREIncidents: React.FC<SREIncidentsProps> = ({ autoStartSimulation 
       setTimeout(() => triggerSimulation(), 500);
     }
   }, [autoStartSimulation, isSimulating]);
+
+  // Listen for incoming Sentry webhooks via SSE
+  useEffect(() => {
+    const eventSource = new EventSource('/api/events');
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === 'sentry_alert') {
+          triggerSimulation(data.title, data.desc);
+        }
+      } catch (err) {
+        console.error('Error parsing SSE event:', err);
+      }
+    };
+    return () => eventSource.close();
+  }, []);
 
   // Auto scroll to bottom of details view when things update
   useEffect(() => {
@@ -52,7 +79,7 @@ export const SREIncidents: React.FC<SREIncidentsProps> = ({ autoStartSimulation 
     }
   };
 
-  const triggerSimulation = () => {
+  const triggerSimulation = (customTitle?: string, customDesc?: string) => {
     if (isSimulating) return;
     setIsSimulating(true);
 
@@ -62,8 +89,8 @@ export const SREIncidents: React.FC<SREIncidentsProps> = ({ autoStartSimulation 
       status: 'INVESTIGATING',
       severity: 'SEV-1',
       source: 'Sentry Webhook',
-      title: 'Uncaught TypeError: Cannot read properties of undefined (reading \'user\')',
-      stackTrace: `Incoming webhook payload received...\nParsing Sentry payload...`,
+      title: customTitle || 'Uncaught TypeError: Cannot read properties of undefined (reading \'user\')',
+      stackTrace: customDesc ? `Incoming webhook payload received...\nParsing Sentry payload...\n${customDesc}` : `Incoming webhook payload received...\nParsing Sentry payload...`,
       createdAt: new Date().toISOString()
     };
 
@@ -140,6 +167,17 @@ export const SREIncidents: React.FC<SREIncidentsProps> = ({ autoStartSimulation 
           </button>
         </div>
         <div className="flex-1 overflow-y-auto">
+          <button
+            onClick={() => setSelectedIncidentId(null)}
+            className={`w-full text-left p-4 border-b border-slate-800/50 hover:bg-slate-800/20 transition-all flex items-center gap-3 ${selectedIncidentId === null ? 'bg-[#1164A3] border-l-2 border-l-blue-400' : 'border-l-2 border-l-transparent'}`}
+          >
+            <BarChart2 className="w-5 h-5 text-blue-400" />
+            <div>
+              <div className="text-xs font-bold text-white">Impact Dashboard</div>
+              <div className="text-[10px] text-slate-500 font-mono">Overview & Metrics</div>
+            </div>
+          </button>
+          
           {incidents.map((incident) => (
             <button
               key={incident.id}
@@ -270,8 +308,59 @@ VirtForceSRE.init({
             </div>
           </>
         ) : (
-          <div className="flex items-center justify-center h-full text-slate-500 font-mono text-xs">
-            Select an incident to view details
+          <div className="flex flex-col h-full overflow-y-auto p-6 bg-[#1a1d24]">
+            <h2 className="text-xl font-bold text-white font-mono mb-6">SRE Incident Impact Dashboard</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              {/* Chart 1: Resolution Time */}
+              <div className="bg-[#12151f] border border-slate-800 p-4 rounded-lg shadow-sm">
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Historical Resolution Time (mins)</h3>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={INCIDENT_IMPACT_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="colorRes" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#818cf8" stopOpacity={0.8}/>
+                          <stop offset="95%" stopColor="#818cf8" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                      <XAxis dataKey="day" stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
+                      <YAxis stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
+                      <Tooltip contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #334155', fontSize: '12px' }} />
+                      <Area type="monotone" dataKey="avgResolutionTime" stroke="#818cf8" fillOpacity={1} fill="url(#colorRes)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+              
+              {/* Chart 2: Alert Frequency */}
+              <div className="bg-[#12151f] border border-slate-800 p-4 rounded-lg shadow-sm">
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Critical Alerts Frequency</h3>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={INCIDENT_IMPACT_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                      <XAxis dataKey="day" stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
+                      <YAxis stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
+                      <Tooltip contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #334155', fontSize: '12px' }} cursor={{ fill: '#1e293b' }} />
+                      <Bar dataKey="criticalAlerts" fill="#f43f5e" radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-[#12151f] border border-slate-800 p-6 rounded-lg text-sm text-slate-300">
+              <h3 className="text-sm font-bold text-white mb-2">Automated Incident Defense</h3>
+              <p className="text-slate-400 mb-4">
+                The SRE swarm automatically catches exceptions, provisions an isolated sandbox, reproduces the trace, and applies a patch. The impact of the autonomous SRE team has reduced manual on-call burden by over 80%.
+              </p>
+              <ul className="list-disc list-inside space-y-2 text-xs font-mono text-slate-500">
+                <li>Webhook integration active: listening for Sentry events on /api/webhooks/sentry</li>
+                <li>Zero-downtime regression test pipeline initialized</li>
+                <li>Container sandboxes provisioned on demand</li>
+              </ul>
+            </div>
           </div>
         )}
       </div>

@@ -31,3 +31,5 @@
 ## Next Steps
 * Open source the repository to GitHub.
 * Implement real WebSocket-based communication streams for real-time live terminal logs updates instead of API polling.
+* Implemented the `/api/webhooks/sentry` API route to receive Sentry webhooks and trigger the `useSwarmSimulation` SRE incident flow over SSE.
+* Added an 'Incident Impact' visualization on the SRE Incidents dashboard using `recharts` to show historical resolution times and frequency of critical alerts.

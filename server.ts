@@ -808,6 +808,32 @@ async function startServer() {
     }
   });
 
+  // --- API Endpoint: Sentry Webhook & SSE ---
+  const clients = new Set<express.Response>();
+
+  app.get("/api/events", (req, res) => {
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    clients.add(res);
+    req.on("close", () => clients.delete(res));
+  });
+
+  app.post("/api/webhooks/sentry", (req, res) => {
+    try {
+      const payload = req.body;
+      const exceptionTitle = payload.project_name ? `${payload.project_name}: ${payload.message}` : (payload.message || "Unknown Exception");
+      const exceptionDesc = payload.culprit || payload.url || JSON.stringify(payload);
+      
+      const eventData = JSON.stringify({ type: 'sentry_alert', title: exceptionTitle, desc: exceptionDesc });
+      clients.forEach(client => client.write(`data: ${eventData}\n\n`));
+      
+      res.json({ success: true });
+    } catch (err: any) {
+      res.status(500).json({ error: "Failed to process Sentry webhook: " + err.message });
+    }
+  });
+
   // --- Asset Serving & Vite Integration ---
   if (process.env.NODE_ENV !== "production") {
     console.log("[HOST] Running in DEVELOPMENT mode, mounting Vite proxy middlewares...");
