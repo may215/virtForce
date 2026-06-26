@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 360" width="100%" height="auto" style="background: #090b11; border-radius: 12px; border: 1px solid #1e293b; font-family: system-ui, -apple-system, sans-serif;">
+    <defs>
+      <pattern id="grid3" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#111524" stroke-width="1"/>
+      </pattern>
+      <linearGradient id="glowGradCrawler" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.1" />
+        <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.05" />
+      </linearGradient>
+      <marker id="arrow-lp-readme" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155" />
+      </marker>
+      <marker id="arrow-active-lp-readme" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#00d2ff" />
+      </marker>
+      <filter id="shadow-crawler" x="-10%" y="-10%" width="120%" height="120%">
+        <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.5"/>
+      </filter>
+    </defs>
+
+    <rect width="850" height="360" rx="12" fill="#090b11" />
+    <rect width="850" height="360" fill="url(#grid3)" rx="12" />
+    
+    <text x="30" y="40" fill="#ffffff" font-size="14" font-weight="bold" font-family="monospace">📂 TOPOLOGICAL INGRESS CRAWLER &amp; CACHING ENGINE</text>
+    <text x="30" y="58" fill="#64748b" font-size="10">Generates lightweight, serialized context-graphs of repository structures, reducing LLM token cost by 92.1%.</text>
+
+    <!-- Top Ingress Crawler Map Board -->
+    <rect x="30" y="80" width="540" height="250" rx="8" fill="#050608" stroke="#1e293b" stroke-width="1.5" filter="url(#shadow-crawler)" />
+    
+    <!-- Top Ingress Board Header -->
+    <rect x="30" y="80" width="540" height="30" rx="8" fill="#0b0d14" />
+    <circle cx="48" cy="95" r="4" fill="#ef4444" />
+    <circle cx="60" cy="95" r="4" fill="#f59e0b" />
+    <circle cx="72" cy="95" r="4" fill="#10b981" />
+    <text x="92" y="99" fill="#00d2ff" font-size="9" font-family="monospace" font-weight="bold">● INITIALIZATION GRAPH LANES (ACTIVE CACHE SERIALIZATION)</text>
+    <text x="430" y="98" fill="#64748b" font-size="8" font-family="monospace">INGRESS_CRAWLER_V2</text>
+
+    <!-- Content of connections map -->
+    <line x1="100" y1="195" x2="210" y2="155" stroke="#00d2ff" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#arrow-active-lp-readme)" />
+    <line x1="210" y1="155" x2="320" y2="195" stroke="#00d2ff" stroke-width="2" marker-end="url(#arrow-active-lp-readme)" />
+    <line x1="320" y1="195" x2="440" y2="155" stroke="#00d2ff" stroke-width="2" marker-end="url(#arrow-active-lp-readme)" />
+    <line x1="320" y1="195" x2="440" y2="235" stroke="#334155" stroke-width="1.2" marker-end="url(#arrow-lp-readme)" />
+
+    <!-- File Nodes -->
+    <!-- HTML (100, 195) -->
+    <circle cx="100" cy="195" r="18" fill="#0a0d14" stroke="#1e293b" stroke-width="1.5" />
+    <text x="100" y="199" text-anchor="middle" font-size="11">🌐</text>
+    <text x="100" y="225" text-anchor="middle" fill="#e2e8f0" font-size="8" font-family="monospace" font-weight="bold">index.html</text>
+    <text x="100" y="172" text-anchor="middle" fill="#475569" font-size="7" font-weight="bold" font-family="monospace">HTML</text>
+
+    <!-- BOOT (210, 155) -->
+    <circle cx="210" cy="155" r="18" fill="#0a0d14" stroke="#1e293b" stroke-width="1.5" />
+    <text x="210" y="159" text-anchor="middle" font-size="11">⚡</text>
+    <text x="210" y="185" text-anchor="middle" fill="#e2e8f0" font-size="8" font-family="monospace" font-weight="bold">main.tsx</text>
+    <text x="210" y="132" text-anchor="middle" fill="#475569" font-size="7" font-weight="bold" font-family="monospace">BOOT</text>
+
+    <!-- CORE (320, 195) -->
+    <circle cx="320" cy="195" r="18" fill="#141a24" stroke="#00d2ff" stroke-width="1.5" />
+    <text x="320" y="199" text-anchor="middle" font-size="11">📦</text>
+    <text x="320" y="225" text-anchor="middle" fill="#e2e8f0" font-size="8" font-family="monospace" font-weight="bold">App.tsx</text>
+    <text x="320" y="172" text-anchor="middle" fill="#00d2ff" font-size="7" font-weight="bold" font-family="monospace">CORE</text>
+
+    <!-- MAPS (440, 155) -->
+    <circle cx="440" cy="155" r="18" fill="#1b2332" stroke="#00d2ff" stroke-width="1.5" />
+    <text x="440" y="159" text-anchor="middle" font-size="11">🗺️</text>
+    <text x="440" y="185" text-anchor="middle" fill="#e2e8f0" font-size="8" font-family="monospace" font-weight="bold">MapboxRoute.tsx</text>
+    <text x="440" y="132" text-anchor="middle" fill="#00d2ff" font-size="7" font-weight="bold" font-family="monospace">MAPS</text>
+
+    <!-- DBMS (440, 235) -->
+    <circle cx="440" cy="235" r="18" fill="#0a0d14" stroke="#1e293b" stroke-width="1.5" />
+    <text x="440" y="239" text-anchor="middle" font-size="11">💾</text>
+    <text x="440" y="265" text-anchor="middle" fill="#8e9bb0" font-size="8" font-family="monospace" font-weight="bold">TechnicianDb.ts</text>
+    <text x="440" y="212" text-anchor="middle" fill="#475569" font-size="7" font-weight="bold" font-family="monospace">DBMS</text>
+
+    <!-- Sidebar Performance stats panel -->
+    <rect x="590" y="80" width="230" height="250" rx="8" fill="#0a0d14" stroke="#1e293b" stroke-width="1.5" filter="url(#shadow-crawler)" />
+    <rect x="590" y="80" width="230" height="30" rx="8" fill="#131722" />
+    <text x="602" y="99" fill="#e2e8f0" font-weight="bold" font-size="9" font-family="monospace">📊 CACHE OPTIMIZATION METRICS</text>
+
+    <!-- Stats details -->
+    <text x="605" y="135" fill="#f43f5e" font-size="9" font-family="sans-serif">UNOPTIMIZED CRAWL LOAD:</text>
+    <text x="605" y="150" fill="#f43f5e" font-size="12" font-weight="bold" font-family="monospace">~148K Tokens</text>
+    <text x="605" y="162" fill="#64748b" font-size="8">Requires repetitive full-repo file walk (25s)</text>
+
+    <path d="M 605 180 L 805 180" stroke="#1e293b" stroke-width="1" />
+
+    <text x="605" y="205" fill="#10b981" font-size="9" font-family="sans-serif">VIRTFORCE SEED DELEGATE CRAWL:</text>
+    <text x="605" y="222" fill="#10b981" font-size="14" font-weight="bold" font-family="monospace">~11.8K Tokens</text>
+    <text x="605" y="235" fill="#10b981" font-weight="bold" font-size="8" font-family="monospace">● INSTANT SERIALIZED CACHE</text>
+    <text x="605" y="247" fill="#64748b" font-size="8">Delta hash match resolves context inline (0.1s)</text>
+
+    <!-- Saved badge -->
+    <rect x="605" y="275" width="200" height="40" rx="4" fill="#064e3b" stroke="#047857" stroke-width="1" />
+    <text x="615" y="291" fill="#34d399" font-size="11" font-weight="bold" font-family="sans-serif">🎯 92.1% SPEND REDUCTION</text>
+    <text x="615" y="304" fill="#a7f3d0" font-size="8" font-family="sans-serif">Saves massive prompt context token bandwidth</text>
+  </svg>

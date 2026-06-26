@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 460" width="100%" height="auto" style="background: #090a10; border-radius: 12px; border: 1px solid #1e293b; font-family: system-ui, -apple-system, sans-serif;">
+    <!-- Dark ambient mesh grid background -->
+    <defs>
+      <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#101524" stroke-width="1"/>
+      </pattern>
+      <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.15" />
+        <stop offset="50%" stop-color="#8b5cf6" stop-opacity="0.05" />
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.15" />
+      </linearGradient>
+      <linearGradient id="neonCyan" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#00d2ff" />
+        <stop offset="100%" stop-color="#0080ff" />
+      </linearGradient>
+      <linearGradient id="neonGreen" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#10b981" />
+        <stop offset="100%" stop-color="#059669" />
+      </linearGradient>
+      <linearGradient id="lineGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#ef4444" stop-opacity="0.2" />
+        <stop offset="50%" stop-color="#3b82f6" stop-opacity="0.8" />
+        <stop offset="100%" stop-color="#10b981" stop-opacity="0.8" />
+      </linearGradient>
+      <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+        <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.5"/>
+      </filter>
+    </defs>
+    
+    <rect width="850" height="460" rx="12" fill="#090a10" />
+    <rect width="850" height="460" fill="url(#grid)" rx="12" />
+    <circle cx="200" cy="150" r="180" fill="url(#glowGrad)" filter="url(#shadow)" />
+    <circle cx="650" cy="300" r="120" fill="url(#glowGrad)" filter="url(#shadow)" />
+
+    <!-- App Main Mockup Panel Window Bar -->
+    <rect x="15" y="15" width="820" height="430" rx="8" fill="#0c0e16" stroke="#1f293d" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="15" y="15" width="820" height="36" rx="8" fill="#07080d" />
+    <!-- Window buttons -->
+    <circle cx="35" cy="33" r="5" fill="#f43f5e" />
+    <circle cx="50" cy="33" r="5" fill="#eab308" />
+    <circle cx="65" cy="33" r="5" fill="#10b981" />
+    
+    <text x="90" y="37" fill="#64748b" font-size="11" font-family="monospace">🛡️ virtForce OS -- Telemetry HQ Dashboard -- Port 3000</text>
+    <rect x="670" y="24" width="150" height="18" rx="4" fill="#1e1b4b" stroke="#312e81" stroke-width="1" />
+    <text x="678" y="36" fill="#00d2ff" font-size="9" font-family="monospace" font-weight="bold">● SIMULATION ACTIVE</text>
+
+    <!-- Sidebar Panel Navigation -->
+    <rect x="15" y="51" width="120" height="394" fill="#08090f" />
+    <!-- Nav Items -->
+    <text x="25" y="80" fill="#ffffff" font-size="11" font-weight="bold" font-family="monospace">☰ WORKSPACE</text>
+    
+    <rect x="20" y="100" width="110" height="20" rx="3" fill="#1e293b" />
+    <text x="30" y="113" fill="#00d2ff" font-size="10" font-family="sans-serif" font-weight="500">🎯 CAD Canvas</text>
+    
+    <text x="30" y="143" fill="#64748b" font-size="10" font-family="sans-serif">⚙️ Sprint Tasks</text>
+    <text x="30" y="173" fill="#64748b" font-size="10" font-family="sans-serif">🛡️ Secure Sandboxes</text>
+    <text x="30" y="203" fill="#64748b" font-size="10" font-family="sans-serif">💬 Webhook Gate</text>
+    <text x="30" y="233" fill="#64748b" font-size="10" font-family="sans-serif">📈 Growth Lab</text>
+    
+    <!-- System Metrics panel inside Sidebar -->
+    <rect x="20" y="340" width="110" height="90" rx="4" fill="#030406" stroke="#161b26" stroke-width="1" />
+    <text x="26" y="354" fill="#475569" font-size="8" font-family="monospace" font-weight="bold">BURNRATE / SEC</text>
+    <text x="26" y="368" fill="#ef4444" font-size="11" font-family="monospace" font-weight="bold">$0.0018 / s</text>
+    <text x="26" y="388" fill="#475569" font-size="8" font-family="monospace" font-weight="bold">TOTAL BUDGET</text>
+    <text x="26" y="402" fill="#10b981" font-size="11" font-family="monospace" font-weight="bold">$91.12 Left</text>
+    <text x="26" y="420" fill="#475569" font-size="7" font-family="monospace">MEMORY: 512 MB</text>
+
+    <!-- Main CAD Topology Swarm Canvas Area -->
+    <text x="155" y="75" fill="#f8fafc" font-size="14" font-weight="bold">Interactive CAD Topological Swarm Canvas</text>
+    <text x="155" y="93" fill="#94a3b8" font-size="10">Drag agent nodes to align pipelines. Real-time simulated communication pathways active.</text>
+
+    <!-- Interactive Grid Canvas Border -->
+    <rect x="155" y="105" width="455" height="235" rx="6" fill="#05060b" stroke="#1e293b" stroke-width="1.5" />
+    
+    <!-- Connections in swarm canvas -->
+    <path d="M 215 175 Q 280 140 345 175" fill="none" stroke="url(#lineGlow)" stroke-width="2.5" />
+    <path d="M 345 175 Q 410 140 475 220" fill="none" stroke="#2563eb" stroke-dasharray="4 4" stroke-width="1.8" />
+    <path d="M 475 220 Q 410 290 345 280" fill="none" stroke="#10b981" stroke-width="2" />
+    <path d="M 345 280 Q 280 270 215 250" fill="none" stroke="#8b5cf6" stroke-dasharray="3 3" stroke-width="1.5" />
+    <path d="M 475 220 L 555 175" fill="none" stroke="#10b981" stroke-width="2" />
+    <path d="M 215 250 L 555 255" fill="none" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.3" />
+
+    <!-- Animated pulsing path signal particles -->
+    <circle cx="280" cy="158" r="4" fill="#00d2ff" />
+    <circle cx="410" cy="180" r="4" fill="#22c55e" />
+
+    <!-- Agent Nodes in swarm -->
+    <!-- CEO Node -->
+    <circle cx="215" cy="175" r="22" fill="#090d16" stroke="#00d2ff" stroke-width="2" filter="url(#shadow)" />
+    <text x="215" y="179" text-anchor="middle" font-size="12">🎯</text>
+    <text x="215" y="209" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="bold">CEO (Supervisor)</text>
+    <text x="215" y="219" text-anchor="middle" fill="#00d2ff" font-size="8">Status: IDLE</text>
+
+    <!-- PM Node -->
+    <circle cx="345" cy="175" r="22" fill="#0d111d" stroke="#2563eb" stroke-width="2" filter="url(#shadow)" />
+    <text x="345" y="179" text-anchor="middle" font-size="12">📋</text>
+    <text x="345" y="209" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="bold">PM (Specs Node)</text>
+    <text x="345" y="219" text-anchor="middle" fill="#2563eb" font-size="8">Status: SLEEPING</text>
+
+    <!-- DEV Node (Active) -->
+    <circle cx="475" cy="220" r="26" fill="#0a191f" stroke="#10b981" stroke-width="3" filter="url(#shadow)" />
+    <circle cx="475" cy="220" r="32" fill="none" stroke="#10b981" stroke-opacity="0.4" stroke-width="1" />
+    <text x="475" y="224" text-anchor="middle" font-size="14">💻</text>
+    <text x="475" y="258" text-anchor="middle" fill="#10b981" font-size="9" font-weight="bold">DEV (OpenHands)</text>
+    <text x="475" y="268" text-anchor="middle" fill="#34d399" font-size="8" font-weight="bold">Status: WRITING CODE</text>
+
+    <!-- QA Node -->
+    <circle cx="345" cy="280" r="22" fill="#180e15" stroke="#ec4899" stroke-width="2" filter="url(#shadow)" />
+    <text x="345" y="284" text-anchor="middle" font-size="12">🛡️</text>
+    <text x="345" y="312" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="bold">QA (Auditor)</text>
+
+    <!-- DevOps Node -->
+    <circle cx="555" cy="175" r="20" fill="#0e0c15" stroke="#8b5cf6" stroke-width="2" filter="url(#shadow)" />
+    <text x="555" y="179" text-anchor="middle" font-size="11">⚙️</text>
+
+    <!-- Marketing Node -->
+    <circle cx="215" cy="275" r="20" fill="#120c15" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)" />
+    <text x="215" y="279" text-anchor="middle" font-size="11">✨</text>
+
+    <!-- Canvas Drag Overlay Hint -->
+    <rect x="495" y="115" width="105" height="24" rx="4" fill="#1e1b4b" stroke="#4338ca" stroke-width="1" />
+    <text x="502" y="130" fill="#c7d2fe" font-size="8" font-family="monospace">👆 Drag &amp; Drop Nodes</text>
+
+    <!-- Sidebar Live Inspector Panel -->
+    <rect x="620" y="105" width="205" height="235" rx="6" fill="#05060b" stroke="#1e293b" stroke-width="1.5" />
+    <rect x="620" y="105" width="205" height="28" rx="6" fill="#0a0d15" />
+    <text x="632" y="123" fill="#e2e8f0" font-weight="bold" font-size="10" font-family="monospace">⚙️ NODE PARAM INSPECTOR</text>
+
+    <!-- Inspector Fields (Currently Selected Node: DEV) -->
+    <text x="632" y="152" fill="#94a3b8" font-size="9">TARGET NODE:</text>
+    <text x="632" y="165" fill="#10b981" font-size="11" font-weight="bold" font-family="monospace">DEV (OpenHands-Sandbox)</text>
+    
+    <text x="632" y="190" fill="#94a3b8" font-size="9">MEMORY LIMIT CONFIG:</text>
+    <rect x="632" y="196" width="180" height="20" rx="3" fill="#1e293b" />
+    <text x="640" y="210" fill="#e2e8f0" font-size="10" font-family="monospace">512 MB (Sandbox High)</text>
+    
+    <text x="632" y="235" fill="#94a3b8" font-size="9">SOVEREIGN AI MODEL ROUTE:</text>
+    <rect x="632" y="241" width="180" height="20" rx="3" fill="#1e293b" />
+    <text x="640" y="255" fill="#00d2ff" font-size="10" font-family="monospace">Google Gemini-2.5-Pro</text>
+
+    <text x="632" y="280" fill="#94a3b8" font-size="9">CONTAINER PORT BINDINGS:</text>
+    <text x="632" y="295" fill="#ffffff" font-size="10" font-family="monospace" font-weight="bold">Port 3000 (Forward Proxy)</text>
+    
+    <!-- Active terminal execution console simulator inside Dashboard -->
+    <rect x="155" y="350" width="670" height="85" rx="6" fill="#030406" stroke="#111622" stroke-width="1.5" />
+    <rect x="155" y="350" width="670" height="18" rx="6" fill="#07080d" />
+    <text x="167" y="362" fill="#64748b" font-weight="bold" font-size="8" font-family="monospace">TERMINAL STDOUT COMMAND CONSOLE (DOCKER-COMPILE LOGS)</text>
+    
+    <text x="167" y="382" fill="#a78bfa" font-size="9" font-family="monospace">virtforce-dev | [SANDBOX-COMPILE] Generating custom React components in /src/components/MyMVP.tsx...</text>
+    <text x="167" y="397" fill="#34d399" font-size="9" font-family="monospace">✓ SUCCESS: Static assets compiled successfully in 184ms inside test container container-08</text>
+    <text x="167" y="412" fill="#38bdf8" font-size="9" font-family="monospace">virtforce-host | [HITL LOCK-HOLD] Triggering active sandbox approvals loop. Staging git diff deltas...</text>
+    <text x="167" y="425" fill="#94a3b8" font-size="9" font-family="monospace">$ _</text>
+  </svg>

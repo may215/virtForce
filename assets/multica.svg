@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 360" width="100%" height="auto" style="background: #08090f; border-radius: 12px; border: 1px solid #1e293b; font-family: system-ui, -apple-system, sans-serif;">
+    <defs>
+      <pattern id="grid4" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0e1220" stroke-width="1"/>
+      </pattern>
+      <filter id="shadow-multica" x="-10%" y="-10%" width="120%" height="120%">
+        <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000000" flood-opacity="0.5"/>
+      </filter>
+    </defs>
+
+    <rect width="850" height="360" rx="12" fill="#08090f" />
+    <rect width="850" height="360" fill="url(#grid4)" rx="12" />
+
+    <text x="30" y="40" fill="#ffffff" font-size="14" font-weight="bold" font-family="monospace">🐙 NATIVE MULTICA DAEMON INTEGRATION DECK</text>
+    <text x="30" y="58" fill="#64748b" font-size="10">Syncs background agents, compiles skill-sets compound logic during runtime, and maps tools to Cursor / Claude-Desktop MCP.</text>
+
+    <!-- Main multica panel -->
+    <rect x="30" y="80" width="790" height="250" rx="8" fill="#040608" stroke="#1e293b" stroke-width="1.5" filter="url(#shadow-multica)" />
+    
+    <!-- Titlebar -->
+    <rect x="30" y="80" width="790" height="32" rx="8" fill="#0b0d13" />
+    <circle cx="48" cy="96" r="4" fill="#ef4444" />
+    <circle cx="60" cy="96" r="4" fill="#f59e0b" />
+    <circle cx="72" cy="96" r="4" fill="#10b981" />
+    <text x="92" y="100" fill="#818cf8" font-size="9" font-family="monospace" font-weight="bold">🐙 DAEMON CONNECTED -- localhost:5902</text>
+    <rect x="670" y="87" width="140" height="18" rx="4" fill="#022c22" stroke="#065f46" stroke-width="1" />
+    <text x="678" y="99" fill="#34d399" font-size="8" font-family="monospace" font-weight="bold">● MULTICA SYNC ACTIVE</text>
+
+    <!-- Left column: 3 loaded workers -->
+    <text x="50" y="135" fill="#94a3b8" font-size="9" font-family="monospace" font-weight="bold">SYNCHRONIZED LOCAL DAEMON WORKERS</text>
+
+    <!-- CEO-Copilot Node -->
+    <rect x="50" y="148" width="220" height="52" rx="6" fill="#090b11" stroke="#312e81" stroke-width="1.2" />
+    <text x="62" y="180" font-size="18">🎯</text>
+    <text x="92" y="170" fill="#ffffff" font-size="10" font-weight="bold" font-family="monospace">CEO-Copilot</text>
+    <text x="92" y="184" fill="#818cf8" font-size="8" font-family="monospace">ROLE: Supervisor / planner</text>
+    <rect x="210" y="156" width="52" height="12" rx="2" fill="#1e1b4b" />
+    <text x="214" y="165" fill="#a5b4fc" font-size="7" font-weight="bold" font-family="monospace">ONLINE</text>
+
+    <!-- Code-Mutant Node -->
+    <rect x="50" y="210" width="220" height="52" rx="6" fill="#090b11" stroke="#065f46" stroke-width="1.2" />
+    <text x="62" y="242" font-size="18">💻</text>
+    <text x="92" y="232" fill="#ffffff" font-size="10" font-weight="bold" font-family="monospace">Code-Mutant</text>
+    <text x="92" y="246" fill="#10b981" font-size="8" font-family="monospace">ROLE: Coder Agent</text>
+    <rect x="210" y="218" width="52" height="12" rx="2" fill="#022c22" />
+    <text x="214" y="227" fill="#34d399" font-weight="bold" font-size="7" font-family="monospace">WRITING</text>
+
+    <!-- Aero-DevOps Node -->
+    <rect x="50" y="272" width="220" height="48" rx="6" fill="#090b11" stroke="#3b0764" stroke-width="1.2" />
+    <text x="62" y="301" font-size="16">⚙️</text>
+    <text x="92" y="291" fill="#ffffff" font-size="10" font-weight="bold" font-family="monospace">Aero-DevOps</text>
+    <text x="92" y="303" fill="#c084fc" font-size="8" font-family="monospace">ROLE: DevOps Builder</text>
+    <rect x="210" y="280" width="52" height="12" rx="2" fill="#2e1065" />
+    <text x="214" y="289" fill="#e9d5ff" font-weight="bold" font-size="7" font-family="monospace">STANDBY</text>
+
+    <!-- Center Separator -->
+    <line x1="295" y1="130" x2="295" y2="310" stroke="#111625" stroke-width="1.5" />
+
+    <!-- Right column: Terminal CLI sync -->
+    <text x="315" y="135" fill="#94a3b8" font-size="9" font-family="monospace" font-weight="bold">TERMINAL OUTPUT STDOUT COMMAND LINE (DAEMON SYNC)</text>
+    <rect x="315" y="148" width="485" height="120" rx="6" fill="#020305" stroke="#111625" stroke-width="1.5" />
+    <text x="330" y="172" fill="#00d2ff" font-size="10" font-family="monospace">$ multica sync-skills --virtforce</text>
+    <text x="330" y="192" fill="#818cf8" font-size="9.5" font-family="monospace">[multicad] sync completed. Exposing skill: code_refiner (Type: MCP) - OK</text>
+    <text x="330" y="210" fill="#818cf8" font-size="9.5" font-family="monospace">[multicad] sync completed. Exposing skill: ingress_crawler (Type: MCP) - OK</text>
+    <text x="330" y="228" fill="#c084fc" font-size="9.5" font-family="monospace">[multicad] sync completed. Exposing skill: security_agent_shield (Type: MPC) - OK</text>
+    <text x="330" y="250" fill="#10b981" font-size="9.5" font-weight="bold" font-family="monospace">[SUCCESS] 3 secure virtForce developer tools hot-loaded inside Multica teammate database.</text>
+
+    <!-- Info note -->
+    <rect x="315" y="280" width="485" height="40" rx="4" fill="#0c101d" stroke="#1d283d" stroke-width="1.2" />
+    <text x="325" y="296" fill="#94a3b8" font-size="8.5" font-family="sans-serif">Config file</text>
+    <text x="372" y="296" fill="#c7d2fe" font-size="8.5" font-weight="bold" font-family="monospace">~/.multica/configs/teammates.json</text>
+    <text x="590" y="296" fill="#94a3b8" font-size="8.5" font-family="sans-serif">synchronized successfully under localhost loop.</text>
+    <text x="325" y="310" fill="#64748b" font-size="8" font-family="sans-serif">* Enables Cross-MCP triggers to share secure sandboxed execution steps instantly with AI editors.</text>
+
+  </svg>
